@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet>
+  <title>Reserve Your Build — IntexiaUWebDesign</title>
+  <meta name="description" content="Reserve your IntexiaUWebDesign project — Genesis, Momentum, or Signature.">
+  <link rel="icon" href="assets/intexiau_logo.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&amp;family=Rajdhani:wght@300;400;500;600;700&amp;family=Share+Tech+Mono&amp;display=swap" rel="stylesheet">
+  <style>
+    html,body{ margin:0; background:#020510; }
+    ::selection{ background:#22e5ff; color:#020510; }
+    @keyframes pulse{ 0%,100%{ opacity:1; } 50%{ opacity:.55; } }
+    @keyframes ringExpand{ 0%{ transform:scale(.6); opacity:.7; } 100%{ transform:scale(2.6); opacity:0; } }
+    a{ color:#22e5ff; }
+    a:hover{ color:#7be3ff; }
+  </style>
+</helmet>
+
+<div style="background:#020510; color:#fff; font-family:'Rajdhani',sans-serif; min-height:100vh; overflow-x:hidden; position:relative;">
+
+  <div style="position:fixed; inset:0; z-index:0; pointer-events:none; background:
+    radial-gradient(circle at 20% 15%, rgba(34,229,255,.08), transparent 40%),
+    radial-gradient(circle at 85% 75%, rgba(123,47,255,.10), transparent 45%);"></div>
+
+  <div style="position:relative; z-index:1; padding:22px 8vw; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+    <a href="Pricing.dc.html" style="text-decoration:none; color:#fff; font-family:'Share Tech Mono',monospace; font-size:12px; letter-spacing:2px; opacity:.85; border:1px solid rgba(255,255,255,.35); padding:8px 18px; border-radius:20px; white-space:nowrap;">← BACK TO PRICING</a>
+    <a href="IntexiaU WebDesign.dc.html" style="display:flex; align-items:center; gap:12px; text-decoration:none;">
+      <img src="assets/intexiau_logo.png" alt="IntexiaU" style="height:34px; width:34px; object-fit:contain; filter:brightness(1.5);">
+      <span style="font-family:'Orbitron',sans-serif; font-size:15px; font-weight:700; letter-spacing:1px; background:linear-gradient(135deg,#fff,#22e5ff); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">IntexiaUWebDesign</span>
+    </a>
+    <div style="font-family:'Share Tech Mono',monospace; font-size:11px; letter-spacing:2px; color:rgba(255,255,255,.4);">SECURE RESERVATION</div>
+  </div>
+
+  <section style="position:relative; z-index:1; text-align:center; padding:30px 8vw 10px;">
+    <div style="font-family:'Share Tech Mono',monospace; font-size:13px; letter-spacing:6px; color:{{ plan.accent }}; text-transform:uppercase; margin-bottom:16px;">Reserving — {{ plan.title }}</div>
+    <h1 style="font-family:'Orbitron',sans-serif; font-weight:900; font-size:clamp(30px,4.6vw,54px); line-height:1.1; margin:0 0 16px;">Lock In Your <span style="background:linear-gradient(135deg,#22e5ff,#7b2fff); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">Build</span></h1>
+    <p style="max-width:640px; margin:0 auto; font-size:16px; font-weight:300; color:rgba(255,255,255,.7); line-height:1.7;">Confirm the details below, then reserve your project. We'll follow up to kick off discovery.</p>
+  </section>
+
+  <section style="position:relative; z-index:1; max-width:1100px; margin:40px auto 100px; padding:0 8vw; display:grid; grid-template-columns:1fr 1.1fr; gap:32px; align-items:start;">
+
+    <div style="position:relative; background:{{ plan.bg }}; border:1px solid {{ plan.border }}; border-radius:20px; padding:38px 30px;">
+      <sc-if value="{{ plan.badge }}">
+        <div style="position:absolute; top:-14px; left:50%; transform:translateX(-50%); background:linear-gradient(135deg,#22e5ff,#7b2fff); color:#020510; font-family:'Orbitron',sans-serif; font-size:11px; font-weight:900; letter-spacing:1.5px; padding:6px 18px; border-radius:20px; white-space:nowrap; box-shadow:0 0 20px rgba(34,229,255,.5);">{{ plan.badge }}</div>
+      </sc-if>
+      <div style="font-family:'Orbitron',sans-serif; font-size:13px; letter-spacing:3px; color:{{ plan.accent }}; text-transform:uppercase; margin-bottom:14px;">{{ plan.eyebrow }}</div>
+      <h3 style="font-family:'Orbitron',sans-serif; font-weight:700; font-size:26px; margin:0 0 6px; color:#fff;">{{ plan.title }}</h3>
+      <p style="font-size:14.5px; color:rgba(255,255,255,.6); line-height:1.6; margin:0 0 22px;">{{ plan.desc }}</p>
+      <div style="display:flex; align-items:baseline; gap:6px; margin-bottom:8px;">
+        <sc-if value="{{ plan.priceNote }}"><span style="font-size:13px; color:rgba(255,255,255,.45);">{{ plan.priceNote }}</span></sc-if><span style="font-family:'Orbitron',sans-serif; font-weight:900; font-size:clamp(28px,3vw,38px); background:{{ plan.priceBg }}; -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">{{ plan.price }}</span>
+      </div>
+      <div style="height:1px; background:rgba(255,255,255,.1); margin-bottom:24px;"></div>
+      <div style="display:flex; flex-direction:column; gap:14px;">
+        <sc-for list="{{ plan.features }}" as="f" hint-placeholder-count="6">
+          <sc-if value="{{ f.divider }}">
+            <div style="display:flex; align-items:center; gap:10px; margin:4px 0;">
+              <div style="flex:1; height:1px; background:linear-gradient(90deg, transparent, #d4af37, transparent);"></div>
+              <span style="font-family:'Orbitron',sans-serif; font-size:10.5px; letter-spacing:1.5px; color:#d4af37; text-transform:uppercase; white-space:nowrap;">{{ f.dividerLabel }}</span>
+              <div style="flex:1; height:1px; background:linear-gradient(90deg, transparent, #d4af37, transparent);"></div>
+            </div>
+          </sc-if>
+          <div style="display:flex; align-items:flex-start; gap:10px;">
+            <span style="color:{{ plan.accent }}; font-size:15px; line-height:1.4; flex-shrink:0;">◆</span>
+            <span style="font-size:14.5px; color:{{ f.textColor }}; font-weight:{{ f.textWeight }}; line-height:1.5;">{{ f.text }}</span>
+          </div>
+        </sc-for>
+        <sc-if value="{{ plan.highlightFeature }}">
+          <div style="display:flex; align-items:center; gap:10px; margin-top:6px; padding:12px 14px; border-radius:10px; background:linear-gradient(135deg, rgba(34,229,255,.14), rgba(123,47,255,.18)); border:1px solid rgba(34,229,255,.4); box-shadow:0 0 22px rgba(123,47,255,.25);">
+            <span style="font-size:14px; font-weight:700; color:#fff; line-height:1.4;">{{ plan.highlightFeature }}</span>
+          </div>
+        </sc-if>
+        <sc-if value="{{ plan.highlightCgi }}">
+          <div style="display:flex; align-items:center; gap:10px; margin-top:6px; padding:12px 14px; border-radius:10px; background:linear-gradient(135deg, rgba(123,47,255,.18), rgba(34,229,255,.14)); border:1px solid rgba(123,47,255,.5); box-shadow:0 0 22px rgba(34,229,255,.25);">
+            <span style="font-size:14px; font-weight:700; color:#fff; line-height:1.4;">{{ plan.highlightCgi }}</span>
+          </div>
+        </sc-if>
+      </div>
+      <a href="Pricing.dc.html" style="display:inline-block; margin-top:26px; font-size:13px; color:{{ plan.accent }}; text-decoration:none; letter-spacing:.5px;">Not the right tier? Switch plans →</a>
+    </div>
+
+    <div style="position:relative; background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.12); border-radius:20px; padding:34px 30px;">
+      <sc-if value="{{ !submitted }}">
+        <div style="font-family:'Orbitron',sans-serif; font-size:13px; letter-spacing:2px; color:#fff; margin-bottom:22px; display:flex; align-items:center; gap:10px;">
+          <span style="width:8px; height:8px; border-radius:50%; background:#22e5ff; box-shadow:0 0 8px #22e5ff; animation:pulse 1.6s ease infinite;"></span>
+          PAYMENT DETAILS
+        </div>
+        <form onSubmit="{{ handleSubmit }}" style="display:flex; flex-direction:column; gap:16px;">
+          <div>
+            <label style="display:block; font-size:12px; letter-spacing:1px; color:rgba(255,255,255,.5); margin-bottom:6px;">Full Name</label>
+            <input required="" value="{{ name }}" onChange="{{ onNameChange }}" type="text" placeholder="Jane Doe" style="width:100%; box-sizing:border-box; padding:12px 14px; font-size:15px; border-radius:8px; border:1px solid rgba(255,255,255,.15); background:rgba(255,255,255,.04); color:#fff; font-family:'Rajdhani',sans-serif;">
+          </div>
+          <div>
+            <label style="display:block; font-size:12px; letter-spacing:1px; color:rgba(255,255,255,.5); margin-bottom:6px;">Email</label>
+            <input required="" value="{{ email }}" onChange="{{ onEmailChange }}" type="email" placeholder="jane@company.com" style="width:100%; box-sizing:border-box; padding:12px 14px; font-size:15px; border-radius:8px; border:1px solid rgba(255,255,255,.15); background:rgba(255,255,255,.04); color:#fff; font-family:'Rajdhani',sans-serif;">
+          </div>
+          <div>
+            <label style="display:block; font-size:12px; letter-spacing:1px; color:rgba(255,255,255,.5); margin-bottom:6px;">Card Number</label>
+            <input required="" value="{{ card }}" onChange="{{ onCardChange }}" type="text" placeholder="•••• •••• •••• ••••" style="width:100%; box-sizing:border-box; padding:12px 14px; font-size:15px; border-radius:8px; border:1px solid rgba(255,255,255,.15); background:rgba(255,255,255,.04); color:#fff; font-family:'Share Tech Mono',monospace; letter-spacing:1px;">
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+            <div>
+              <label style="display:block; font-size:12px; letter-spacing:1px; color:rgba(255,255,255,.5); margin-bottom:6px;">Expiry</label>
+              <input required="" value="{{ expiry }}" onChange="{{ onExpiryChange }}" type="text" placeholder="MM / YY" style="width:100%; box-sizing:border-box; padding:12px 14px; font-size:15px; border-radius:8px; border:1px solid rgba(255,255,255,.15); background:rgba(255,255,255,.04); color:#fff; font-family:'Share Tech Mono',monospace;">
+            </div>
+            <div>
+              <label style="display:block; font-size:12px; letter-spacing:1px; color:rgba(255,255,255,.5); margin-bottom:6px;">CVC</label>
+              <input required="" value="{{ cvc }}" onChange="{{ onCvcChange }}" type="text" placeholder="•••" style="width:100%; box-sizing:border-box; padding:12px 14px; font-size:15px; border-radius:8px; border:1px solid rgba(255,255,255,.15); background:rgba(255,255,255,.04); color:#fff; font-family:'Share Tech Mono',monospace;">
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; padding-top:10px; border-top:1px solid rgba(255,255,255,.1); margin-top:6px;">
+            <span style="font-size:14px; color:rgba(255,255,255,.6);">Total</span>
+            <span style="font-family:'Orbitron',sans-serif; font-weight:900; font-size:22px; color:#fff;">{{ plan.priceNote }}{{ plan.price }}</span>
+          </div>
+
+          <button type="submit" style="margin-top:8px; padding:16px; border:none; border-radius:10px; font-family:'Orbitron',sans-serif; font-size:13px; font-weight:700; letter-spacing:1.5px; color:#fff; background:linear-gradient(135deg,#0088ff,#7b2fff); cursor:pointer; box-shadow:0 0 30px rgba(0,136,255,.3);">Reserve {{ plan.title }}</button>
+
+          <div style="font-size:11.5px; color:rgba(255,255,255,.35); text-align:center; line-height:1.6;">🔒 This is a placeholder checkout — no real payment is processed yet. Connect a payment processor (e.g. Stripe) to go live.</div>
+        </form>
+      </sc-if>
+      <sc-if value="{{ submitted }}">
+        <div style="text-align:center; padding:40px 10px;">
+          <div style="font-size:40px; margin-bottom:18px;">✓</div>
+          <h3 style="font-family:'Orbitron',sans-serif; font-weight:700; font-size:22px; margin:0 0 12px; color:#fff;">Reservation Confirmed</h3>
+          <p style="font-size:15px; color:rgba(255,255,255,.65); line-height:1.7; max-width:36ch; margin:0 auto;">Thanks, {{ name }} — your {{ plan.title }} build is reserved. We'll reach out at {{ email }} to kick off discovery.</p>
+        </div>
+      </sc-if>
+    </div>
+
+  </section>
+
+  <footer style="position:relative; z-index:1; padding:34px 8vw; display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; font-size:12px; color:rgba(255,255,255,.4); border-top:1px solid rgba(255,255,255,.08);">
+    <span>IntexiaUWebDesign</span>
+    <span>A Platform of IntexiaU</span>
+  </footer>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    name: '', email: '', card: '', expiry: '', cvc: '',
+    submitted: false
+  };
+
+  constructor(props) {
+    super(props);
+    this.planData = {
+      genesis: {
+        eyebrow: 'Tier One', title: 'Genesis', accent: '#22e5ff',
+        bg: 'linear-gradient(160deg, rgba(34,229,255,.06), rgba(255,255,255,.02))',
+        border: 'rgba(34,229,255,.25)', priceBg: 'linear-gradient(135deg,#22e5ff,#7be3ff)',
+        desc: 'A sharp, fully custom launchpad for your brand — built to make a serious first impression, not a placeholder site.',
+        price: '$600', priceNote: '+',
+        features: [
+          { text: 'Fully custom design — zero templates' },
+          { text: 'Up to 5 pages, precision-crafted' },
+          { text: 'Flawless on mobile & desktop' },
+          { text: 'Built-in contact & lead capture' },
+          { text: 'Basic SEO setup' }
+        ],
+        highlightCgi: '🎬 Custom 4K CGI Visuals',
+        badge: ''
+      },
+      momentum: {
+        eyebrow: 'Tier Two', title: 'Momentum', accent: '#7be3ff',
+        bg: 'linear-gradient(160deg, rgba(123,47,255,.10), rgba(34,229,255,.04))',
+        border: 'rgba(123,47,255,.35)', priceBg: 'linear-gradient(135deg,#22e5ff,#7b2fff)',
+        desc: 'For businesses ready to stand out — richer pages, real interactivity, and a site that does more of the work for you.',
+        price: '$2,000', priceNote: '+',
+        features: [
+          { text: 'Fully custom design — zero templates' },
+          { text: 'Up to 10 pages, precision-crafted', gold: true },
+          { text: 'Flawless on mobile & desktop' },
+          { text: 'Built-in contact & lead capture' },
+          { text: 'Basic SEO setup' },
+          { text: 'Custom animations & interactions', divider: true, dividerLabel: 'Everything in Genesis, plus' },
+          { text: 'Booking / product listings', gold: true }
+        ],
+        highlightFeature: '🤖 Custom AI Chatbot — trained on your business',
+        highlightCgi: '🎬 Custom 4K CGI Visuals',
+        badge: 'MOST CHOSEN'
+      },
+      signature: {
+        eyebrow: 'Tier Three', title: 'Signature', accent: '#c9a5ff',
+        bg: 'linear-gradient(160deg, rgba(123,47,255,.14), rgba(34,229,255,.05))',
+        border: 'rgba(123,47,255,.45)', priceBg: 'linear-gradient(135deg,#7b2fff,#c9a5ff)',
+        desc: 'A flagship digital presence — deeply custom, immersive, and built to be the centerpiece of your brand.',
+        price: '$10,000+', priceNote: '',
+        features: [
+          { text: 'Fully custom design — zero templates' },
+          { text: 'Unlimited pages, precision-crafted', gold: true },
+          { text: 'Flawless on mobile & desktop' },
+          { text: 'Built-in contact & lead capture' },
+          { text: 'Basic SEO setup' },
+          { text: 'Custom animations & interactions' },
+          { text: 'Booking / product listings', gold: true },
+          { text: 'Immersive scroll/Animated experience', divider: true, dividerLabel: 'Everything in Momentum, plus' },
+          { text: 'Priority support during build' }
+        ],
+        highlightFeature: '🤖 Custom AI Chatbot — trained on your business',
+        highlightCgi: '🎬 Custom 4K CGI Visuals',
+        badge: ''
+      }
+    };
+  }
+
+  getPlanKey() {
+    const params = new URLSearchParams(window.location.search);
+    const p = (params.get('plan') || '').toLowerCase();
+    return this.planData[p] ? p : 'momentum';
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    this.setState({ submitted: true });
+  }
+
+  renderVals() {
+    const raw = this.planData[this.getPlanKey()];
+    const plan = {
+      ...raw,
+      features: raw.features.map(f => ({
+        ...f,
+        textColor: f.gold ? '#d4af37' : 'rgba(255,255,255,.8)',
+        textWeight: f.gold ? '700' : '400'
+      }))
+    };
+    return {
+      plan,
+      name: this.state.name,
+      email: this.state.email,
+      card: this.state.card,
+      expiry: this.state.expiry,
+      cvc: this.state.cvc,
+      submitted: this.state.submitted,
+      onNameChange: (e) => this.setState({ name: e.target.value }),
+      onEmailChange: (e) => this.setState({ email: e.target.value }),
+      onCardChange: (e) => this.setState({ card: e.target.value }),
+      onExpiryChange: (e) => this.setState({ expiry: e.target.value }),
+      onCvcChange: (e) => this.setState({ cvc: e.target.value }),
+      handleSubmit: (e) => this.handleSubmit(e)
+    };
+  }
+}
+
+</script>
+</body>
+</html>

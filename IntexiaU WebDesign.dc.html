@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>IntexiaUWebDesign — Custom, Immersive Web Design | A Platform of IntexiaU</title>
+  <meta name="description" content="IntexiaUWebDesign builds custom, immersive websites powered by human creativity, raw computing power, and AI. Explore our services, pricing, and start your project today.">
+  <meta property="og:title" content="IntexiaUWebDesign — Custom, Immersive Web Design">
+  <meta property="og:description" content="Custom websites built where human creativity, raw computing power, and artificial intelligence converge.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="assets/intexiau_logo.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&amp;family=Rajdhani:wght@300;400;600;700&amp;family=Share+Tech+Mono&amp;display=swap" rel="stylesheet">
+  <style>
+    html,body{ margin:0; background:#020510; }
+    ::selection{ background:#22e5ff; color:#020510; }
+    @keyframes ringExpand{ 0%{ transform:scale(.5); opacity:.8; } 100%{ transform:scale(3); opacity:0; } }
+    @keyframes pulse{ 0%,100%{ opacity:1; } 50%{ opacity:.5; } }
+    @keyframes blink{ 50%{ opacity:0; } }
+    @keyframes loadFill{ to{ width:100%; } }
+    @keyframes codeFall{ from{ transform:translateY(-100%); } to{ transform:translateY(100vh); } }
+    @keyframes glitch1{ 0%,90%,100%{ clip-path:inset(50% 0 30% 0); } 92%{ clip-path:inset(20% 0 60% 0); } 95%{ clip-path:inset(70% 0 5% 0); } }
+    @keyframes glitch2{ 0%,85%,100%{ clip-path:inset(40% 0 40% 0); } 87%{ clip-path:inset(10% 0 80% 0); } 90%{ clip-path:inset(60% 0 20% 0); } }
+    @keyframes pcFadeA{ 0%,35%{ opacity:1; } 50%,85%{ opacity:0; } 100%{ opacity:1; } }
+    @keyframes pcFadeB{ 0%,35%{ opacity:0; } 50%,85%{ opacity:1; } 100%{ opacity:0; } }
+    @keyframes frameBreathe{ 0%,100%{ box-shadow: inset 0 0 40px rgba(34,229,255,.08), 0 0 24px rgba(123,47,255,.12); border-color: rgba(34,229,255,.32); } 50%{ box-shadow: inset 0 0 60px rgba(123,47,255,.14), 0 0 42px rgba(34,229,255,.22); border-color: rgba(123,47,255,.42); } }
+    @keyframes cornerPulse{ 0%,100%{ opacity:.5; } 50%{ opacity:1; } }
+    @keyframes scanSweep{ 0%{ top:-2%; opacity:0; } 10%{ opacity:1; } 90%{ opacity:1; } 100%{ top:101%; opacity:0; } }
+    @keyframes heroRing{ 0%{ transform:scale(.3); opacity:0; } 15%{ opacity:.9; } 100%{ transform:scale(1.6); opacity:0; } }
+    @keyframes heroGlitch{ 0%,93%,100%{ opacity:0; } 93.4%{ opacity:.5; } 93.7%{ opacity:0; } 96%{ opacity:.35; } 96.2%{ opacity:0; } }
+    @keyframes heroHexFade{ 0%,100%{ opacity:.08; transform:rotate(0deg) scale(1); } 50%{ opacity:.22; transform:rotate(6deg) scale(1.05); } }
+    @keyframes heroGridDrift{ 0%{ background-position:0 0; opacity:0; } 10%{ opacity:.14; } 90%{ opacity:.14; } 100%{ background-position:0 -120px; opacity:0; } }
+    @keyframes heroCoreGlow{ 0%,100%{ opacity:.5; transform:translate(-50%,-50%) scale(1); } 50%{ opacity:1; transform:translate(-50%,-50%) scale(1.15); } }
+    @keyframes wordSlideIn{ 0%{ opacity:0; transform:translateY(38px) rotate(2deg); } 100%{ opacity:1; transform:translateY(0) rotate(0deg); } }
+    @keyframes numberDrift{ 0%{ transform:translateX(-6%); } 100%{ transform:translateX(6%); } }
+    @keyframes rippleExpand{ 0%{ transform:scale(0); opacity:.55; } 100%{ transform:scale(1); opacity:0; } }
+    @keyframes tickerScroll{ 0%{ transform:translateX(0); } 100%{ transform:translateX(-50%); } }
+    @keyframes cursorPulse{ 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.25); } }
+    @keyframes dotClickPulse{ 0%{ transform:scale(1); opacity:.9; } 100%{ transform:scale(3.2); opacity:0; } }
+
+
+
+    .ix-glitch{ position:relative; }
+    .ix-glitch::before, .ix-glitch::after{ content:attr(data-text); position:absolute; top:0; left:0; width:100%; background:transparent; -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+    .ix-glitch::before{ left:2px; text-shadow:-2px 0 #7b2fff; animation:glitch1 3s infinite linear alternate-reverse; }
+    .ix-glitch::after{ left:-2px; text-shadow:2px 0 #22e5ff; animation:glitch2 2s infinite linear alternate-reverse; }
+    a{ color:#22e5ff; }
+    a:hover{ color:#7be3ff; }
+  </style>
+</helmet>
+
+<div style="background:#020510; color:#fff; font-family:'Rajdhani',sans-serif; overflow-x:hidden; position:relative;">
+
+  <div ref="{{ setLoader }}" style="position:fixed; inset:0; background:#000; z-index:9000; display:flex; flex-direction:column; align-items:center; justify-content:center; transition:opacity 1s ease;">
+    <div style="font-family:'Orbitron',sans-serif; font-size:44px; font-weight:900; background:linear-gradient(135deg,#fff,#22e5ff); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin-bottom:36px; animation:pulse 1.5s ease infinite;">IntexiaU</div>
+    <div style="width:280px; height:2px; background:rgba(255,255,255,.1); border-radius:2px; overflow:hidden;">
+      <div style="height:100%; background:linear-gradient(90deg,#22e5ff,#7b2fff); width:0%; animation:loadFill 2.2s ease forwards; box-shadow:0 0 20px rgba(34,229,255,.8);"></div>
+    </div>
+    <div style="font-family:'Share Tech Mono',monospace; font-size:12px; letter-spacing:4px; color:rgba(34,229,255,.6); margin-top:20px; animation:blink 1s step-end infinite;">INITIALIZING EXPERIENCE...</div>
+  </div>
+
+  <canvas ref="{{ setCanvas }}" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none;"></canvas>
+
+  <div ref="{{ setPingLayer }}" style="position:fixed; inset:0; z-index:9998; pointer-events:none;"></div>
+  <div ref="{{ setReticle }}" style="position:fixed; top:0; left:0; width:30px; height:30px; z-index:9999; pointer-events:none; border:1px solid rgba(34,229,255,.8); border-radius:50%; box-shadow:0 0 12px rgba(34,229,255,.6); animation:cursorPulse 2.4s ease-in-out infinite; transition:width .25s ease, height .25s ease, border-color .25s ease;">
+    <div style="position:absolute; top:-5px; left:50%; width:1px; height:5px; background:#22e5ff; transform:translateX(-50%);"></div>
+    <div style="position:absolute; bottom:-5px; left:50%; width:1px; height:5px; background:#22e5ff; transform:translateX(-50%);"></div>
+    <div style="position:absolute; left:-5px; top:50%; height:1px; width:5px; background:#22e5ff; transform:translateY(-50%);"></div>
+    <div style="position:absolute; right:-5px; top:50%; height:1px; width:5px; background:#22e5ff; transform:translateY(-50%);"></div>
+    <div style="position:absolute; top:50%; left:50%; width:3px; height:3px; margin:-1.5px 0 0 -1.5px; border-radius:50%; background:#22e5ff;"></div>
+  </div>
+
+  <div style="position:fixed; top:22px; left:32px; z-index:200; display:flex; align-items:center; gap:12px;">
+    <img src="assets/intexiau_logo.png" alt="IntexiaU" style="height:34px; width:34px; object-fit:contain; filter:brightness(1.5);">
+    <div style="display:flex; flex-direction:column; line-height:1.1;">
+      <span style="font-family:'Orbitron',sans-serif; font-size:15px; font-weight:700; letter-spacing:1px; background:linear-gradient(135deg,#fff,#22e5ff); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">IntexiaUWebDesign</span>
+      <span style="font-family:'Share Tech Mono',monospace; font-size:9px; letter-spacing:2px; color:rgba(34,229,255,.55); margin-top:2px;">A PLATFORM OF INTEXIAU</span>
+    </div>
+  </div>
+
+  <div style="position:fixed; top:22px; right:32px; z-index:200; display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:flex-end; max-width:60vw;">
+    <a href="Start a Project.dc.html" onClick="{{ spawnRipple }}" style="position:relative; overflow:hidden; text-decoration:none; padding:10px 22px; border:1px solid rgba(34,229,255,.4); border-radius:30px; font-family:'Share Tech Mono',monospace; font-size:11px; letter-spacing:2px; color:#22e5ff; background:rgba(34,229,255,.05); white-space:nowrap;">GET STARTED</a>
+    <a href="Pricing.dc.html" onClick="{{ spawnRipple }}" style="position:relative; overflow:hidden; text-decoration:none; padding:10px 22px; border:1px solid rgba(123,47,255,.4); border-radius:30px; font-family:'Share Tech Mono',monospace; font-size:11px; letter-spacing:2px; color:#c9a5ff; background:rgba(123,47,255,.05); white-space:nowrap;">PRICING</a>
+  </div>
+
+  <div style="position:fixed; right:26px; top:50%; transform:translateY(-50%); z-index:200; display:flex; flex-direction:column; gap:12px;">
+    <sc-for list="{{ dots }}" as="d" hint-placeholder-count="10">
+      <div onClick="{{ d.onClick }}" style="width:16px; height:16px; border-radius:50%; cursor:pointer; background:{{ d.active }}; transform:scale({{ d.scale }}); box-shadow:{{ d.glow }}; transition:background .4s, transform .4s, box-shadow .4s;"></div>
+    </sc-for>
+  </div>
+
+  <!-- CHAPTER 1: INTRO -->
+  <section ref="{{ regChapter }}" data-idx="0" data-screen-label="Intro" style="position:relative; min-height:100vh; display:flex; align-items:center; justify-content:center; overflow:hidden;">
+    <div ref="{{ regBg }}" data-idx="0" style="position:absolute; inset:0; background-image:url('assets/hero_gateway.png'); background-size:cover; background-position:center; filter:brightness(.4) saturate(1.5); transform:scale(1.08); transition:transform 8s ease;"></div>
+    <div style="position:absolute; inset:0; background:radial-gradient(ellipse at center, transparent 20%, rgba(2,5,16,.78) 100%);"></div>
+
+    <!-- animated motion-graphic backdrop: pulsing portal core -->
+    <div style="position:absolute; top:50%; left:50%; width:120px; height:120px; margin:-60px 0 0 -60px; border-radius:50%; background:radial-gradient(circle, rgba(34,229,255,.55), rgba(123,47,255,.25) 60%, transparent 75%); filter:blur(6px); animation:heroCoreGlow 4s ease-in-out infinite; z-index:1;"></div>
+
+    <!-- expanding concentric rings, alternating cyan/purple -->
+    <div style="position:absolute; top:50%; left:50%; width:220px; height:220px; margin:-110px 0 0 -110px; border-radius:50%; border:1px solid rgba(34,229,255,.5); z-index:1; animation:heroRing 6s ease-out infinite;"></div>
+    <div style="position:absolute; top:50%; left:50%; width:220px; height:220px; margin:-110px 0 0 -110px; border-radius:50%; border:1px solid rgba(123,47,255,.5); z-index:1; animation:heroRing 6s ease-out infinite; animation-delay:1.5s;"></div>
+    <div style="position:absolute; top:50%; left:50%; width:220px; height:220px; margin:-110px 0 0 -110px; border-radius:50%; border:1px solid rgba(34,229,255,.4); z-index:1; animation:heroRing 6s ease-out infinite; animation-delay:3s;"></div>
+    <div style="position:absolute; top:50%; left:50%; width:220px; height:220px; margin:-110px 0 0 -110px; border-radius:50%; border:1px solid rgba(123,47,255,.4); z-index:1; animation:heroRing 6s ease-out infinite; animation-delay:4.5s;"></div>
+
+    <!-- drifting wireframe fragments: partial hexagon + fine grid -->
+    <div style="position:absolute; top:18%; left:12%; width:160px; height:160px; z-index:1; pointer-events:none; clip-path:polygon(50% 2%, 95% 26%, 95% 74%, 50% 98%, 5% 74%, 5% 26%); border:1px solid rgba(34,229,255,.5); animation:heroHexFade 8s ease-in-out infinite;"></div>
+    <div style="position:absolute; bottom:14%; right:10%; width:120px; height:120px; z-index:1; pointer-events:none; clip-path:polygon(50% 2%, 95% 26%, 95% 74%, 50% 98%, 5% 74%, 5% 26%); border:1px solid rgba(123,47,255,.5); animation:heroHexFade 9s ease-in-out infinite; animation-delay:2s;"></div>
+    <div style="position:absolute; inset:0; z-index:1; pointer-events:none; background-image:linear-gradient(rgba(34,229,255,.4) 1px, transparent 1px), linear-gradient(90deg, rgba(34,229,255,.4) 1px, transparent 1px); background-size:60px 60px; mask-image:radial-gradient(ellipse at center, rgba(0,0,0,.9) 0%, transparent 65%); animation:heroGridDrift 14s linear infinite;"></div>
+
+    <!-- machine-waking glitch flicker -->
+    <div style="position:absolute; inset:0; z-index:1; pointer-events:none; background:linear-gradient(180deg, transparent, rgba(34,229,255,.08), transparent); animation:heroGlitch 9s steps(1) infinite;"></div>
+
+    <div style="position:absolute; inset:26px; z-index:2; pointer-events:none; opacity:{{ introFrame.wrapOpacity }}; transition:opacity .7s ease;">
+      <div style="position:absolute; inset:0; border:1px solid rgba(34,229,255,.45); border-radius:2px; box-shadow:inset 0 0 40px rgba(123,47,255,.14), 0 0 30px rgba(34,229,255,.2); animation:frameBreathe 6s ease-in-out infinite;"></div>
+      <sc-for list="{{ frameCorners }}" as="c" hint-placeholder-count="4">
+        <div style="position:absolute; width:34px; height:34px; {{ c.pos }} {{ c.border }} animation:cornerPulse 3.2s ease-in-out infinite; animation-delay:{{ c.delay }};"></div>
+      </sc-for>
+      <div style="position:absolute; left:0; right:0; height:2px; background:linear-gradient(90deg, transparent, rgba(34,229,255,.9), rgba(123,47,255,.9), transparent); box-shadow:0 0 12px rgba(34,229,255,.7); opacity:0; animation:{{ introFrame.scanAnim }};"></div>
+    </div>
+    <div ref="{{ regFlash }}" data-idx="0" style="position:absolute; inset:26px; z-index:2; pointer-events:none; border:1px solid transparent; border-radius:2px; box-shadow:0 0 0 rgba(34,229,255,0); opacity:0; transition:opacity .4s ease, box-shadow .4s ease, border-color .4s ease;"></div>
+    <div style="position:relative; z-index:10; text-align:center; max-width:900px; padding:40px;">
+      <img src="assets/intexiau_logo.png" alt="IntexiaU logo" style="width:110px; height:110px; margin:0 auto 30px;">
+      
+      <div style="width:80px; height:1px; background:linear-gradient(90deg,transparent,#22e5ff,transparent); margin:20px auto;"></div><h1 class="ix-glitch" data-text="IntexiaUWebDesign" style="font-family: 'Orbitron',sans-serif; font-size: clamp(30px,6.4vw,84px); font-weight: 900; line-height: 1.05; margin: 0 0 20px; display: inline-block">Intexia<span style="background:linear-gradient(135deg,#22e5ff,#7b2fff); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">U</span>WebDesign</h1>
+      <p style="font-size:clamp(16px,2vw,22px); font-weight:300; color:rgba(255,255,255,.75); line-height:1.7; max-width:700px; margin:0 auto 32px;">Where human creativity, raw computing power, and artificial intelligence converge to build the web of tomorrow.</p>
+      <div style="display:inline-block; padding:8px 24px; border:1px solid rgba(34,229,255,.4); border-radius:40px; font-family:'Share Tech Mono',monospace; font-size:12px; letter-spacing:3px; color:#22e5ff; background:rgba(34,229,255,.05);">▾ SCROLL TO BEGIN</div>
+    </div>
+  </section>
+
+  <!-- MARQUEE TICKER -->
+  <div style="position:relative; overflow:hidden; height:54px; display:flex; align-items:center; background:linear-gradient(90deg, rgba(34,229,255,.06), rgba(123,47,255,.06)); border-top:1px solid rgba(34,229,255,.2); border-bottom:1px solid rgba(34,229,255,.2); z-index:5;">
+    <div style="display:flex; white-space:nowrap; animation:tickerScroll 22s linear infinite; font-family:'Share Tech Mono',monospace; font-size:15px; letter-spacing:6px; color:rgba(34,229,255,.6);">
+      <span style="padding-right:6px;">{{ tickerText }}{{ tickerText }}{{ tickerText }}{{ tickerText }}</span>
+      <span style="padding-right:6px;">{{ tickerText }}{{ tickerText }}{{ tickerText }}{{ tickerText }}</span>
+    </div>
+  </div>
+
+  <!-- CHAPTER CONTENT SECTIONS -->
+  <sc-for list="{{ chapters }}" as="ch" hint-placeholder-count="8">
+    <section ref="{{ regChapter }}" data-idx="{{ ch.idx }}" data-screen-label="{{ ch.label }}" style="position:relative; min-height:100vh; display:flex; align-items:center; justify-content:center; overflow:hidden;">
+      <sc-if value="{{ ch.animBg }}">
+        <div ref="{{ regBg }}" data-idx="{{ ch.idx }}" style="position:absolute; inset:0; background-image:{{ ch.animBgA }}; background-size:cover; background-position:center; filter:brightness(.65) saturate(1.4); transform:scale(1.08); transition:transform 8s ease; animation:pcFadeA 3.5s ease-in-out infinite;"></div>
+        <div style="position:absolute; inset:0; background-image:{{ ch.animBgB }}; background-size:cover; background-position:center; filter:brightness(.65) saturate(1.4); animation:pcFadeB 3.5s ease-in-out infinite;"></div>
+      </sc-if>
+      <sc-if value="{{ ch.bgUrl }}">
+        <div ref="{{ regBg }}" data-idx="{{ ch.idx }}" style="position:absolute; inset:0; background-image:{{ ch.bgUrl }}; background-size:cover; background-position:center; filter:brightness(.65) saturate(1.4); transform:scale(1.08); transition:transform 8s ease;"></div>
+      </sc-if>
+      <div style="position:absolute; inset:0; background:radial-gradient(ellipse at center, transparent 30%, rgba(2,5,16,.62) 100%);"></div>
+      <div style="position:absolute; inset:26px; z-index:2; pointer-events:none; opacity:{{ ch.frame.wrapOpacity }}; transition:opacity .7s ease;">
+        <div style="position:absolute; inset:0; border:1px solid rgba(34,229,255,.45); border-radius:2px; box-shadow:inset 0 0 40px rgba(123,47,255,.14), 0 0 30px rgba(34,229,255,.2); animation:frameBreathe 6s ease-in-out infinite;"></div>
+        <sc-for list="{{ frameCorners }}" as="c" hint-placeholder-count="4">
+          <div style="position:absolute; width:34px; height:34px; {{ c.pos }} {{ c.border }} animation:cornerPulse 3.2s ease-in-out infinite; animation-delay:{{ c.delay }};"></div>
+        </sc-for>
+        <div style="position:absolute; left:0; right:0; height:2px; background:linear-gradient(90deg, transparent, rgba(34,229,255,.9), rgba(123,47,255,.9), transparent); box-shadow:0 0 12px rgba(34,229,255,.7); opacity:0; animation:{{ ch.frame.scanAnim }};"></div>
+      </div>
+      <div ref="{{ regFlash }}" data-idx="{{ ch.idx }}" style="position:absolute; inset:26px; z-index:2; pointer-events:none; border:1px solid transparent; border-radius:2px; box-shadow:0 0 0 rgba(34,229,255,0); opacity:0; transition:opacity .4s ease, box-shadow .4s ease, border-color .4s ease;"></div>
+      <div ref="{{ regReveal }}" data-idx="{{ ch.idx }}" data-dir="{{ ch.dir }}" style="position:relative; z-index:10; text-align:{{ ch.align }}; max-width:{{ ch.maxWidth }}; padding:40px 44px; opacity:0; transform:translateX({{ ch.startX }}px);">
+        <div style="position:absolute; inset:-18% -10%; z-index:0; pointer-events:none; background:radial-gradient(ellipse at center, rgba(2,5,16,.7) 0%, rgba(2,5,16,.5) 30%, rgba(2,5,16,.26) 52%, rgba(2,5,16,.08) 70%, transparent 88%);"></div>
+        <div style="position:relative; z-index:1;">
+        <div style="position:absolute; top:-6vw; left:0; right:0; text-align:center; font-family:'Orbitron',sans-serif; font-size:26vw; font-weight:900; color:transparent; -webkit-text-stroke:2px rgba(34,229,255,.28); z-index:1; pointer-events:none; animation:numberDrift 18s ease-in-out infinite alternate;">{{ ch.numLabel }}</div>
+        <div style="font-family:'Share Tech Mono',monospace; font-size:13px; letter-spacing:6px; color:#22e5ff; text-transform:uppercase; margin-bottom:16px; text-shadow:0 2px 12px rgba(0,0,0,.8);">{{ ch.eyebrow }}</div>
+        <h1 style="font-family:'Orbitron',sans-serif; font-size:clamp(32px,5vw,72px); font-weight:900; line-height:1.1; margin:0 0 20px; text-shadow:0 4px 24px rgba(0,0,0,.85);">
+          <sc-for list="{{ ch.titleWords }}" as="w" hint-placeholder-count="3">
+            <span data-word style="display:inline-block; opacity:0; transform:translateY(30px) rotate(2deg); transition:opacity .6s ease {{ w.delay }}, transform .6s ease {{ w.delay }}; margin-right:0.28em; background:{{ w.accent }}; -webkit-background-clip:{{ w.clip }}; -webkit-text-fill-color:{{ w.fill }}; background-clip:{{ w.clip }};">{{ w.text }}</span>
+          </sc-for>
+        </h1>
+        <div style="width:80px; height:1px; background:linear-gradient(90deg,transparent,#22e5ff,transparent); margin:{{ ch.dividerMargin }};"></div>
+        <p style="font-size:clamp(16px,2vw,22px); font-weight:300; color:rgba(255,255,255,.85); line-height:1.7; max-width:700px; margin:0 0 12px; text-shadow:0 2px 10px rgba(0,0,0,.7);">{{ ch.body1 }}</p>
+        <sc-if value="{{ ch.body2 }}">
+          <p style="font-size:16px; font-weight:300; color:rgba(255,255,255,.8); line-height:1.7; max-width:700px; margin:0; text-shadow:0 2px 10px rgba(0,0,0,.7);">{{ ch.body2 }}</p>
+        </sc-if>
+
+        <sc-if value="{{ ch.parts }}">
+          <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:32px;">
+            <sc-for list="{{ ch.parts }}" as="p" hint-placeholder-count="6">
+              <div data-card-stagger onMouseMove="{{ tiltMove }}" onMouseLeave="{{ tiltLeave }}" style="background:rgba(34,229,255,.05); border:1px solid rgba(34,229,255,.2); border-radius:8px; padding:14px 18px; text-align:left; opacity:0; transform:translateY(20px) scale(.95); transition:opacity .5s ease {{ p.cardDelay }}, transform .3s ease, box-shadow .3s ease;">
+                <div style="font-size:14px; color:#fff; margin-bottom:4px; font-weight:600;">{{ p.name }}</div><div style="font-family:'Share Tech Mono',monospace; font-size:11px; letter-spacing:1px; color:rgba(34,229,255,.75);">{{ p.spec }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ ch.trinity }}">
+          <div style="display:flex; gap:32px; margin-top:32px; justify-content:center; flex-wrap:wrap;">
+            <sc-for list="{{ ch.trinity }}" as="t" hint-placeholder-count="3">
+              <div data-card-stagger onMouseMove="{{ tiltMove }}" onMouseLeave="{{ tiltLeave }}" style="flex:1; min-width:180px; max-width:220px; background:rgba(34,229,255,.04); border:1px solid rgba(34,229,255,.15); border-radius:12px; padding:26px 18px; text-align:center; opacity:0; transform:translateY(20px) scale(.95); transition:opacity .5s ease {{ t.cardDelay }}, transform .3s ease, box-shadow .3s ease;">
+                <div style="font-family:'Orbitron',sans-serif; font-size:18px; font-weight:700; color:#22e5ff; letter-spacing:2px; margin-bottom:10px;">{{ t.title }}</div>
+                <div style="font-size:18px; color:rgba(255,255,255,.6); line-height:1.6;">{{ t.desc }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ ch.servicesTop }}">
+          <div style="display:flex; flex-direction:column; gap:18px; margin-top:32px; max-width:700px; margin-left:auto; margin-right:auto;">
+            <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:18px;">
+              <sc-for list="{{ ch.servicesTop }}" as="s" hint-placeholder-count="2">
+                <div data-card-stagger onMouseMove="{{ tiltMove }}" onMouseLeave="{{ tiltLeave }}" style="background:rgba(34,229,255,.04); border:1px solid rgba(34,229,255,.15); border-radius:10px; padding:20px; text-align:left; opacity:0; transform:translateY(20px) scale(.95); transition:opacity .5s ease {{ s.cardDelay }}, transform .3s ease, box-shadow .3s ease;">
+                  <div style="font-family:'Orbitron',sans-serif; font-size:28px; font-weight:700; color:#22e5ff; letter-spacing:2px; margin-bottom:8px;">{{ s.title }}</div>
+                  <div style="font-size:32px; color:rgba(255,255,255,.65); line-height:1.6;">{{ s.desc }}</div>
+                </div>
+              </sc-for>
+            </div>
+            <sc-if value="{{ ch.servicesBottom }}">
+              <div onMouseMove="{{ tiltMove }}" onMouseLeave="{{ tiltLeave }}" style="width:50%; margin:0 auto; background:rgba(34,229,255,.04); border:1px solid rgba(34,229,255,.15); border-radius:10px; padding:20px; text-align:left; transition:transform .3s ease, box-shadow .3s ease;">
+                <div style="font-family:'Orbitron',sans-serif; font-size:28px; font-weight:700; color:#22e5ff; letter-spacing:2px; margin-bottom:8px;">{{ ch.servicesBottom.title }}</div>
+                <div style="font-size:32px; color:rgba(255,255,255,.65); line-height:1.6;">{{ ch.servicesBottom.desc }}</div>
+              </div>
+            </sc-if>
+          </div>
+        </sc-if>
+        </div>
+
+      </div>
+    </section>
+  </sc-for>
+
+  <!-- MARQUEE TICKER -->
+  <div style="position:relative; overflow:hidden; height:54px; display:flex; align-items:center; background:linear-gradient(90deg, rgba(123,47,255,.06), rgba(34,229,255,.06)); border-top:1px solid rgba(123,47,255,.2); border-bottom:1px solid rgba(123,47,255,.2); z-index:5;">
+    <div style="display:flex; white-space:nowrap; animation:tickerScroll 26s linear infinite reverse; font-family:'Share Tech Mono',monospace; font-size:15px; letter-spacing:6px; color:rgba(123,47,255,.7);">
+      <span style="padding-right:6px;">{{ tickerText }}{{ tickerText }}{{ tickerText }}{{ tickerText }}</span>
+      <span style="padding-right:6px;">{{ tickerText }}{{ tickerText }}{{ tickerText }}{{ tickerText }}</span>
+    </div>
+  </div>
+
+  <!-- FINAL CTA -->
+  <section id="final-cta" ref="{{ regChapter }}" data-idx="8" data-screen-label="Final CTA" style="position:relative; min-height:100vh; display:flex; align-items:center; justify-content:center; overflow:hidden;">
+    <div ref="{{ regBg }}" data-idx="8" style="position:absolute; inset:0; background-image:url('assets/final_cta_bg.png'); background-size:cover; background-position:center; filter:brightness(.65) saturate(1.4); transform:scale(1.08); transition:transform 8s ease;"></div>
+    <div style="position:absolute; inset:0; background:radial-gradient(ellipse at center, transparent 30%, rgba(2,5,16,.62) 100%);"></div>
+    <div style="position:absolute; inset:26px; z-index:2; pointer-events:none; opacity:{{ finalFrame.wrapOpacity }}; transition:opacity .7s ease;">
+      <div style="position:absolute; inset:0; border:1px solid rgba(34,229,255,.45); border-radius:2px; box-shadow:inset 0 0 40px rgba(123,47,255,.14), 0 0 30px rgba(34,229,255,.2); animation:frameBreathe 6s ease-in-out infinite;"></div>
+      <sc-for list="{{ frameCorners }}" as="c" hint-placeholder-count="4">
+        <div style="position:absolute; width:34px; height:34px; {{ c.pos }} {{ c.border }} animation:cornerPulse 3.2s ease-in-out infinite; animation-delay:{{ c.delay }};"></div>
+      </sc-for>
+      <div style="position:absolute; left:0; right:0; height:2px; background:linear-gradient(90deg, transparent, rgba(34,229,255,.9), rgba(123,47,255,.9), transparent); box-shadow:0 0 12px rgba(34,229,255,.7); opacity:0; animation:{{ finalFrame.scanAnim }};"></div>
+    </div>
+    <div ref="{{ regFlash }}" data-idx="8" style="position:absolute; inset:26px; z-index:2; pointer-events:none; border:1px solid transparent; border-radius:2px; box-shadow:0 0 0 rgba(34,229,255,0); opacity:0; transition:opacity .4s ease, box-shadow .4s ease, border-color .4s ease;"></div>
+    <div style="position:absolute; width:500px; height:500px; top:50%; left:50%; margin:-250px 0 0 -250px; border-radius:50%; border:1px solid rgba(34,229,255,.3); animation:ringExpand 3s ease-out infinite;"></div>
+    <div style="position:absolute; width:500px; height:500px; top:50%; left:50%; margin:-250px 0 0 -250px; border-radius:50%; border:1px solid rgba(34,229,255,.3); animation:ringExpand 3s ease-out infinite; animation-delay:1s;"></div>
+    <div style="position:absolute; top:-6vw; left:0; right:0; text-align:center; font-family:'Orbitron',sans-serif; font-size:22vw; font-weight:900; color:transparent; -webkit-text-stroke:2px rgba(34,229,255,.28); z-index:2; pointer-events:none; animation:numberDrift 20s ease-in-out infinite alternate;">08</div>
+    <div ref="{{ regReveal }}" data-idx="8" data-dir="up" style="position:relative; z-index:10; text-align:center; max-width:800px; padding:40px; opacity:0; transform:translateY(40px);">
+      <img src="assets/intexiau_logo.png" alt="IntexiaU logo" style="width:130px; height:130px; margin:0 auto 30px; filter:drop-shadow(0 0 30px rgba(34,229,255,.8));">
+      <div style="font-family:'Share Tech Mono',monospace; font-size:13px; letter-spacing:6px; color:#22e5ff; text-transform:uppercase; margin-bottom:16px;">— Your Journey Starts Here —</div>
+      <h1 style="font-family:'Orbitron',sans-serif; font-size:clamp(36px,6vw,80px); font-weight:900; line-height:1.1; margin:0 0 20px;">
+        <sc-for list="{{ finalTitleWords }}" as="w" hint-placeholder-count="3">
+          <span data-word style="display:inline-block; opacity:0; transform:translateY(30px) rotate(2deg); transition:opacity .6s ease {{ w.delay }}, transform .6s ease {{ w.delay }}; margin-right:0.28em; background:{{ w.accent }}; -webkit-background-clip:{{ w.clip }}; -webkit-text-fill-color:{{ w.fill }}; background-clip:{{ w.clip }};">{{ w.text }}</span>
+        </sc-for>
+      </h1>
+      <div style="width:80px; height:1px; background:linear-gradient(90deg,transparent,#22e5ff,transparent); margin:20px auto;"></div>
+      <p style="font-size:18px; font-weight:300; color:rgba(255,255,255,.75); line-height:1.7; max-width:600px; margin:0 auto 32px;">Don't just have a website. Own a digital experience. Partner with IntexiaU and let the trinity of developer, machine, and AI build something extraordinary for you.</p>
+      <a href="Pricing.dc.html" onClick="{{ spawnRipple }}" style="position:relative; overflow:hidden; display:inline-block; padding:16px 48px; background:linear-gradient(135deg,#0088ff,#7b2fff); border-radius:4px; font-family:'Orbitron',sans-serif; font-size:14px; font-weight:700; letter-spacing:3px; color:#fff; text-transform:uppercase; text-decoration:none; box-shadow:0 0 30px rgba(0,136,255,.35);">Get Started Today</a>
+      <div style="font-family:'Share Tech Mono',monospace; font-size:13px; letter-spacing:4px; color:rgba(34,229,255,.7); margin-top:26px;">A PLATFORM OF INTEXIAU · WWW.INTEXIAU.COM · AI-POWERED</div>
+    </div>
+  </section>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  state = { scrollPct: 0, activeIdx: 0, statsOn: false, statCounts: [0,0,0,0] };
+
+  constructor(props) {
+    super(props);
+    this.chapterEls = [];
+    this.bgEls = [];
+    this.revealEls = [];
+    this.flashEls = [];
+    this.statsTriggered = false;
+    this.lastScrollY = 0;
+    this.lastDir = null;
+    this.frameCorners = [
+      { pos: 'top:0; left:0;', border: 'border-top:2px solid #22e5ff; border-left:2px solid #22e5ff; box-shadow:-2px -2px 10px rgba(34,229,255,.5);', delay: '0s' },
+      { pos: 'top:0; right:0;', border: 'border-top:2px solid #7b2fff; border-right:2px solid #7b2fff; box-shadow:2px -2px 10px rgba(123,47,255,.5);', delay: '.8s' },
+      { pos: 'bottom:0; left:0;', border: 'border-bottom:2px solid #7b2fff; border-left:2px solid #7b2fff; box-shadow:-2px 2px 10px rgba(123,47,255,.5);', delay: '1.6s' },
+      { pos: 'bottom:0; right:0;', border: 'border-bottom:2px solid #22e5ff; border-right:2px solid #22e5ff; box-shadow:2px 2px 10px rgba(34,229,255,.5);', delay: '2.4s' }
+    ];
+
+    this.statTargets = [500, 200, 99, 47];
+    this.statSuffixes = ['+','+','%','+'];
+    this.statLabels = ['Websites Built','Happy Clients','% Uptime','Awards Won'];
+
+    this.tickerText = 'DEVELOPER \u2022 MACHINE \u2022 ARTIFICIAL INTELLIGENCE \u2022 ';
+    this.mouse = { x: 0, y: 0 };
+    this.reticlePos = { x: 0, y: 0 };
+
+    this.chapters = [
+      { idx:1, label:'The Architect', bgUrl:"url('assets/developer.png')", align:'center', maxWidth:'800px', dir:'left', startX:-90,
+        eyebrow:'Chapter 01 — The Architect', titlePre:'The', titleAccent:'Mastermind', dividerMargin:'20px auto',
+        body1:'Every great website begins with a single vision. A developer who sees not just code, but art. Not just pages, but experiences.',
+        body2:'Armed with knowledge, precision, and an unstoppable drive — this is where it all begins.' },
+      { idx:2, label:'The Powerhouse', bgUrl:"url('assets/white_pc_full.png')", align:'center', maxWidth:'800px', dir:'right', startX:90,
+        eyebrow:'Chapter 02 — The Machine', titlePre:'The', titleAccent:'Powerhouse', dividerMargin:'20px auto',
+        body1:"A precision-engineered white titan. Every component chosen for maximum performance. This machine doesn't just run code — it breathes it." },
+      { idx:3, label:'Anatomy of Power', animBg:true, animBgA:"url('assets/pc_disassembled.png')", animBgB:"url('assets/white_pc_full.png')", align:'center', maxWidth:'1000px', dir:'left', startX:-90,
+        eyebrow:'Chapter 03 — Anatomy of Power', titlePre:'Every', titleAccent:'Part Matters', dividerMargin:'20px auto',
+        body1:'Stripped to its core, then reassembled with purpose. Each component a masterpiece of engineering — working in perfect harmony to deliver unmatched performance.',
+        parts:[
+          { name:'CPU', spec:'Ryzen 7700x3d' },
+          { name:'GPU', spec:' RX9070xt xfx Swift — 24GB VRAM' },
+          { name:'RAM', spec:'64GB DDR5 6400MHz' },
+          { name:'STORAGE', spec:'2TB Samsung 990Pro' },
+          { name:'COOLING', spec:'360mm AIO Liquid' },
+          { name:'POWER', spec:'1000W 80+ Platinum' }
+        ]},
+      { idx:4, label:'The Trinity', bgUrl:"url('assets/synergy.png')", align:'center', maxWidth:'1000px', dir:'left', startX:-90,
+        eyebrow:'Chapter 04 — The Trinity', titlePre:'One', titleAccent:'Force', dividerMargin:'20px auto',
+        body1:'Three powers. One unstoppable mission.',
+        trinity:[
+          { title:'DEVELOPER', desc:'Human creativity, strategic vision, and the craft of code — turning ideas into digital reality.' },
+          { title:'MACHINE', desc:'Raw computational power. Processing thousands of operations per second, without hesitation.' },
+          { title:'ARTIFICIAL INTELLIGENCE', desc:'Learning, adapting, optimizing. AI amplifies every decision and accelerates every build.' }
+        ]},
+      { idx:5, label:'Creation', bgUrl:"url('assets/website_building.png')", align:'center', maxWidth:'800px', dir:'right', startX:90,
+        eyebrow:'Chapter 05 — Creation', titlePre:'Building the', titleAccent:'Future', dividerMargin:'20px auto',
+        body1:'Code flows. Designs emerge. Interfaces breathe. The developer, the machine, and the AI weave together to craft immersive digital experiences.',
+        body2:'Every pixel deliberate. Every interaction intentional. Every website a masterpiece.' },
+      { idx:6, label:'Intelligence', bgUrl:"url('assets/ai_neural.png')", align:'center', maxWidth:'800px', dir:'left', startX:-90,
+        eyebrow:'Chapter 06 — Intelligence', titlePre:'AI-', titleAccent:'Powered', dividerMargin:'20px auto',
+        body1:"Our AI doesn't just assist — it transforms. Analyzing user behavior, optimizing performance, generating content, and predicting what your audience needs." },
+      { idx:7, label:'Services', bgUrl:"url('assets/services_showcase.png')", align:'center', maxWidth:'900px', dir:'right', startX:90,
+        eyebrow:'What We Build', titlePre:'Our', titleAccent:'Services', dividerMargin:'20px auto', body1:'',
+        servicesTop:[
+          { title:'WEB DESIGN', desc:'Stunning, responsive websites that captivate visitors and drive conversions from the first pixel.' },
+          { title:'WEB DEVELOPMENT', desc:'Blazing-fast, scalable web applications built with cutting-edge technology and clean architecture.' }
+        ],
+        servicesBottom: { title:'AI INTEGRATION', desc:'Embed intelligent automation, chatbots, and AI-driven personalization directly into your platform.' }
+      }
+    ];
+  }
+
+  componentDidMount() {
+    this.onScroll = () => {
+      const doc = document.documentElement;
+      const max = doc.scrollHeight - doc.clientHeight;
+      const pct = max > 0 ? (window.scrollY / max) * 100 : 0;
+      this.setState({ scrollPct: pct });
+    };
+    window.addEventListener('scroll', this.onScroll, { passive: true });
+
+    this.io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const idx = parseInt(entry.target.dataset.idx, 10);
+        if (entry.isIntersecting) {
+          this.setState({ activeIdx: idx });
+        }
+      });
+    }, { threshold: 0.5 });
+    this.chapterEls.forEach(el => this.io.observe(el));
+
+    this.bgIo = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        entry.target.style.transform = entry.isIntersecting ? 'scale(1)' : 'scale(1.08)';
+      });
+    }, { threshold: 0.15 });
+    this.bgEls.forEach(el => this.bgIo.observe(el));
+
+    this.revealIo = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.transition = 'opacity 1s ease, transform 1s ease';
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = entry.target.dataset.dir === 'up' ? 'translateY(0)' : 'translateX(0)';
+          entry.target.querySelectorAll('[data-word]').forEach(w => {
+            w.style.opacity = '1';
+            w.style.transform = 'translateY(0) rotate(0deg)';
+          });
+          entry.target.querySelectorAll('[data-card-stagger]').forEach(c => {
+            c.style.opacity = '1';
+            c.style.transform = 'translateY(0) scale(1)';
+          });
+          if (entry.target.querySelector('[data-stats-marker]') || entry.target.contains(this.statsEl)) {
+            this.triggerStats();
+          }
+        }
+      });
+    }, { threshold: 0.35 });
+    this.revealEls.forEach(el => this.revealIo.observe(el));
+
+    if (this.statsEl) {
+      this.statsIo = new IntersectionObserver((entries) => {
+        entries.forEach(entry => { if (entry.isIntersecting) this.triggerStats(); });
+      }, { threshold: 0.4 });
+      this.statsIo.observe(this.statsEl);
+    }
+
+    this.initParticles();
+    this.initReticle();
+  }
+
+  initReticle() {
+    this.onMouseMove = (e) => {
+      this.mouse.x = e.clientX;
+      this.mouse.y = e.clientY;
+      const hovered = e.target.closest && e.target.closest('a,[data-clickable],[role="button"]');
+      if (this.reticleEl) this.reticleEl.dataset.hover = hovered ? '1' : '0';
+    };
+    window.addEventListener('mousemove', this.onMouseMove, { passive: true });
+
+    this.onClickPing = (e) => {
+      if (!this.pingLayerEl) return;
+      const ping = document.createElement('div');
+      ping.style.cssText = `position:fixed; left:${e.clientX}px; top:${e.clientY}px; width:72px; height:72px; margin:-36px 0 0 -36px; border-radius:50%; border:1px solid rgba(34,229,255,.8); pointer-events:none; z-index:9998; animation:rippleExpand .6s ease-out forwards;`;
+      this.pingLayerEl.appendChild(ping);
+      setTimeout(() => ping.remove(), 650);
+    };
+    window.addEventListener('click', this.onClickPing);
+
+    const tick = () => {
+      this.reticlePos.x += (this.mouse.x - this.reticlePos.x) * 0.18;
+      this.reticlePos.y += (this.mouse.y - this.reticlePos.y) * 0.18;
+      if (this.reticleEl) {
+        this.reticleEl.style.transform = `translate(${this.reticlePos.x}px, ${this.reticlePos.y}px) translate(-50%,-50%)`;
+      }
+      this.reticleRaf = requestAnimationFrame(tick);
+    };
+    tick();
+  }
+
+  spawnRipple(e) {
+    const btn = e.currentTarget;
+    const rect = btn.getBoundingClientRect();
+    const span = document.createElement('span');
+    const size = Math.max(rect.width, rect.height) * 1.6;
+    span.style.cssText = `position:absolute; left:${e.clientX - rect.left}px; top:${e.clientY - rect.top}px; width:${size}px; height:${size}px; margin:${-size/2}px 0 0 ${-size/2}px; border-radius:50%; background:radial-gradient(circle, rgba(34,229,255,.5), transparent 70%); pointer-events:none; animation:rippleExpand .6s ease-out forwards;`;
+    btn.appendChild(span);
+    setTimeout(() => span.remove(), 650);
+  }
+
+  tiltMove(e) {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const px = (e.clientX - rect.left) / rect.width - 0.5;
+    const py = (e.clientY - rect.top) / rect.height - 0.5;
+    card.style.transform = `perspective(600px) rotateX(${(-py * 10).toFixed(2)}deg) rotateY(${(px * 10).toFixed(2)}deg) translateY(-4px)`;
+    card.style.boxShadow = `${(-px*20).toFixed(0)}px ${(10-py*10).toFixed(0)}px 30px rgba(34,229,255,.18)`;
+  }
+
+  tiltLeave(e) {
+    const card = e.currentTarget;
+    card.style.transform = 'perspective(600px) rotateX(0deg) rotateY(0deg) translateY(0)';
+    card.style.boxShadow = 'none';
+  }
+
+  componentWillUnmount() {
+    if (this.onScroll) window.removeEventListener('scroll', this.onScroll);
+    if (this.io) this.io.disconnect();
+    if (this.bgIo) this.bgIo.disconnect();
+    if (this.revealIo) this.revealIo.disconnect();
+    if (this.statsIo) this.statsIo.disconnect();
+    if (this.rafId) cancelAnimationFrame(this.rafId);
+    if (this.reticleRaf) cancelAnimationFrame(this.reticleRaf);
+    window.removeEventListener('resize', this.onResize);
+    if (this.onMouseMove) window.removeEventListener('mousemove', this.onMouseMove);
+    if (this.onClickPing) window.removeEventListener('click', this.onClickPing);
+    clearTimeout(this.loaderTimer1);
+    clearTimeout(this.loaderTimer2);
+  }
+
+  triggerStats() {
+    if (this.statsTriggered) return;
+    this.statsTriggered = true;
+    const targets = this.statTargets;
+    let counts = [0,0,0,0];
+    const steps = targets.map(t => Math.ceil(t / 50));
+    const tick = () => {
+      let done = true;
+      counts = counts.map((c, i) => {
+        const nc = Math.min(c + steps[i], targets[i]);
+        if (nc < targets[i]) done = false;
+        return nc;
+      });
+      this.setState({ statCounts: counts });
+      if (!done) this.statsTimer = setTimeout(tick, 30);
+    };
+    tick();
+  }
+
+  initParticles() {
+    const canvas = this.canvasEl;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = document.documentElement.scrollHeight;
+    };
+    this.onResize = resize;
+    resize();
+    window.addEventListener('resize', resize);
+
+    const makeParticle = () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3,
+      radius: Math.random() * 1.5 + 0.3,
+      alpha: Math.random() * 0.5 + 0.1,
+      color: Math.random() > 0.5 ? '34,229,255' : '123,47,255'
+    });
+    for (let i = 0; i < 140; i++) particles.push(makeParticle());
+
+    const draw = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0 || p.x > canvas.width || p.y < 0 || p.y > canvas.height) {
+          p.x = Math.random() * canvas.width; p.y = Math.random() * canvas.height;
+        }
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${p.color},${p.alpha})`;
+        ctx.fill();
+      });
+      this.rafId = requestAnimationFrame(draw);
+    };
+    draw();
+
+    this.loaderTimer1 = setTimeout(() => {
+      if (this.loaderEl) {
+        this.loaderEl.style.opacity = '0';
+        this.loaderEl.style.pointerEvents = 'none';
+      }
+      this.loaderTimer2 = setTimeout(() => { if (this.loaderEl) this.loaderEl.style.display = 'none'; }, 1000);
+    }, 2400);
+  }
+
+  scrollToChapter(idx) {
+    const el = this.chapterEls.find(c => parseInt(c.dataset.idx, 10) === idx);
+    if (el) {
+      const top = el.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+  }
+
+  buildFrameState(active) {
+    return {
+      wrapOpacity: active ? 1 : 0,
+      scanAnim: active ? 'scanSweep 3.2s linear 1 forwards' : 'none'
+    };
+  }
+
+  renderVals() {
+    const totalDots = 9;
+    const dots = Array.from({ length: totalDots }, (_, i) => ({
+      active: i === this.state.activeIdx ? '#22e5ff' : 'rgba(255,255,255,.2)',
+      scale: i === this.state.activeIdx ? 1.4 : 1,
+      glow: i === this.state.activeIdx ? '0 0 20px rgba(34,229,255,.8), 0 0 40px rgba(34,229,255,.4)' : 'none',
+      onClick: () => this.scrollToChapter(i)
+    }));
+
+    const statsDisplay = this.statLabels.map((label, i) => ({
+      label,
+      val: this.state.statCounts[i] + this.statSuffixes[i]
+    }));
+
+    const makeWords = (pre, accent) => {
+      const words = [];
+      (pre || '').split(' ').filter(Boolean).forEach(w => words.push({ text: w, isAccent: false }));
+      (accent || '').split(' ').filter(Boolean).forEach(w => words.push({ text: w, isAccent: true }));
+      return words.map((w, i) => ({
+        text: w.text,
+        delay: `${i * 0.09}s`,
+        accent: w.isAccent ? 'linear-gradient(135deg,#22e5ff,#7b2fff)' : 'none',
+        clip: w.isAccent ? 'text' : 'border-box',
+        fill: w.isAccent ? 'transparent' : '#fff'
+      }));
+    };
+
+    const addStagger = (arr) => (arr || []).map((item, i) => ({ ...item, cardDelay: `${i * 0.12}s` }));
+
+    const chaptersWithFrames = this.chapters.map(ch => ({
+      ...ch,
+      frame: this.buildFrameState(this.state.activeIdx === ch.idx),
+      titleWords: makeWords(ch.titlePre, ch.titleAccent),
+      numLabel: '0' + ch.idx,
+      parts: addStagger(ch.parts),
+      trinity: addStagger(ch.trinity),
+      servicesTop: addStagger(ch.servicesTop)
+    }));
+
+    return {
+      scrollPct: this.state.scrollPct,
+      dots,
+      chapters: chaptersWithFrames,
+      statsDisplay,
+      frameCorners: this.frameCorners,
+      tickerText: this.tickerText,
+      introFrame: this.buildFrameState(this.state.activeIdx === 0),
+      finalFrame: this.buildFrameState(this.state.activeIdx === 8),
+      finalTitleWords: makeWords('Elevate Your', 'Brand'),
+      spawnRipple: (e) => this.spawnRipple(e),
+      tiltMove: (e) => this.tiltMove(e),
+      tiltLeave: (e) => this.tiltLeave(e),
+      setLoader: (el) => { this.loaderEl = el; },
+      setCanvas: (el) => { this.canvasEl = el; },
+      setReticle: (el) => { this.reticleEl = el; },
+      setPingLayer: (el) => { this.pingLayerEl = el; },
+      regChapter: (el) => { if (el && this.chapterEls.indexOf(el) === -1) this.chapterEls.push(el); },
+      regBg: (el) => { if (el && this.bgEls.indexOf(el) === -1) this.bgEls.push(el); },
+      regFlash: (el) => { if (el && this.flashEls.indexOf(el) === -1) this.flashEls.push(el); },
+      regReveal: (el) => { if (el && this.revealEls.indexOf(el) === -1) this.revealEls.push(el); if (el && el.dataset.idx === '9') this.statsEl = null; if (el && el.querySelector) { const marker = el.parentElement; } },
+      regStats: (el) => { if (el) this.statsEl = el; }
+    };
+  }
+}
+
+</script>
+</body>
+</html>
