@@ -1,0 +1,6 @@
+# Source, staff-only and working files that should never be served
+internal/
+src/
+scripts/
+marketing/*.md
+marketing/flyer-source.html

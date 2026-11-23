@@ -1,3 +1,4 @@
+<!-- BUILT FILE (public edition) from src/agent-readiness/optimizer.src.html. Edit the source and rebuild. -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,6 +40,7 @@
   color-scheme: dark;
 }
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 html,body{margin:0}
 body{background:var(--bg);color:var(--ink);font:16px/1.5 var(--body)}
 h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
@@ -117,6 +119,10 @@ pre{margin:0;background:var(--bg);border:1px solid var(--line);border-radius:6px
 .cta-box{border:1px solid var(--accent);background:var(--accent-soft);border-radius:8px;padding:14px;display:grid;gap:8px}
 .cta-box p{margin:0}
 .cta-box .row a{text-decoration:none}
+.gate{border:1px dashed var(--accent);border-radius:8px;padding:14px;display:grid;gap:10px}
+.gate p{margin:0}
+.gate form{display:grid;gap:10px}
+.locked{color:var(--muted);font-size:.92rem;margin:4px 0 0}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -129,7 +135,7 @@ pre{margin:0;background:var(--bg);border:1px solid var(--line);border-radius:6px
   <header class="top">
     <span class="eyebrow">Free tool · works on any website</span>
     <h1>Agent Readiness Optimizer</h1>
-    <p>Checks how well AI assistants (ChatGPT, Claude, Gemini, Copilot, Perplexity, Meta AI, Grok and Siri) can read a web page and lead a person to its main action: applying, booking, buying, signing up or getting in touch. Describe the site, fetch or paste a page, run the audit, then test it with a live agent and copy the generated fixes.</p>
+    <p>Checks how well AI assistants (ChatGPT, Claude, Gemini, Copilot, Perplexity, Meta AI, Grok and Siri) can read a web page and lead a person to its main action: applying, booking, buying, signing up or getting in touch. Describe the site, fetch or paste a page and run the audit. <span data-edition="public">Your score and top issues are free; enter your email for the full report.</span><span data-edition="full">Then test it with a live agent and copy the generated fixes.</span></p>
   </header>
 
   <div class="bench">
@@ -217,10 +223,11 @@ pre{margin:0;background:var(--bg);border:1px solid var(--line);border-radius:6px
       </div>
       <p class="verdict" id="verdict"></p>
       <div class="cta-box" id="ctaBox" hidden>
-        <p><strong>Want these fixed?</strong> IntexiaUWebDesign can send you a prioritized fix report to work through yourself, or make the fixes and re-test across every assistant for you.</p>
+        <p id="ctaText"><strong>Want these fixed?</strong> Get a fix report with the exact changes for every issue, or have IntexiaUWebDesign make the fixes and re-test across every assistant.</p>
         <div class="row">
           <a class="btn" id="ctaDiy" href="https://webstudio.intexiau.com/checkout?plan=audit&amp;path=diy">Get my fix report</a>
           <a class="btn ghost" id="ctaDone" href="https://webstudio.intexiau.com/checkout?plan=audit&amp;path=redesign">Have IntexiaU fix it</a>
+          <a class="btn ghost" id="ctaRedesign" href="https://webstudio.intexiau.com/pricing" hidden>See redesign plans</a>
         </div>
       </div>
       <div class="filters" role="group" aria-label="Filter findings">
@@ -228,6 +235,21 @@ pre{margin:0;background:var(--bg);border:1px solid var(--line);border-radius:6px
         <button class="chip" data-f="all" aria-pressed="false">All checks</button>
       </div>
       <div id="checks"></div>
+      <div class="gate" id="gate" hidden>
+        <p><strong id="gateMore"></strong> Get your full report free: every issue ranked by impact, and more live agent questions.</p>
+        <form id="gateForm" novalidate>
+          <div class="grid2">
+            <div class="field"><label for="g-name">Your name</label><input type="text" id="g-name" autocomplete="name" required></div>
+            <div class="field"><label for="g-email">Email</label><input type="text" id="g-email" inputmode="email" autocomplete="email" required></div>
+          </div>
+          <div class="field"><label for="g-org">Organization (optional)</label><input type="text" id="g-org" autocomplete="organization"></div>
+          <input type="text" id="g-trap" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+          <div class="row"><button class="btn" type="submit" id="gateBtn">Show my full report</button></div>
+          <p class="hint">Your results go to the IntexiaUWebDesign team so we can follow up about your site. We won't share your details.</p>
+          <p class="status" id="gateStatus"></p>
+        </form>
+        <p class="hint" id="gateExample" hidden>This is the fictional example. Run the check on your own site to unlock a full report.</p>
+      </div>
     </section>
   </div>
 
@@ -266,11 +288,7 @@ pre{margin:0;background:var(--bg);border:1px solid var(--line);border-radius:6px
     </div>
   
     <div class="pl-cols">
-      <div>
-        <h3>What the audit can't see</h3>
-        <p class="hint">Assistants also rely on search indexes, business listings and directories. Tick these off as you confirm them. Saved in this browser.</p>
-        <ul class="pl-list" id="pl-off"></ul>
-      </div>
+      
       <div class="pl-test">
         <h3>Ask each assistant yourself</h3>
         <p class="hint">Copy the question, ask it in each assistant without naming your organization, and record what happened. Repeat every few months: answers change as indexes update.</p>
@@ -303,32 +321,7 @@ pre{margin:0;background:var(--bg);border:1px solid var(--line);border-radius:6px
     <div class="agent-out" id="agentOut"></div>
   </section>
 
-  <section class="panel" aria-labelledby="fx-h">
-    <h2 id="fx-h">Generated fixes</h2>
-    <p class="hint">Built from the site profile. Check every fact before publishing.</p>
-    <div class="tabs" role="tablist" aria-label="Fixes">
-      <button class="tab" role="tab" id="t-fx1" aria-controls="p-fx1" aria-selected="true">llms.txt</button>
-      <button class="tab" role="tab" id="t-fx2" aria-controls="p-fx2" aria-selected="false">Structured data</button>
-      <button class="tab" role="tab" id="t-fx3" aria-controls="p-fx3" aria-selected="false">Get-started block</button>
-      <button class="tab" role="tab" id="t-fx4" aria-controls="p-fx4" aria-selected="false">robots.txt</button>
-    </div>
-    <div class="tabpanel" role="tabpanel" id="p-fx1" aria-labelledby="t-fx1">
-      <div class="codehead"><p class="hint">Save as a plain text file at the root of the site (/llms.txt). Agents use it as a map of the site.</p><button class="btn ghost copy" data-target="fx-llms" type="button">Copy</button></div>
-      <pre id="fx-llms"></pre>
-    </div>
-    <div class="tabpanel" role="tabpanel" id="p-fx2" aria-labelledby="t-fx2" hidden>
-      <div class="codehead"><p class="hint">Paste into the &lt;head&gt; of the home page and the main service page. Check it at validator.schema.org.</p><button class="btn ghost copy" data-target="fx-jsonld" type="button">Copy</button></div>
-      <pre id="fx-jsonld"></pre>
-    </div>
-    <div class="tabpanel" role="tabpanel" id="p-fx3" aria-labelledby="t-fx3" hidden>
-      <div class="codehead"><p class="hint">A plain-HTML section that works without JavaScript, so every agent can read and follow it. Put it high on the page.</p><button class="btn ghost copy" data-target="fx-block" type="button">Copy</button></div>
-      <pre id="fx-block"></pre>
-    </div>
-    <div class="tabpanel" role="tabpanel" id="p-fx4" aria-labelledby="t-fx4" hidden>
-      <div class="codehead"><p class="hint">Lets assistants that browse for a person, and AI search engines, reach the site. Blocking AI training crawlers is a separate choice and doesn't affect this, except Google-Extended, which also controls Gemini's answers.</p><button class="btn ghost copy" data-target="fx-robots" type="button">Copy</button></div>
-      <pre id="fx-robots"></pre>
-    </div>
-  </section>
+
 </div>
 
 <script>
@@ -369,6 +362,13 @@ const EXAMPLE = {
 };
 const PF = ["name","site","type","summary","actionLabel","action","phone","hours","open","close","area","region","services","audience","lang","emerg"];
 const KEY = "agent-optimizer-universal";
+const EDITION = "public";
+const FREE_ISSUES = 3, AGENT_FREE = 1, AGENT_UNLOCKED = 3;
+let unlocked = EDITION === "full";
+try{ if(localStorage.getItem(KEY+"-unlocked")==="1") unlocked = true; }catch(e){}
+let agentRuns = 0;
+try{ agentRuns = +(localStorage.getItem(KEY+"-agent-runs")||0); }catch(e){}
+document.querySelectorAll("[data-edition]").forEach(n => { if(n.dataset.edition !== EDITION) n.remove(); });
 
 const $ = id => document.getElementById(id);
 const store = { get(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } }, set(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} } };
@@ -448,7 +448,7 @@ function runAudit(){
   const phone10 = last10(P.phone);
   const A = "Path to action";
 
-  if(!src.trim()) add(A,"high","fail","No page source pasted","Paste the page's HTML source to run the audit.","Use Ctrl+U on the page, copy everything, paste into Page HTML.");
+  if(!src.trim()) add(A,"high","fail","No page source pasted","Paste the page's HTML source to run the audit.");
   if(!actionU) add(A,"high","skip","Main action link not set","Add the link for your main action in the site profile so the audit can look for it.");
 
   /* path to action */
@@ -464,95 +464,95 @@ function runAudit(){
       add(A,"high","pass",`Direct link to "${label}"`, `Found ${hits.length} link(s) to ${actionU.host}${actionU.pathname} in the page source.`);
       const t = (hits[0].textContent||hits[0].getAttribute("aria-label")||"").trim();
       const vague = t.split(/\s+/).length<2 || /^(here|click here|go|more)$/i.test(t);
-      add(A,"med", vague?"warn":"pass", vague?"Action link text is too short":"Action link text says what it does", `"${t.slice(0,60)}"`, vague?`Use text such as "${label}".`:null);
+      add(A,"med", vague?"warn":"pass", vague?"Action link text is too short":"Action link text says what it does", `"${t.slice(0,60)}"`);
     } else if(textHits.length){
-      add(A,"high","warn","No direct link to the main action", `"${(textHits[0].textContent||"").trim().slice(0,40)}" points to ${textHits[0].getAttribute("href")}, not ${P.action}. Agents need an extra hop and may stop there.`, `Add a plain <a href="${P.action}"> on this page.`);
+      add(A,"high","warn","No direct link to the main action", `"${(textHits[0].textContent||"").trim().slice(0,40)}" points to ${textHits[0].getAttribute("href")}, not ${P.action}. Agents need an extra hop and may stop there.`);
     } else {
-      add(A,"high","fail","No link to the main action", `An agent reading this page can't find where to "${label}".`, "Add a plain <a href> with clear text, high on the page. See Get-started block in Generated fixes.");
+      add(A,"high","fail","No link to the main action", `An agent reading this page can't find where to "${label}".`);
     }
   }
   const jsOnly = [...doc.querySelectorAll("button, a:not([href]), a[href^='javascript'], a[href='#']")].filter(n => ctaRe.test(n.textContent));
-  if(jsOnly.length) add(A,"high","fail","Action button works only with JavaScript", `"${(jsOnly[0].textContent||"").trim().slice(0,40)}" has no real URL. Most agents don't run scripts or click buttons, so they can't follow it.`, "Make it an <a href> to the real URL, styled as a button.");
+  if(jsOnly.length) add(A,"high","fail","Action button works only with JavaScript", `"${(jsOnly[0].textContent||"").trim().slice(0,40)}" has no real URL. Most agents don't run scripts or click buttons, so they can't follow it.`);
 
   if(phone10){
     const shown = digits(text).includes(phone10);
     const others = text.match(/\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}/g)||[];
-    add(A,"high", shown?"pass":(others.length?"warn":"fail"), shown?"Phone number is on the page":"Your phone number isn't on the page", shown?P.phone:(others.length?`The page shows ${others.slice(0,2).join(", ")}, not ${P.phone}. Agents may give the wrong number.`:`${P.phone} doesn't appear.`), shown?null:`Show ${P.phone} as text with a label.`);
+    add(A,"high", shown?"pass":(others.length?"warn":"fail"), shown?"Phone number is on the page":"Your phone number isn't on the page", shown?P.phone:(others.length?`The page shows ${others.slice(0,2).join(", ")}, not ${P.phone}. Agents may give the wrong number.`:`${P.phone} doesn't appear.`));
     const tel = links.some(a => /^tel:/i.test(a.getAttribute("href")) && last10(a.getAttribute("href"))===phone10);
-    add(A,"low", tel?"pass":"warn", tel?"Phone is a tap-to-call link":"Phone isn't a tel: link", tel?"":"Agents and phones recognize tel: links as a call action.", tel?null:`<a href="tel:+1${phone10}">${P.phone}</a>`);
+    add(A,"low", tel?"pass":"warn", tel?"Phone is a tap-to-call link":"Phone isn't a tel: link", tel?"":"Agents and phones recognize tel: links as a call action.");
   }
   if(P.hours || P.phone){
     const ok = /(mon(day)?|tue|wed|thu|fri|sat|sun|weekday|daily|24\/7|24 hours).{0,50}\d/i.test(text) || /\d{1,2}(:\d{2})?\s*(a\.?m\.?|p\.?m\.?)\s*(-|–|to)\s*\d{1,2}/i.test(text);
-    add(A,"med", ok?"pass":"fail", ok?"Hours are stated":"Hours not stated", ok?"":"Agents can't tell a person when you're open or reachable.", ok?null:(P.hours?`Add "${P.hours}".`:"State your hours in text."));
+    add(A,"med", ok?"pass":"fail", ok?"Hours are stated":"Hours not stated", ok?"":"Agents can't tell a person when you're open or reachable.");
   }
   if(P.audience){
     const kw = keywords(P.audience), f = kw.filter(w => textL.includes(w));
     const ok = kw.length===0 || f.length/kw.length >= .4;
-    add(A,"med", ok?"pass":"fail", ok?"Says who it's for":"Doesn't say who it's for", ok?"":"Agents can't tell whether a person qualifies or is a good fit, so they hedge.", ok?null:`Add a sentence such as "${P.audience}"`);
+    add(A,"med", ok?"pass":"fail", ok?"Says who it's for":"Doesn't say who it's for", ok?"":"Agents can't tell whether a person qualifies or is a good fit, so they hedge.");
   }
   const area = list(P.area);
   if(area.length){
     const f = area.filter(c => textL.includes(c.toLowerCase()));
     const s = f.length===area.length?"pass":f.length?"warn":"fail";
-    add(A,"high", s, s==="pass"?"All places served are listed":"Service area is incomplete", s==="pass"?f.join(", "):`Found ${f.length} of ${area.length}. Missing: ${area.filter(c=>!f.includes(c)).join(", ")}. Agents may wrongly turn people away.`, s==="pass"?null:`List every place: ${area.join(", ")}${P.region?" ("+P.region+")":""}.`);
+    add(A,"high", s, s==="pass"?"All places served are listed":"Service area is incomplete", s==="pass"?f.join(", "):`Found ${f.length} of ${area.length}. Missing: ${area.filter(c=>!f.includes(c)).join(", ")}. Agents may wrongly turn people away.`);
   }
   const svc = list(P.services);
   if(svc.length){
     const f = svc.filter(a => textL.includes(a.toLowerCase().split(/\s*&\s*|\s+and\s+/)[0]));
     const s = f.length >= Math.ceil(svc.length*.75) ? "pass" : f.length ? "warn" : "fail";
-    add(A,"med", s, "Services named on the page", `Found ${f.length} of ${svc.length}.${s!=="pass"?" Missing: "+svc.filter(a=>!f.includes(a)).join(", ")+".":""}`, s==="pass"?null:"Name each service in text, with examples of the problems or needs it covers. People describe needs, not your program names.");
+    add(A,"med", s, "Services named on the page", `Found ${f.length} of ${svc.length}.${s!=="pass"?" Missing: "+svc.filter(a=>!f.includes(a)).join(", ")+".":""}`);
   }
   if(P.lang){
     const langs = list(P.lang).filter(l => !/^english$/i.test(l));
     const ok = /(interpret|translat|language|idioma)/i.test(text) || langs.some(l => textL.includes(l.toLowerCase()));
-    add(A,"low", ok?"pass":"warn", ok?"Language options mentioned":"Language options not mentioned", ok?"":"Agents serving non-English speakers can't say whether help is available in their language.", ok?null:`Say which languages you offer: ${P.lang}.`);
+    add(A,"low", ok?"pass":"warn", ok?"Language options mentioned":"Language options not mentioned", ok?"":"Agents serving non-English speakers can't say whether help is available in their language.");
   }
   if(P.emerg){
     const ok = /(emergenc|911|urgent|hotline|immediate danger|crisis)/i.test(text);
-    add(A,"low", ok?"pass":"warn", ok?"Urgent guidance present":"No urgent guidance", ok?"":"Agents need a safe answer when something is urgent.", ok?null:P.emerg);
+    add(A,"low", ok?"pass":"warn", ok?"Urgent guidance present":"No urgent guidance", ok?"":"Agents need a safe answer when something is urgent.");
   }
 
   /* readability */
   const h1 = doc.querySelectorAll("h1").length;
-  add("Readability","med", h1===1?"pass":(h1?"warn":"fail"), h1===1?"One main heading (H1)":`${h1} H1 headings`, h1===1?"":"Agents use the H1 to decide what the page is about.", h1===1?null:`Use one H1 that says what you offer and for whom${P.summary?', e.g. "'+P.summary.replace(/\.$/,"")+'"':""}.`);
+  add("Readability","med", h1===1?"pass":(h1?"warn":"fail"), h1===1?"One main heading (H1)":`${h1} H1 headings`, h1===1?"":"Agents use the H1 to decide what the page is about.");
   const hs = [...doc.querySelectorAll("h1,h2,h3,h4,h5,h6")].map(h => +h.tagName[1]);
   let skip = null; for(let i=1;i<hs.length;i++) if(hs[i]-hs[i-1]>1){ skip = `H${hs[i-1]} → H${hs[i]}`; break; }
-  add("Readability","low", skip?"warn":"pass", skip?"Heading levels skip":"Heading levels are in order", skip?`Jumps from ${skip}. Agents read headings as an outline.`:"", skip?"Don't skip levels: H1, then H2 for sections, H3 inside them.":null);
+  add("Readability","low", skip?"warn":"pass", skip?"Heading levels skip":"Heading levels are in order", skip?`Jumps from ${skip}. Agents read headings as an outline.`:"");
   const nScripts = doc.querySelectorAll("script").length, shell = words<120 && nScripts>3;
-  add("Readability","high", shell?"fail":(words<120?"warn":"pass"), shell?"Content loads only with JavaScript":(words<120?"Very little text in the source":"Content is in the page source"), shell?`Only ${words} words but ${nScripts} scripts. Many agents don't run JavaScript and see a blank page.`:`${words} words in the source.`, (shell||words<120)?"Put the key content (what you offer, who it's for, how to start) in the HTML the server sends.":null);
+  add("Readability","high", shell?"fail":(words<120?"warn":"pass"), shell?"Content loads only with JavaScript":(words<120?"Very little text in the source":"Content is in the page source"), shell?`Only ${words} words but ${nScripts} scripts. Many agents don't run JavaScript and see a blank page.`:`${words} words in the source.`);
   const rawTpl = (src.match(/\{\{[^{}]{1,80}\}\}/g)||[]).length;
   const emptyRoot = [...doc.querySelectorAll("#root,#app,#__next,#__nuxt,[data-reactroot]")].some(n => !(n.textContent||"").trim());
-  if(rawTpl>=3 || emptyRoot) add("Readability","high", "fail", rawTpl>=3?"Agents see unfilled template code":"Page is an empty app shell", rawTpl>=3?`${rawTpl} placeholders like ${(src.match(/\{\{[^{}]{1,40}\}\}/)||[""])[0]} appear in the source. Agents that don't run JavaScript read these instead of your content.`:"The main app container is empty until JavaScript runs. Agents that don't run scripts see nothing.", "Pre-render the page (static HTML or server-side rendering) so the words people need are in the HTML the server sends.");
+  if(rawTpl>=3 || emptyRoot) add("Readability","high", "fail", rawTpl>=3?"Agents see unfilled template code":"Page is an empty app shell", rawTpl>=3?`${rawTpl} placeholders like ${(src.match(/\{\{[^{}]{1,40}\}\}/)||[""])[0]} appear in the source. Agents that don't run JavaScript read these instead of your content.`:"The main app container is empty until JavaScript runs. Agents that don't run scripts see nothing.");
   const imgs = [...doc.querySelectorAll("img")], noAlt = imgs.filter(i => !i.hasAttribute("alt"));
-  if(imgs.length) add("Readability","low", noAlt.length?"warn":"pass", noAlt.length?`${noAlt.length} of ${imgs.length} images lack alt text`:"Images have alt text", noAlt.length?"Agents and screen readers skip images without alt text.":"", noAlt.length?'Add short alt text, or alt="" for decorative images.':null);
+  if(imgs.length) add("Readability","low", noAlt.length?"warn":"pass", noAlt.length?`${noAlt.length} of ${imgs.length} images lack alt text`:"Images have alt text", noAlt.length?"Agents and screen readers skip images without alt text.":"");
   const vague = links.filter(a => /^(click here|here|read more|learn more|more|this link)$/i.test((a.textContent||"").trim()));
-  add("Readability","med", vague.length?"warn":"pass", vague.length?`${vague.length} links with vague text`:"Link text is descriptive", vague.length?`e.g. "${(vague[0].textContent||"").trim()}". Agents pick links by their text.`:"", vague.length?'Say where the link goes, e.g. "Senior food boxes: who qualifies".':null);
+  add("Readability","med", vague.length?"warn":"pass", vague.length?`${vague.length} links with vague text`:"Link text is descriptive", vague.length?`e.g. "${(vague[0].textContent||"").trim()}". Agents pick links by their text.`:"");
   const lm = doc.querySelector("main") && doc.querySelector("nav");
-  add("Readability","low", lm?"pass":"warn", lm?"Page uses <main> and <nav>":"Missing <main> or <nav> landmarks", lm?"":"Landmarks help agents separate content from menus and footers.", lm?null:"Wrap the menu in <nav> and the page content in <main>.");
+  add("Readability","low", lm?"pass":"warn", lm?"Page uses <main> and <nav>":"Missing <main> or <nav> landmarks", lm?"":"Landmarks help agents separate content from menus and footers.");
 
   /* discovery */
   const title = (doc.querySelector("title")?.textContent||"").trim();
   const tOk = title.length>=15 && title.length<=70 && !/^(home|welcome|index|untitled)$/i.test(title);
-  add("Discovery","med", tOk?"pass":"fail", tOk?"Page title is descriptive":"Page title is weak", `Title: "${title||"(none)"}"`, tOk?null:`Say what you offer and where, e.g. "${(svc[0]||"Services")}${area[0]?" in "+area[0]:""} | ${P.name||"Your name"}".`);
+  add("Discovery","med", tOk?"pass":"fail", tOk?"Page title is descriptive":"Page title is weak", `Title: "${title||"(none)"}"`);
   const desc = doc.querySelector('meta[name="description"]')?.getAttribute("content")||"";
-  add("Discovery","med", desc.length>=50?"pass":"fail", desc.length>=50?"Meta description present":"No useful meta description", desc?`"${desc.slice(0,120)}"`:"AI search tools often quote the description when summarizing a site.", desc.length>=50?null:`<meta name="description" content="${(P.summary||"What you do")} ${label}${P.phone?" or call "+P.phone:""}.">`);
+  add("Discovery","med", desc.length>=50?"pass":"fail", desc.length>=50?"Meta description present":"No useful meta description", desc?`"${desc.slice(0,120)}"`:"AI search tools often quote the description when summarizing a site.");
   const lang = doc.documentElement.getAttribute("lang");
-  add("Discovery","low", lang?"pass":"warn", lang?`Language declared (${lang})`:"No lang attribute", lang?"":"Tells agents what language the page is in.", lang?null:'<html lang="en">');
+  add("Discovery","low", lang?"pass":"warn", lang?`Language declared (${lang})`:"No lang attribute", lang?"":"Tells agents what language the page is in.");
   const robots = $("robots").value;
   if(!robots.trim()) add("Discovery","high","skip","robots.txt not checked","Paste the site's robots.txt in the robots.txt tab to check which AI agents are allowed.");
   else {
     const g = parseRobots(robots);
     const u = BOTS.user.filter(b => robotsBlocks(g,b)), s = BOTS.search.filter(b => robotsBlocks(g,b)), t = BOTS.train.filter(b => robotsBlocks(g,b));
-    add("Discovery","high", u.length?"fail":"pass", u.length?"Blocks assistants that browse for a person":"Assistants that browse for a person are allowed", u.length?`Blocked: ${u.join(", ")}. These visit when someone asks an assistant to check your site.`:BOTS.user.join(", "), u.length?"Remove these Disallow rules. See robots.txt in Generated fixes.":null);
-    add("Discovery","high", s.length?"fail":"pass", s.length?"Blocks AI search engines":"AI search engines are allowed", s.length?`Blocked: ${s.join(", ")}. Those assistants won't show you in their answers.`:"", s.length?"Allow these crawlers.":null);
+    add("Discovery","high", u.length?"fail":"pass", u.length?"Blocks assistants that browse for a person":"Assistants that browse for a person are allowed", u.length?`Blocked: ${u.join(", ")}. These visit when someone asks an assistant to check your site.`:BOTS.user.join(", "));
+    add("Discovery","high", s.length?"fail":"pass", s.length?"Blocks AI search engines":"AI search engines are allowed", s.length?`Blocked: ${s.join(", ")}. Those assistants won't show you in their answers.`:"");
     add("Discovery","low","skip", t.length?`Training crawlers blocked: ${t.join(", ")}`:"Training crawlers allowed", "Your choice either way. Training crawlers don't decide whether you appear in answers. Google-Extended is the exception and is checked with the search crawlers, because it also controls Gemini's answers.");
   }
   const llms = $("llms").value;
-  if(!llms.trim()) add("Discovery","med","fail","No llms.txt","An llms.txt file gives agents a short map of the site: what you do, who it's for and how to start.","Publish the draft from Generated fixes at /llms.txt.");
+  if(!llms.trim()) add("Discovery","med","fail","No llms.txt","An llms.txt file gives agents a short map of the site: what you do, who it's for and how to start.");
   else {
     const c = [/^#\s+\S/m.test(llms), /^>\s+\S/m.test(llms), actionU ? llms.includes(actionU.host+normPath(actionU.pathname).replace(/^\/$/,"")) || llms.includes(P.action) : true, phone10 ? digits(llms).includes(phone10) : true];
     const n = c.filter(Boolean).length;
-    add("Discovery","med", n===4?"pass":"warn","llms.txt quality",`Title ${c[0]?"✓":"✗"} · Summary line ${c[1]?"✓":"✗"} · Action link ${c[2]?"✓":"✗"} · Phone ${c[3]?"✓":"✗"}`, n===4?null:"Compare with the draft in Generated fixes.");
+    add("Discovery","med", n===4?"pass":"warn","llms.txt quality",`Title ${c[0]?"✓":"✗"} · Summary line ${c[1]?"✓":"✗"} · Action link ${c[2]?"✓":"✗"} · Phone ${c[3]?"✓":"✗"}`);
   }
 
   /* structured data */
@@ -560,25 +560,25 @@ function runAudit(){
   doc.querySelectorAll('script[type="application/ld+json"]').forEach(s => { try{ const j = JSON.parse(s.textContent); (Array.isArray(j)?j:[j]).forEach(x => x && x["@graph"] ? ld.push(...x["@graph"]) : ld.push(x)); }catch(e){ bad++; } });
   const types = ld.flatMap(x => [].concat(x && x["@type"] || []));
   const flat = JSON.stringify(ld);
-  if(!ld.length) add("Structured data","high","fail", bad?"Structured data has errors":"No structured data (JSON-LD)", bad?`${bad} JSON-LD block(s) failed to parse.`:"Structured data states facts agents can read without guessing: what you are, how to contact you, where you serve.","Add the block from Generated fixes.");
+  if(!ld.length) add("Structured data","high","fail", bad?"Structured data has errors":"No structured data (JSON-LD)", bad?`${bad} JSON-LD block(s) failed to parse.`:"Structured data states facts agents can read without guessing: what you are, how to contact you, where you serve.");
   else {
     const want = P.type || "Organization";
     const exact = types.some(t => t.toLowerCase()===want.toLowerCase());
     const anyOrg = types.some(t => /Organization|Business|Service|NGO|Store|Clinic|Restaurant/i.test(t));
-    add("Structured data","high", exact?"pass":(anyOrg?"warn":"fail"), exact?`Declared as ${want}`:`Not declared as ${want}`, `Types found: ${types.join(", ")||"none"}`, exact?null:`Use "@type": "${want}".`);
+    add("Structured data","high", exact?"pass":(anyOrg?"warn":"fail"), exact?`Declared as ${want}`:`Not declared as ${want}`, `Types found: ${types.join(", ")||"none"}`);
     const has = k => flat.includes('"'+k+'"');
-    if(phone10) add("Structured data","med", digits(flat).includes(phone10)?"pass":"fail","Phone in structured data","", digits(flat).includes(phone10)?null:"Add telephone.");
-    if(area.length) add("Structured data","med", has("areaServed")?"pass":"fail","Service area in structured data","", has("areaServed")?null:"Add areaServed.");
-    if(P.open) add("Structured data","low", has("openingHoursSpecification")||has("openingHours")?"pass":"warn","Hours in structured data","",null);
-    if(actionU){ const ok = flat.includes(actionU.host+normPath(actionU.pathname).replace(/^\/$/,"")) || flat.includes(P.action); add("Structured data","med", ok?"pass":"fail","Main action in structured data","Agents look for a potentialAction that says where to start.", ok?null:"Add a potentialAction pointing to your main action link."); }
-    add("Structured data","low", types.some(t=>/FAQPage/i.test(t))?"pass":"warn","FAQ markup","An FAQ (Who is it for? Where? How do I start?) gives agents ready answers.",null);
+    if(phone10) add("Structured data","med", digits(flat).includes(phone10)?"pass":"fail","Phone in structured data","");
+    if(area.length) add("Structured data","med", has("areaServed")?"pass":"fail","Service area in structured data","");
+    if(P.open) add("Structured data","low", has("openingHoursSpecification")||has("openingHours")?"pass":"warn","Hours in structured data","");
+    if(actionU){ const ok = flat.includes(actionU.host+normPath(actionU.pathname).replace(/^\/$/,"")) || flat.includes(P.action); add("Structured data","med", ok?"pass":"fail","Main action in structured data","Agents look for a potentialAction that says where to start."); }
+    add("Structured data","low", types.some(t=>/FAQPage/i.test(t))?"pass":"warn","FAQ markup","An FAQ (Who is it for? Where? How do I start?) gives agents ready answers.");
   }
   render(R);
 }
 
 /* render */
 const src_ok = () => !!$("html").value.trim();
-let filter = "issues", last = [];
+let filter = "issues", last = [], lastScore = 0;
 function render(R){
   last = R;
   const sc = R.filter(r => r.s!=="skip"), v = r => r.s==="pass"?1:r.s==="warn"?.5:0;
@@ -593,20 +593,44 @@ function render(R){
   $("verdict").textContent = blocked ? `An agent would likely struggle to lead someone to your main action from this page. ${f} problems and ${w} warnings; start with Path to action.`
     : score>=80 ? `Agents can lead people to your main action from this page. ${f} problems and ${w} warnings left to tidy.`
     : `Agents can probably find your main action, but may give incomplete or wrong details. ${f} problems and ${w} warnings.`;
+  lastScore = score;
+  const isExample = !$("exampleBadge").hidden;
+  const structural = R.some(r => r.cat==="Readability" && r.w===3 && r.s==="fail");
   if(src_ok()){
     const P = readProfile(), site = $("pageUrl").value.trim() || P.site || "";
     const q = `&site=${encodeURIComponent(site)}&score=${score}`;
     $("ctaDiy").href = "https://webstudio.intexiau.com/checkout?plan=audit&path=diy"+q;
     $("ctaDone").href = "https://webstudio.intexiau.com/checkout?plan=audit&path=redesign"+q;
-    $("ctaBox").hidden = !$("exampleBadge").hidden;
+    $("ctaRedesign").href = "https://webstudio.intexiau.com/checkout?plan=momentum&path=redesign"+q;
+    $("ctaRedesign").hidden = !structural;
+    $("ctaText").innerHTML = structural
+      ? "<strong>The way this site is built hides its content from AI.</strong> Fixes help, but a rebuild that serves real HTML solves it. IntexiaUWebDesign can do either."
+      : "<strong>Want these fixed?</strong> Get a fix report with the exact changes for every issue, or have IntexiaUWebDesign make the fixes and re-test across every assistant.";
+    $("ctaBox").hidden = isExample;
   } else $("ctaBox").hidden = true;
   const box = $("checks"); box.textContent = "";
   const ord = {fail:0,warn:1,skip:2,pass:3};
+  const item = r => { const b = el("div",null, el("strong",{text:r.title})); if(r.detail) b.append(el("p",{text:r.detail})); if(r.fix) b.append(el("p",{class:"fix",text:"Fix: "+r.fix})); return el("li",{class:"check","data-s":r.s}, el("span",{class:"pill",text:r.s==="skip"?"info":r.s}), b); };
+  $("gate").hidden = true;
+  document.querySelector(".filters").hidden = !unlocked;
+  if(!unlocked){
+    const issues = R.filter(r=>r.s==="fail"||r.s==="warn").sort((a,b)=>ord[a.s]-ord[b.s] || b.w-a.w);
+    if(!issues.length){ box.append(el("p",{class:"hint",text:"No issues found."})); return; }
+    const ul = el("ul",{class:"checks"}); issues.slice(0,FREE_ISSUES).forEach(r => ul.append(item(r)));
+    box.append(el("div",{class:"group"}, el("h3",{text:"Top issues"}), ul));
+    const more = issues.length - FREE_ISSUES;
+    if(src_ok()){
+      $("gate").hidden = false;
+      $("gateMore").textContent = more>0 ? `${more} more issue${more>1?"s":""} found.` : "That's every issue we found.";
+      $("gateForm").hidden = isExample; $("gateExample").hidden = !isExample;
+    }
+    return;
+  }
   CAT.forEach(c => {
     let rs = R.filter(r=>r.cat===c); if(filter==="issues") rs = rs.filter(r=>r.s==="fail"||r.s==="warn"); if(!rs.length) return;
     rs.sort((a,b)=>ord[a.s]-ord[b.s] || b.w-a.w);
     const ul = el("ul",{class:"checks"});
-    rs.forEach(r => { const b = el("div",null, el("strong",{text:r.title})); if(r.detail) b.append(el("p",{text:r.detail})); if(r.fix) b.append(el("p",{class:"fix",text:"Fix: "+r.fix})); ul.append(el("li",{class:"check","data-s":r.s}, el("span",{class:"pill",text:r.s==="skip"?"info":r.s}), b)); });
+    rs.forEach(r => ul.append(item(r)));
     box.append(el("div",{class:"group"}, el("h3",{text:c}), ul));
   });
   if(!box.childNodes.length) box.append(el("p",{class:"hint",text:"No issues found."}));
@@ -635,78 +659,7 @@ function daysFrom(h){
   return days;
 }
 function renderFixes(){
-  const P = readProfile(), area = list(P.area), svc = list(P.services), phone10 = last10(P.phone);
-  const name = P.name || "Your organization", site = (P.site||"https://example.com/").replace(/\/?$/,"/");
-  const label = P.actionLabel || "Get started", action = P.action || site;
-  const intl = phone10 ? "+1-"+phone10.slice(0,3)+"-"+phone10.slice(3,6)+"-"+phone10.slice(6) : "";
-  const where = area.length ? `${area.join(", ")}${P.region?", "+P.region:""}` : (P.region||"");
-  const L = [`# ${name}`, "", `> ${P.summary || name+" — describe what you do in one sentence."}${where?" Serving "+where+".":""}`, "", "## How to get started", `- [${label}](${action})`];
-  if(P.phone) L.push(`- Phone: ${P.phone}${P.hours?", "+P.hours:""}`); else if(P.hours) L.push(`- Hours: ${P.hours}`);
-  if(P.lang) L.push(`- Languages: ${P.lang}`);
-  if(P.emerg) L.push(`- ${P.emerg}`);
-  if(P.audience || where){ L.push("", "## Who we serve"); if(where) L.push(`- Area: ${where}. People outside this area should look for a local provider.`); if(P.audience) L.push(`- ${P.audience}`); }
-  if(svc.length){ L.push("", "## Services"); svc.forEach(s => L.push(`- ${s}`)); }
-  L.push("", "## Key pages", `- [Home](${site})`, `- [${label}](${action})`, "", "## Instructions for AI assistants", `- To help someone take the next step, send them to "${label}" above${P.phone?" or the phone number listed":""}. Don't invent other contact details.`);
-  if(where) L.push("- If someone is outside the service area, say so and don't send them to sign up.");
-  if(P.emerg) L.push("- If something is urgent or someone is in danger, give the urgent guidance first.");
-  $("fx-llms").textContent = L.join("\n") + "\n";
 
-  const ld = {"@context":"https://schema.org","@type":P.type||"Organization","name":name,"url":site};
-  if(P.summary) ld.description = P.summary;
-  if(intl) ld.telephone = intl;
-  if(area.length) ld.areaServed = area.map(a => ({"@type":"Place","name":a+(P.region?", "+P.region:"")}));
-  else if(P.region) ld.areaServed = {"@type":"Place","name":P.region};
-  if(P.open && P.close) ld.openingHoursSpecification = [{"@type":"OpeningHoursSpecification","dayOfWeek":daysFrom(P.hours),"opens":P.open,"closes":P.close}];
-  if(intl || P.lang) ld.contactPoint = [Object.assign({"@type":"ContactPoint","contactType":"customer service","url":action}, intl?{telephone:intl}:{}, P.lang?{availableLanguage:list(P.lang)}:{})];
-  ld.potentialAction = {"@type":actionType(label),"name":label,"target":{"@type":"EntryPoint","urlTemplate":action}};
-  if(svc.length) ld.hasOfferCatalog = {"@type":"OfferCatalog","name":"Services","itemListElement":svc.map(s => ({"@type":"Offer","itemOffered":{"@type":"Service","name":s}}))};
-  const faq = {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":`How do I get started with ${name}?`,"acceptedAnswer":{"@type":"Answer","text":`${label}: ${action}${P.phone?". Or call "+P.phone+(P.hours?", "+P.hours.replace(/\.$/,""):""):""}.`}}]};
-  if(where) faq.mainEntity.push({"@type":"Question","name":"Where do you serve?","acceptedAnswer":{"@type":"Answer","text":where+"."}});
-  if(P.audience) faq.mainEntity.push({"@type":"Question","name":"Who is it for?","acceptedAnswer":{"@type":"Answer","text":P.audience}});
-  $("fx-jsonld").textContent = `<script type="application/ld+json">\n${JSON.stringify(ld,null,2)}\n<\/script>\n<script type="application/ld+json">\n${JSON.stringify(faq,null,2)}\n<\/script>`;
-
-  const B = [`<section id="get-started" aria-labelledby="get-started-title">`, `  <h2 id="get-started-title">How to get started</h2>`];
-  if(P.summary) B.push(`  <p>${esc(P.summary)}${where?" We serve "+esc(where)+".":""}</p>`);
-  B.push(`  <ol>`, `    <li><a href="${esc(action)}">${esc(label)}</a></li>`);
-  if(P.phone) B.push(`    <li>Or call <a href="tel:+1${phone10}">${esc(P.phone)}</a>${P.hours?", "+esc(P.hours):""}</li>`);
-  B.push(`  </ol>`);
-  if(P.audience) B.push(`  <p>${esc(P.audience)}</p>`);
-  if(svc.length) B.push(`  <p>We offer: ${esc(svc.join(", "))}.</p>`);
-  if(P.lang || P.emerg) B.push(`  <p>${P.lang?"Languages: "+esc(P.lang)+". ":""}${esc(P.emerg||"")}</p>`);
-  B.push(`</section>`);
-  $("fx-block").textContent = B.join("\n");
-
-  $("fx-robots").textContent = `# Assistants that visit when a person asks them about you
-User-agent: ChatGPT-User
-User-agent: Claude-User
-User-agent: Perplexity-User
-User-agent: Meta-ExternalFetcher
-Allow: /
-
-# Search crawlers behind AI answers (ChatGPT, Claude, Perplexity, Gemini, Copilot, Meta AI, Siri)
-User-agent: OAI-SearchBot
-User-agent: Claude-SearchBot
-User-agent: PerplexityBot
-User-agent: Googlebot
-User-agent: Google-Extended
-User-agent: Bingbot
-User-agent: Meta-WebIndexer
-User-agent: Applebot
-Allow: /
-
-# Optional: opt out of AI model training. This doesn't remove you from answers.
-# Don't add Google-Extended here: it also controls Gemini's answers.
-# User-agent: GPTBot
-# User-agent: ClaudeBot
-# User-agent: Meta-ExternalAgent
-# User-agent: Applebot-Extended
-# User-agent: CCBot
-# Disallow: /
-
-User-agent: *
-Allow: /
-
-Sitemap: ${site}sitemap.xml`;
 }
 document.querySelectorAll(".copy").forEach(b => b.addEventListener("click", async () => {
   try{ await navigator.clipboard.writeText($(b.dataset.target).textContent); b.textContent = "Copied"; }catch(e){ b.textContent = "Select and copy"; }
@@ -738,7 +691,8 @@ let sampleFn = null, viaApi = false;
 (async () => {
   try{ if(window.claude && window.claude.use) sampleFn = await window.claude.use("sample"); }catch(e){ sampleFn = null; }
   if(!sampleFn && /^https?:$/.test(location.protocol)) viaApi = true;
-  if(!sampleFn && !viaApi){ $("agentStatus").textContent = "The live agent test isn't available in this view. The audit and fixes still work."; $("runAgent").disabled = true; $("runAll").disabled = true; }
+  if(!sampleFn && !viaApi){ $("agentStatus").textContent = "The live agent test isn't available in this view. The audit still works."; $("runAgent").disabled = true; $("runAll").disabled = true; }
+  else updateAgentButtons();
 })();
 async function apiAgent(sc){
   const r = await fetch("/api/agent-test", {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({question: sc.q, view: agentView()})});
@@ -790,8 +744,19 @@ function showResult(r, out){
   if(conf.length){ const ul = el("ul"); conf.forEach(c => ul.append(el("li",{text:String(c)}))); card.append(el("p",{class:"hint",text:"What the agent found confusing:"}), ul); }
   out.append(card);
 }
+function agentCap(){ return EDITION==="full" ? Infinity : unlocked ? AGENT_UNLOCKED : AGENT_FREE; }
+function updateAgentButtons(){
+  if(EDITION==="full" || (!sampleFn && !viaApi)) return;
+  const left = agentCap() - agentRuns;
+  $("runAll").hidden = true;
+  $("runAgent").disabled = left <= 0;
+  $("agentStatus").textContent = left > 0 ? `${left} free agent test${left>1?"s":""} left.`
+    : unlocked ? "You've used your free agent tests. The Agent Readiness Audit tests every question across each assistant."
+    : "Enter your email above for your full report and more agent tests.";
+}
 async function runAgents(all){
   if(!sampleFn && !viaApi) return;
+  if(agentRuns >= agentCap()){ updateAgentButtons(); return; }
   if(!$("html").value.trim()){ $("agentStatus").textContent = "Paste the page source first."; return; }
   const scs = scenarioList(); if(!scs.length){ $("agentStatus").textContent = "Add at least one test question."; return; }
   const todo = all ? scs : [scs[+$("scenario").value||0]];
@@ -802,12 +767,14 @@ async function runAgents(all){
     for(const sc of todo){
       $("agentStatus").textContent = `Agent is reading the page… (${done+1} of ${todo.length})`;
       const r = await askAgent(sc); showResult(r, out); done++; if(r.cls==="pass") passed++;
+      agentRuns++; try{ localStorage.setItem(KEY+"-agent-runs", String(agentRuns)); }catch(e){}
+      if(agentRuns >= agentCap()) break;
     }
     $("agentStatus").textContent = todo.length>1 ? `${passed} of ${todo.length} passed.` : "";
     const d = el("details"); d.append(el("summary",{text:"What the agent saw"}), el("pre",{text:agentView()})); out.append(d);
   }catch(e){
     $("agentStatus").textContent = e && e.code==="rate_limited" ? "Too many requests. Wait a minute and try again." : e && e.code==="not_granted" ? "Permission to ask Claude wasn't granted." : e && e.code==="unavailable" ? "The live agent test isn't switched on yet. The audit and fixes still work." : "The agent test failed. Try again.";
-  }finally{ $("runAgent").disabled = $("runAll").disabled = false; }
+  }finally{ $("runAgent").disabled = $("runAll").disabled = false; updateAgentButtons(); }
 }
 $("runAgent").addEventListener("click", () => runAgents(false));
 $("runAll").addEventListener("click", () => runAgents(true));
@@ -819,6 +786,26 @@ function loadExample(){
   $("exampleBadge").hidden = false; $("agentOut").textContent = ""; saveAll(); renderFixes(); runAudit();
 }
 $("loadExample").addEventListener("click", loadExample);
+$("gateForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const name = $("g-name").value.trim(), email = $("g-email").value.trim();
+  if(!name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ $("gateStatus").textContent = "Enter your name and a valid email."; return; }
+  const P = readProfile();
+  const issues = last.filter(r=>r.s==="fail"||r.s==="warn").map(r => `${r.s.toUpperCase()} [${r.cat}] ${r.title}`).join("\n");
+  $("gateBtn").disabled = true; $("gateStatus").textContent = "Sending…";
+  let ok = false;
+  try{
+    const r = await fetch("/api/lead", {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({
+      source:"checker", name, email, organization: $("g-org").value.trim() || P.name, website: $("pageUrl").value.trim() || P.site,
+      score: String(lastScore), mainAction: [P.actionLabel, P.action].filter(Boolean).join(" — "), issues, company_fax: $("g-trap").value })});
+    ok = r.ok || r.status===503; /* 503: email not set up yet, but the lead is logged on the server */
+  }catch(err){ ok = false; }
+  $("gateBtn").disabled = false;
+  if(!ok){ $("gateStatus").textContent = "We couldn't send that. Check your connection and try again."; return; }
+  unlocked = true; try{ localStorage.setItem(KEY+"-unlocked","1"); }catch(err){}
+  $("gateStatus").textContent = ""; render(last); updateAgentButtons();
+  $("checks").scrollIntoView({behavior:"smooth", block:"start"});
+});
 $("startOwn").addEventListener("click", () => {
   writeProfile({}); ["html","robots","llms","pageUrl","scenarios"].forEach(k => $(k).value = "");
   fillScenarioSelect(); $("exampleBadge").hidden = true; $("agentOut").textContent = ""; saveAll(); renderFixes(); runAudit();
@@ -972,7 +959,7 @@ const OFF = [
   {id:"faq", t:"A page answers common questions in people's own words", d:"\"Can I get help with an eviction?\" matches how people ask assistants."}
 ];
 function renderOff(){
-  const ul = $("pl-off"); ul.textContent = "";
+  const ul = $("pl-off"); if(!ul) return; ul.textContent = "";
   OFF.forEach(o => {
     const id = "pl-off-"+o.id;
     const cb = el("input",{type:"checkbox",id}); cb.checked = !!state.off[o.id];

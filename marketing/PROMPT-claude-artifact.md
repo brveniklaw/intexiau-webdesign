@@ -1,6 +1,8 @@
-# Prompt for another Claude account
+# Prompt for another Claude account (staff use only)
 
-Start a new chat in Claude (Cowork or claude.ai with artifacts turned on). Drag in `app/agent-readiness-optimizer.html`, then paste everything between the lines below.
+> Use this only with the staff build, `internal/agent-readiness-optimizer-full.html`, and keep the artifact private. It contains every fix and generator, which is the paid product. Don't share the link publicly.
+
+Start a new chat in Claude (Cowork or claude.ai with artifacts turned on). Drag in `internal/agent-readiness-optimizer-full.html`, then paste everything between the lines below.
 
 ---
 

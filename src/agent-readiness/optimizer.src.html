@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<!--
+  SOURCE FILE. Don't edit the built copies; run: node scripts/build-checker.mjs
+  - public build -> agent-readiness/optimizer.html (deployed): no fixes, no generators, gated report
+  - staff build  -> internal/agent-readiness-optimizer-full.html (not deployed): everything
+  Markers: <!--PAID-->..<!--/PAID--> and /*PAID*/../*/PAID*/ are removed from the public build,
+  and the 6th "fix" argument of every add(...) call is stripped.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Free Agent Readiness Checker: Can AI Assistants Find Your Site? | IntexiaUWebDesign</title>
+<meta name="description" content="Free tool from IntexiaUWebDesign. Check whether ChatGPT, Claude, Gemini, Copilot, Perplexity, Meta AI, Grok and Siri can read your page and send people to your booking, sign-up or contact page.">
+<link rel="canonical" href="https://webstudio.intexiau.com/agent-readiness/optimizer">
+<meta property="og:title" content="Free Agent Readiness Checker | IntexiaUWebDesign">
+<meta property="og:description" content="See what AI assistants see on your page, and get the fixes.">
+<meta property="og:image" content="https://webstudio.intexiau.com/assets/og-image.jpg">
+<link rel="icon" href="/assets/favicon-32.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* Universal version. Layout: tool header, two-column workbench (inputs left, findings right), fixes below. Summary before detail. */
+:root{
+  --bg:#f3f5f6; --surface:#ffffff; --ink:#14232b; --muted:#5a6b73; --line:#d8e0e3;
+  --accent:#0d6b74; --accent-ink:#ffffff; --accent-soft:#e1f0f1;
+  --good:#1e7a46; --good-soft:#e3f3e9; --warn:#a1620a; --warn-soft:#fbf0dc; --bad:#b3261e; --bad-soft:#fbe5e3; --skip:#7b8a91; --skip-soft:#eef1f2;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f171b; --surface:#16222a; --ink:#e4ecef; --muted:#97a8b0; --line:#2a3a43;
+    --accent:#3fb3bd; --accent-ink:#0b1417; --accent-soft:#163238;
+    --good:#5cc98a; --good-soft:#163024; --warn:#e5a849; --warn-soft:#33281a; --bad:#f07a71; --bad-soft:#3a1d1b; --skip:#8696a0; --skip-soft:#1d2a31;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f171b; --surface:#16222a; --ink:#e4ecef; --muted:#97a8b0; --line:#2a3a43;
+  --accent:#3fb3bd; --accent-ink:#0b1417; --accent-soft:#163238;
+  --good:#5cc98a; --good-soft:#163024; --warn:#e5a849; --warn-soft:#33281a; --bad:#f07a71; --bad-soft:#3a1d1b; --skip:#8696a0; --skip-soft:#1d2a31;
+  color-scheme: dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.5 var(--body)}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:1.9rem;font-weight:700}
+h2{font-size:1.2rem;font-weight:700}
+h3{font-size:1rem;font-weight:700}
+a{color:var(--accent)}
+button,input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.wrap{max-width:1280px;margin:0 auto;padding:24px 20px 60px;display:grid;gap:20px}
+header.top{display:grid;gap:6px}
+header.top p{margin:0;color:var(--muted);max-width:75ch}
+.eyebrow{font:600 .78rem/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.bench{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:20px;align-items:start}
+@media (max-width:900px){.bench{grid-template-columns:1fr}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;display:grid;gap:14px;min-width:0}
+.tabs{display:flex;gap:4px;flex-wrap:wrap;border-bottom:1px solid var(--line)}
+.tab{background:none;border:0;border-bottom:3px solid transparent;padding:8px 10px;cursor:pointer;color:var(--muted);font-weight:600}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+.tabpanel[hidden]{display:none}
+.tabpanel{display:grid;gap:10px}
+label{font-weight:600;font-size:.92rem}
+.hint{color:var(--muted);font-size:.88rem;margin:0}
+textarea,input[type=text]{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:8px 10px}
+textarea{font:13px/1.45 var(--mono);min-height:260px;resize:vertical}
+.field{display:grid;gap:4px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:500px){.grid2{grid-template-columns:1fr}}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.btn{border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);border-radius:6px;padding:8px 14px;font-weight:700;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--accent)}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.badge-example{font:600 .75rem/1 var(--mono);background:var(--warn-soft);color:var(--warn);padding:4px 8px;border-radius:4px}
+/* summary */
+.summary{display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:center}
+@media (max-width:560px){.summary{grid-template-columns:1fr}}
+.score{width:128px;height:128px;border-radius:50%;display:grid;place-items:center;text-align:center;background:conic-gradient(var(--ring) calc(var(--pct)*1%), var(--line) 0)}
+.score>div{width:104px;height:104px;border-radius:50%;background:var(--surface);display:grid;place-content:center}
+.score b{font:700 2.2rem/1 var(--display);font-variant-numeric:tabular-nums}
+.score span{font-size:.8rem;color:var(--muted)}
+.cats{display:grid;gap:8px}
+.cat{display:grid;grid-template-columns:150px 1fr 42px;gap:10px;align-items:center;font-size:.92rem}
+.bar{height:8px;background:var(--line);border-radius:4px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent)}
+.cat em{font-style:normal;font-variant-numeric:tabular-nums;text-align:right;color:var(--muted)}
+.verdict{margin:0;font-weight:600}
+/* checks */
+.filters{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:3px 10px;font-size:.85rem;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.group h3{margin:6px 0 6px;color:var(--muted);font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;font-family:var(--mono);font-weight:600}
+.checks{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.check{display:grid;grid-template-columns:62px 1fr;gap:10px;padding:10px 12px;border-radius:6px;border-left:4px solid var(--c);background:var(--cs)}
+.check[data-s="pass"]{--c:var(--good);--cs:var(--good-soft)}
+.check[data-s="warn"]{--c:var(--warn);--cs:var(--warn-soft)}
+.check[data-s="fail"]{--c:var(--bad);--cs:var(--bad-soft)}
+.check[data-s="skip"]{--c:var(--skip);--cs:var(--skip-soft)}
+.pill{font:700 .7rem/1 var(--mono);text-transform:uppercase;color:var(--c);padding-top:3px}
+.check strong{display:block}
+.check p{margin:2px 0 0;font-size:.9rem;color:var(--muted)}
+.check .fix{color:var(--ink)}
+/* agent test */
+.agent-out{display:grid;gap:10px}
+.transcript{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:12px;font-size:.95rem;white-space:pre-wrap}
+.result-line{font-weight:700}
+.result-line.pass{color:var(--good)} .result-line.fail{color:var(--bad)} .result-line.warn{color:var(--warn)}
+details summary{cursor:pointer;font-weight:600;color:var(--muted)}
+pre{margin:0;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:12px;overflow-x:auto;font:12.5px/1.5 var(--mono);white-space:pre}
+.codehead{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.sel{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:8px 10px}
+.status{font-size:.88rem;color:var(--muted);min-height:1.2em;margin:0}
+.brandbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-size:.92rem}
+.brandbar a.home{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--ink);font-weight:700}
+.brandbar img{height:26px;width:26px}
+.fetchrow{display:grid;grid-template-columns:1fr auto;gap:8px}
+.cta-box{border:1px solid var(--accent);background:var(--accent-soft);border-radius:8px;padding:14px;display:grid;gap:8px}
+.cta-box p{margin:0}
+.cta-box .row a{text-decoration:none}
+.gate{border:1px dashed var(--accent);border-radius:8px;padding:14px;display:grid;gap:10px}
+.gate p{margin:0}
+.gate form{display:grid;gap:10px}
+.locked{color:var(--muted);font-size:.92rem;margin:4px 0 0}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="brandbar" aria-label="IntexiaUWebDesign">
+    <a class="home" href="https://webstudio.intexiau.com/"><img src="https://webstudio.intexiau.com/assets/intexiau_logo.webp" alt="" width="26" height="26"> IntexiaUWebDesign</a>
+    <a href="https://webstudio.intexiau.com/agent-readiness">About the Agent Readiness Audit</a>
+  </nav>
+  <header class="top">
+    <span class="eyebrow">Free tool · works on any website</span>
+    <h1>Agent Readiness Optimizer</h1>
+    <p>Checks how well AI assistants (ChatGPT, Claude, Gemini, Copilot, Perplexity, Meta AI, Grok and Siri) can read a web page and lead a person to its main action: applying, booking, buying, signing up or getting in touch. Describe the site, fetch or paste a page and run the audit. <span data-edition="public">Your score and top issues are free; enter your email for the full report.</span><span data-edition="full">Then test it with a live agent and copy the generated fixes.</span></p>
+  </header>
+
+  <div class="bench">
+    <section class="panel" aria-labelledby="in-h">
+      <div class="row" style="justify-content:space-between">
+        <h2 id="in-h">What to audit</h2>
+        <span class="badge-example" id="exampleBadge">Fictional example loaded</span>
+      </div>
+      <div class="tabs" role="tablist" aria-label="Inputs">
+        <button class="tab" role="tab" id="t-prof" aria-controls="p-prof" aria-selected="true">1. Site profile</button>
+        <button class="tab" role="tab" id="t-html" aria-controls="p-html" aria-selected="false">2. Page HTML</button>
+        <button class="tab" role="tab" id="t-robots" aria-controls="p-robots" aria-selected="false">robots.txt</button>
+        <button class="tab" role="tab" id="t-llms" aria-controls="p-llms" aria-selected="false">llms.txt</button>
+      </div>
+
+      <div class="tabpanel" role="tabpanel" id="p-prof" aria-labelledby="t-prof">
+        <p class="hint">The facts an agent must find, and the one thing you want it to send people to. Leave a field blank if it doesn't apply and its checks are skipped. Saved in this browser.</p>
+        <div class="grid2">
+          <div class="field"><label for="f-name">Organization or business</label><input type="text" id="f-name"></div>
+          <div class="field"><label for="f-site">Website</label><input type="text" id="f-site"></div>
+        </div>
+        <div class="field">
+          <label for="f-type">What kind of organization (schema.org type)</label>
+          <select id="f-type" class="sel">
+            <option>Organization</option><option>LocalBusiness</option><option>NGO</option><option>LegalService</option><option>MedicalBusiness</option><option>MedicalClinic</option><option>GovernmentOrganization</option><option>EducationalOrganization</option><option>ProfessionalService</option><option>Store</option><option>Restaurant</option><option>FinancialService</option><option>HomeAndConstructionBusiness</option><option>LibrarySystem</option><option>SoftwareApplication</option>
+          </select>
+        </div>
+        <div class="field"><label for="f-summary">What you do, in one sentence</label><input type="text" id="f-summary"></div>
+        <div class="grid2">
+          <div class="field"><label for="f-actionLabel">Main action people should take</label><input type="text" id="f-actionLabel" placeholder="e.g. Book an appointment"></div>
+          <div class="field"><label for="f-action">Link for that action</label><input type="text" id="f-action" placeholder="https://…"></div>
+        </div>
+        <div class="grid2">
+          <div class="field"><label for="f-phone">Phone (optional)</label><input type="text" id="f-phone"></div>
+          <div class="field"><label for="f-hours">Hours (optional)</label><input type="text" id="f-hours" placeholder="Monday to Friday, 9 a.m. to 5 p.m."></div>
+        </div>
+        <div class="grid2">
+          <div class="field"><label for="f-open">Opens (24h, for structured data)</label><input type="text" id="f-open" placeholder="09:00"></div>
+          <div class="field"><label for="f-close">Closes (24h)</label><input type="text" id="f-close" placeholder="17:00"></div>
+        </div>
+        <div class="grid2">
+          <div class="field"><label for="f-area">Places served (comma separated, optional)</label><input type="text" id="f-area" placeholder="Leave blank if you serve everywhere"></div>
+          <div class="field"><label for="f-region">State or country (optional)</label><input type="text" id="f-region"></div>
+        </div>
+        <div class="field"><label for="f-services">Services or products (comma separated)</label><input type="text" id="f-services"></div>
+        <div class="field"><label for="f-audience">Who it's for or who qualifies (optional)</label><input type="text" id="f-audience"></div>
+        <div class="grid2">
+          <div class="field"><label for="f-lang">Languages offered (optional)</label><input type="text" id="f-lang"></div>
+          <div class="field"><label for="f-emerg">Urgent or safety guidance (optional)</label><input type="text" id="f-emerg"></div>
+        </div>
+        <div class="row"><button class="btn ghost" id="resetProfile" type="button">Clear profile</button></div>
+      </div>
+
+      <div class="tabpanel" role="tabpanel" id="p-html" aria-labelledby="t-html" hidden>
+        <div class="field"><label for="pageUrl">Page URL</label>
+          <div class="fetchrow"><input type="text" id="pageUrl" inputmode="url" placeholder="https://yoursite.com/"><button class="btn" id="fetchPage" type="button">Fetch page</button></div>
+          <p class="status" id="fetchStatus"></p>
+        </div>
+        <div class="field">
+          <label for="html">Page source</label>
+          <p class="hint">Fetch page loads the raw source the way most agents see it, plus the site's robots.txt and llms.txt. If fetching doesn't work, open the page, press Ctrl+U (Cmd+Option+U on Mac), select all, and paste here.</p>
+          <textarea id="html" spellcheck="false"></textarea>
+        </div>
+      </div>
+      <div class="tabpanel" role="tabpanel" id="p-robots" aria-labelledby="t-robots" hidden>
+        <div class="field"><label for="robots">Contents of /robots.txt</label><p class="hint">Open yoursite/robots.txt and paste it. Leave blank to skip.</p><textarea id="robots" spellcheck="false"></textarea></div>
+      </div>
+      <div class="tabpanel" role="tabpanel" id="p-llms" aria-labelledby="t-llms" hidden>
+        <div class="field"><label for="llms">Contents of /llms.txt</label><p class="hint">Open yoursite/llms.txt. If it doesn't exist, leave this blank and use the draft in Generated fixes.</p><textarea id="llms" spellcheck="false"></textarea></div>
+      </div>
+
+      <div class="row">
+        <button class="btn" id="run" type="button">Run audit</button>
+        <button class="btn ghost" id="startOwn" type="button">Start my own audit</button>
+        <button class="btn ghost" id="loadExample" type="button">Load example</button>
+        <button class="btn ghost" id="clearAll" type="button">Clear page inputs</button>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="res-h">
+      <h2 id="res-h">Agent readiness</h2>
+      <div class="summary">
+        <div class="score" id="scoreRing" style="--pct:0;--ring:var(--accent)"><div><b id="scoreNum">0</b><span>of 100</span></div></div>
+        <div class="cats" id="cats"></div>
+      </div>
+      <p class="verdict" id="verdict"></p>
+      <div class="cta-box" id="ctaBox" hidden>
+        <p id="ctaText"><strong>Want these fixed?</strong> Get a fix report with the exact changes for every issue, or have IntexiaUWebDesign make the fixes and re-test across every assistant.</p>
+        <div class="row">
+          <a class="btn" id="ctaDiy" href="https://webstudio.intexiau.com/checkout?plan=audit&amp;path=diy">Get my fix report</a>
+          <a class="btn ghost" id="ctaDone" href="https://webstudio.intexiau.com/checkout?plan=audit&amp;path=redesign">Have IntexiaU fix it</a>
+          <a class="btn ghost" id="ctaRedesign" href="https://webstudio.intexiau.com/pricing" hidden>See redesign plans</a>
+        </div>
+      </div>
+      <div class="filters" role="group" aria-label="Filter findings">
+        <button class="chip" data-f="issues" aria-pressed="true">Issues only</button>
+        <button class="chip" data-f="all" aria-pressed="false">All checks</button>
+      </div>
+      <div id="checks"></div>
+      <div class="gate" id="gate" hidden>
+        <p><strong id="gateMore"></strong> Get your full report free: every issue ranked by impact, and more live agent questions.</p>
+        <form id="gateForm" novalidate>
+          <div class="grid2">
+            <div class="field"><label for="g-name">Your name</label><input type="text" id="g-name" autocomplete="name" required></div>
+            <div class="field"><label for="g-email">Email</label><input type="text" id="g-email" inputmode="email" autocomplete="email" required></div>
+          </div>
+          <div class="field"><label for="g-org">Organization (optional)</label><input type="text" id="g-org" autocomplete="organization"></div>
+          <input type="text" id="g-trap" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+          <div class="row"><button class="btn" type="submit" id="gateBtn">Show my full report</button></div>
+          <p class="hint">Your results go to the IntexiaUWebDesign team so we can follow up about your site. We won't share your details.</p>
+          <p class="status" id="gateStatus"></p>
+        </form>
+        <p class="hint" id="gateExample" hidden>This is the fictional example. Run the check on your own site to unlock a full report.</p>
+      </div>
+    </section>
+  </div>
+
+<section class="panel" aria-labelledby="pl-h" id="platforms">
+    <style>
+      .pl-table-wrap{overflow-x:auto}
+      .pl-table{width:100%;border-collapse:collapse;font-size:.92rem;min-width:720px}
+      .pl-table th,.pl-table td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+      .pl-table th{font:600 .75rem/1.2 var(--mono);text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+      .pl-table td:first-child{font-weight:700;white-space:nowrap}
+      .st{display:inline-block;font:700 .7rem/1 var(--mono);text-transform:uppercase;padding:4px 7px;border-radius:4px;margin-bottom:3px}
+      .st.pass{color:var(--good);background:var(--good-soft)} .st.warn{color:var(--warn);background:var(--warn-soft)}
+      .st.fail{color:var(--bad);background:var(--bad-soft)} .st.skip{color:var(--skip);background:var(--skip-soft)}
+      .pl-note{display:block;color:var(--muted);font-size:.84rem}
+      .pl-bot{font:12px/1.4 var(--mono);color:var(--muted)}
+      .pl-cols{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+      @media (max-width:900px){.pl-cols{grid-template-columns:1fr}}
+      .pl-list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+      .pl-list label{display:grid;grid-template-columns:20px 1fr;gap:8px;font-weight:400;font-size:.93rem;cursor:pointer}
+      .pl-list input{margin-top:4px;accent-color:var(--accent)}
+      .pl-list small{display:block;color:var(--muted)}
+      .pl-test{display:grid;gap:8px}
+      .pl-test .r{display:grid;grid-template-columns:110px 1fr;gap:10px;align-items:center}
+      .pl-test select{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:6px 8px}
+      .pl-q{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:10px 12px;font-size:.95rem}
+      .pl-sum{font-weight:700;margin:0}
+    </style>
+    <h2 id="pl-h">Findable across AI platforms</h2>
+    <p class="hint">Each assistant finds websites in its own way: through its own search crawler, a regular search index (Google or Bing), or by visiting a page when someone asks. This table checks your robots.txt and the page's robots meta tags against the crawlers each company publishes. xAI publishes none for Grok, so its row can only be checked against your catch-all rule. Training crawlers are listed separately: blocking them is your choice and doesn't stop answers, except Google-Extended, which also controls Gemini's answers.</p>
+    <p class="status" id="pl-summary"></p>
+    <div class="pl-table-wrap">
+      <table class="pl-table">
+        <thead><tr><th scope="col">Assistant</th><th scope="col">Shows up in answers</th><th scope="col">Visits a page for a person</th><th scope="col">Training crawler (your choice)</th></tr></thead>
+        <tbody id="pl-body"></tbody>
+      </table>
+    </div>
+  
+    <div class="pl-cols">
+      <!--PAID--><div>
+        <h3>What the audit can't see</h3>
+        <p class="hint">Assistants also rely on search indexes, business listings and directories. Tick these off as you confirm them. Saved in this browser.</p>
+        <ul class="pl-list" id="pl-off"></ul>
+      </div><!--/PAID-->
+      <div class="pl-test">
+        <h3>Ask each assistant yourself</h3>
+        <p class="hint">Copy the question, ask it in each assistant without naming your organization, and record what happened. Repeat every few months: answers change as indexes update.</p>
+        <div class="pl-q" id="pl-q"></div>
+        <div class="row"><button class="btn ghost" id="pl-copy" type="button">Copy question</button></div>
+        <div id="pl-tests"></div>
+        <p class="pl-sum" id="pl-testsum"></p>
+      </div>
+    </div>
+  </section>
+  
+  <section class="panel" aria-labelledby="ag-h">
+    <h2 id="ag-h">Test with a live agent</h2>
+    <p class="hint">Claude reads only what an agent would get from this page (its text and links, with no JavaScript run) and tries to help a person. A question passes when the agent sends them to your main action link or phone. Start a line with <b>!</b> for a request you <em>can't</em> help with: it passes when the agent doesn't send that person to your main action.</p>
+    <div class="grid2">
+      <div class="field">
+        <label for="scenarios">Test questions, one per line</label>
+        <textarea id="scenarios" spellcheck="false" style="min-height:130px;font-family:var(--body);font-size:.95rem"></textarea>
+      </div>
+      <div class="field">
+        <label for="scenario">Question to run</label>
+        <select id="scenario" class="sel"></select>
+        <div class="row" style="margin-top:8px">
+          <button class="btn" id="runAgent" type="button">Run this question</button>
+          <button class="btn ghost" id="runAll" type="button">Run all</button>
+        </div>
+        <p class="status" id="agentStatus"></p>
+      </div>
+    </div>
+    <div class="agent-out" id="agentOut"></div>
+  </section>
+
+<!--PAID-->
+  <section class="panel" aria-labelledby="fx-h">
+    <h2 id="fx-h">Generated fixes</h2>
+    <p class="hint">Built from the site profile. Check every fact before publishing.</p>
+    <div class="tabs" role="tablist" aria-label="Fixes">
+      <button class="tab" role="tab" id="t-fx1" aria-controls="p-fx1" aria-selected="true">llms.txt</button>
+      <button class="tab" role="tab" id="t-fx2" aria-controls="p-fx2" aria-selected="false">Structured data</button>
+      <button class="tab" role="tab" id="t-fx3" aria-controls="p-fx3" aria-selected="false">Get-started block</button>
+      <button class="tab" role="tab" id="t-fx4" aria-controls="p-fx4" aria-selected="false">robots.txt</button>
+    </div>
+    <div class="tabpanel" role="tabpanel" id="p-fx1" aria-labelledby="t-fx1">
+      <div class="codehead"><p class="hint">Save as a plain text file at the root of the site (/llms.txt). Agents use it as a map of the site.</p><button class="btn ghost copy" data-target="fx-llms" type="button">Copy</button></div>
+      <pre id="fx-llms"></pre>
+    </div>
+    <div class="tabpanel" role="tabpanel" id="p-fx2" aria-labelledby="t-fx2" hidden>
+      <div class="codehead"><p class="hint">Paste into the &lt;head&gt; of the home page and the main service page. Check it at validator.schema.org.</p><button class="btn ghost copy" data-target="fx-jsonld" type="button">Copy</button></div>
+      <pre id="fx-jsonld"></pre>
+    </div>
+    <div class="tabpanel" role="tabpanel" id="p-fx3" aria-labelledby="t-fx3" hidden>
+      <div class="codehead"><p class="hint">A plain-HTML section that works without JavaScript, so every agent can read and follow it. Put it high on the page.</p><button class="btn ghost copy" data-target="fx-block" type="button">Copy</button></div>
+      <pre id="fx-block"></pre>
+    </div>
+    <div class="tabpanel" role="tabpanel" id="p-fx4" aria-labelledby="t-fx4" hidden>
+      <div class="codehead"><p class="hint">Lets assistants that browse for a person, and AI search engines, reach the site. Blocking AI training crawlers is a separate choice and doesn't affect this, except Google-Extended, which also controls Gemini's answers.</p><button class="btn ghost copy" data-target="fx-robots" type="button">Copy</button></div>
+      <pre id="fx-robots"></pre>
+    </div>
+  </section>
+<!--/PAID-->
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* Fictional example so the tool opens in a working state. */
+const EXAMPLE = {
+  profile: {
+    name:"Northgate Community Food Bank", site:"https://northgatefood.example/", type:"NGO",
+    summary:"A nonprofit food bank giving free groceries to households in need.",
+    actionLabel:"Find a pantry and sign up", action:"https://northgatefood.example/get-food/",
+    phone:"(555) 201-4400", hours:"Monday to Saturday, 10 a.m. to 6 p.m.", open:"10:00", close:"18:00",
+    area:"Northgate, Riverside, Elm Park", region:"Ohio",
+    services:"Grocery pantry, Senior boxes, Kids weekend meals, SNAP application help",
+    audience:"Any household that needs food; no proof of income required.",
+    lang:"English, Spanish", emerg:""
+  },
+  html:[
+'<!doctype html>','<html>','<head>','  <title>Welcome</title>','</head>','<body>',
+'  <div class="menu"><a href="/">Home</a> <a href="/about">About</a> <a href="/donate">Donate</a> <a href="/volunteer">Volunteer</a></div>',
+'  <h1>Fighting hunger together</h1>','  <img src="/hero.jpg">',
+'  <p>Northgate Community Food Bank has served our neighbors since 1985.</p>',
+'  <a href="#" onclick="openPantryMap()">Get Food</a>',
+'  <h3>Programs</h3>',
+'  <p>Grocery pantry and Kids weekend meals. <a href="/programs">Learn more</a></p>',
+'  <p>Serving Northgate and Riverside.</p>',
+'  <p>Call us: (555) 201-4499</p>',
+'  <p>Questions? <a href="/contact">Click here</a>.</p>',
+'</body>','</html>'].join("\n"),
+  robots:"User-agent: GPTBot\nDisallow: /\n\nUser-agent: *\nAllow: /",
+  scenarios:[
+    "I just lost my job in Riverside and need groceries this week. Where do I go?",
+    "Necesito comida para mis hijos en Elm Park. ¿Cómo me inscribo?",
+    "My mom is 72 and lives in Northgate. Can she get a senior food box?",
+    "! I live in Chicago. Can you deliver groceries to me?"
+  ].join("\n")
+};
+const PF = ["name","site","type","summary","actionLabel","action","phone","hours","open","close","area","region","services","audience","lang","emerg"];
+const KEY = "agent-optimizer-universal";
+const EDITION = "full"; /* the build sets "public" */
+const FREE_ISSUES = 3, AGENT_FREE = 1, AGENT_UNLOCKED = 3;
+let unlocked = EDITION === "full";
+try{ if(localStorage.getItem(KEY+"-unlocked")==="1") unlocked = true; }catch(e){}
+let agentRuns = 0;
+try{ agentRuns = +(localStorage.getItem(KEY+"-agent-runs")||0); }catch(e){}
+document.querySelectorAll("[data-edition]").forEach(n => { if(n.dataset.edition !== EDITION) n.remove(); });
+
+const $ = id => document.getElementById(id);
+const store = { get(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } }, set(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} } };
+const digits = s => (s||"").replace(/\D/g,"");
+const last10 = s => digits(s).slice(-10);
+const list = s => (s||"").split(",").map(x=>x.trim()).filter(Boolean);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const safeUrl = (u,b) => { try{ return new URL(u,b); }catch(e){ return null; } };
+const normPath = p => (p||"/").replace(/\/+$/,"") || "/";
+function el(tag, attrs, ...kids){
+  const n = document.createElement(tag);
+  if(attrs) for(const k in attrs){ if(k==="text") n.textContent = attrs[k]; else n.setAttribute(k, attrs[k]); }
+  kids.forEach(k => { if(k!=null) n.append(k.nodeType ? k : document.createTextNode(k)); });
+  return n;
+}
+const STOP = new Set("about after their there these those which while would could should where your with from that this have will into than then them they what when been only also more most very just over such some here each other".split(" "));
+const keywords = s => [...new Set((s||"").toLowerCase().match(/[a-zà-ÿ]{5,}/g)||[])].filter(w=>!STOP.has(w));
+
+/* tabs */
+document.querySelectorAll('[role="tablist"]').forEach(tl => {
+  const tabs = [...tl.querySelectorAll('[role="tab"]')];
+  const select = t => tabs.forEach(x => { const on = x===t; x.setAttribute("aria-selected", on); x.tabIndex = on?0:-1; $(x.getAttribute("aria-controls")).hidden = !on; });
+  tabs.forEach((t,i) => {
+    t.addEventListener("click", () => select(t));
+    t.addEventListener("keydown", e => { if(e.key==="ArrowRight"||e.key==="ArrowLeft"){ const n = tabs[(i+(e.key==="ArrowRight"?1:-1)+tabs.length)%tabs.length]; n.focus(); select(n); } });
+  });
+});
+
+/* profile */
+const readProfile = () => { const p = {}; PF.forEach(k => p[k] = $("f-"+k).value.trim()); return p; };
+const writeProfile = p => PF.forEach(k => $("f-"+k).value = p[k] || (k==="type"?"Organization":""));
+const saveAll = () => store.set(KEY, {profile:readProfile(), scenarios:$("scenarios").value});
+PF.forEach(k => $("f-"+k).addEventListener("input", () => { saveAll(); renderFixes(); }));
+$("f-type").addEventListener("change", () => { saveAll(); renderFixes(); });
+$("resetProfile").addEventListener("click", () => { writeProfile({}); saveAll(); renderFixes(); runAudit(); });
+
+/* robots */
+function parseRobots(txt){
+  const groups = []; let cur = null, lastUA = false;
+  txt.split(/\r?\n/).forEach(raw => {
+    const line = raw.replace(/#.*/,"").trim(); if(!line) return;
+    const m = line.match(/^([A-Za-z-]+)\s*:\s*(.*)$/); if(!m) return;
+    const k = m[1].toLowerCase(), v = m[2].trim();
+    if(k==="user-agent"){ if(!cur||!lastUA){ cur={uas:[],rules:[]}; groups.push(cur); } cur.uas.push(v.toLowerCase()); lastUA = true; }
+    else if(k==="allow"||k==="disallow"){ if(cur) cur.rules.push({type:k,path:v}); lastUA = false; }
+    else lastUA = false;
+  });
+  return groups;
+}
+function robotsBlocks(groups, bot){
+  const b = bot.toLowerCase(); let best = null, len = -1;
+  groups.forEach(g => g.uas.forEach(ua => { if(ua!=="*" && b.includes(ua) && ua.length>len){ best=g; len=ua.length; } }));
+  if(!best) best = groups.find(g => g.uas.includes("*"));
+  if(!best) return false;
+  return best.rules.some(r => r.type==="disallow" && r.path==="/") && !best.rules.some(r => r.type==="allow" && (r.path==="/"||r.path===""));
+}
+const BOTS = { user:["ChatGPT-User","Claude-User","Perplexity-User","Meta-ExternalFetcher"], search:["OAI-SearchBot","Claude-SearchBot","PerplexityBot","Googlebot","Google-Extended","Bingbot","Meta-WebIndexer","Applebot"], train:["GPTBot","ClaudeBot","Meta-ExternalAgent","Applebot-Extended","CCBot"] };
+
+/* audit */
+const W = {high:3, med:2, low:1};
+const CAT = ["Path to action","Discovery","Structured data","Readability"];
+function runAudit(){
+  const P = readProfile();
+  const src = $("html").value;
+  const base = $("pageUrl").value.trim() || P.site || "https://example.com/";
+  const doc = new DOMParser().parseFromString(src || "<html><body></body></html>", "text/html");
+  const R = [];
+  const add = (cat, sev, s, title, detail, fix) => R.push({cat, w:W[sev], s, title, detail, fix});
+  const clone = doc.body.cloneNode(true);
+  clone.querySelectorAll("script,style,noscript,svg,template").forEach(n => n.remove());
+  const text = (clone.textContent||"").replace(/\s+/g," ").trim();
+  const textL = text.toLowerCase();
+  const words = text ? text.split(" ").length : 0;
+  const links = [...doc.querySelectorAll("a[href]")].filter(a => !/^(#|javascript:)/i.test(a.getAttribute("href")));
+  const actionU = safeUrl(P.action, base);
+  const label = P.actionLabel || "the main action";
+  const phone10 = last10(P.phone);
+  const A = "Path to action";
+
+  if(!src.trim()) add(A,"high","fail","No page source pasted","Paste the page's HTML source to run the audit.","Use Ctrl+U on the page, copy everything, paste into Page HTML.");
+  if(!actionU) add(A,"high","skip","Main action link not set","Add the link for your main action in the site profile so the audit can look for it.");
+
+  /* path to action */
+  const labelWords = keywords(P.actionLabel).concat((P.actionLabel||"").toLowerCase().split(/\s+/).filter(w=>w.length>=3 && !["and","the","for","our","you","now","your","with","get"].includes(w)));
+  const ctaRe = new RegExp("\\b(apply|get \\w+|book|schedule|sign up|signup|register|get started|get help|enroll|buy|order|shop|donate|contact|request|join|reserve"+(labelWords.length?"|"+labelWords.map(w=>w.replace(/[^a-zà-ÿ]/g,"")).filter(Boolean).join("|"):"")+")\\b","i");
+  if(actionU){
+    const hits = links.filter(a => { const u = safeUrl(a.getAttribute("href"), base); return u && u.host===actionU.host && normPath(u.pathname)===normPath(actionU.pathname); });
+    const lw = labelWords.map(w=>w.replace(/[^a-zà-ÿ]/g,"")).filter(Boolean);
+    const labelRe = lw.length ? new RegExp("\\b("+lw.join("|")+")\\b","i") : null;
+    let textHits = labelRe ? links.filter(a => labelRe.test(a.textContent)) : [];
+    if(!textHits.length) textHits = links.filter(a => /\b(apply|book|schedule|sign up|register|get started|get help|enroll|request|reserve)\b/i.test(a.textContent));
+    if(hits.length){
+      add(A,"high","pass",`Direct link to "${label}"`, `Found ${hits.length} link(s) to ${actionU.host}${actionU.pathname} in the page source.`);
+      const t = (hits[0].textContent||hits[0].getAttribute("aria-label")||"").trim();
+      const vague = t.split(/\s+/).length<2 || /^(here|click here|go|more)$/i.test(t);
+      add(A,"med", vague?"warn":"pass", vague?"Action link text is too short":"Action link text says what it does", `"${t.slice(0,60)}"`, vague?`Use text such as "${label}".`:null);
+    } else if(textHits.length){
+      add(A,"high","warn","No direct link to the main action", `"${(textHits[0].textContent||"").trim().slice(0,40)}" points to ${textHits[0].getAttribute("href")}, not ${P.action}. Agents need an extra hop and may stop there.`, `Add a plain <a href="${P.action}"> on this page.`);
+    } else {
+      add(A,"high","fail","No link to the main action", `An agent reading this page can't find where to "${label}".`, "Add a plain <a href> with clear text, high on the page. See Get-started block in Generated fixes.");
+    }
+  }
+  const jsOnly = [...doc.querySelectorAll("button, a:not([href]), a[href^='javascript'], a[href='#']")].filter(n => ctaRe.test(n.textContent));
+  if(jsOnly.length) add(A,"high","fail","Action button works only with JavaScript", `"${(jsOnly[0].textContent||"").trim().slice(0,40)}" has no real URL. Most agents don't run scripts or click buttons, so they can't follow it.`, "Make it an <a href> to the real URL, styled as a button.");
+
+  if(phone10){
+    const shown = digits(text).includes(phone10);
+    const others = text.match(/\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}/g)||[];
+    add(A,"high", shown?"pass":(others.length?"warn":"fail"), shown?"Phone number is on the page":"Your phone number isn't on the page", shown?P.phone:(others.length?`The page shows ${others.slice(0,2).join(", ")}, not ${P.phone}. Agents may give the wrong number.`:`${P.phone} doesn't appear.`), shown?null:`Show ${P.phone} as text with a label.`);
+    const tel = links.some(a => /^tel:/i.test(a.getAttribute("href")) && last10(a.getAttribute("href"))===phone10);
+    add(A,"low", tel?"pass":"warn", tel?"Phone is a tap-to-call link":"Phone isn't a tel: link", tel?"":"Agents and phones recognize tel: links as a call action.", tel?null:`<a href="tel:+1${phone10}">${P.phone}</a>`);
+  }
+  if(P.hours || P.phone){
+    const ok = /(mon(day)?|tue|wed|thu|fri|sat|sun|weekday|daily|24\/7|24 hours).{0,50}\d/i.test(text) || /\d{1,2}(:\d{2})?\s*(a\.?m\.?|p\.?m\.?)\s*(-|–|to)\s*\d{1,2}/i.test(text);
+    add(A,"med", ok?"pass":"fail", ok?"Hours are stated":"Hours not stated", ok?"":"Agents can't tell a person when you're open or reachable.", ok?null:(P.hours?`Add "${P.hours}".`:"State your hours in text."));
+  }
+  if(P.audience){
+    const kw = keywords(P.audience), f = kw.filter(w => textL.includes(w));
+    const ok = kw.length===0 || f.length/kw.length >= .4;
+    add(A,"med", ok?"pass":"fail", ok?"Says who it's for":"Doesn't say who it's for", ok?"":"Agents can't tell whether a person qualifies or is a good fit, so they hedge.", ok?null:`Add a sentence such as "${P.audience}"`);
+  }
+  const area = list(P.area);
+  if(area.length){
+    const f = area.filter(c => textL.includes(c.toLowerCase()));
+    const s = f.length===area.length?"pass":f.length?"warn":"fail";
+    add(A,"high", s, s==="pass"?"All places served are listed":"Service area is incomplete", s==="pass"?f.join(", "):`Found ${f.length} of ${area.length}. Missing: ${area.filter(c=>!f.includes(c)).join(", ")}. Agents may wrongly turn people away.`, s==="pass"?null:`List every place: ${area.join(", ")}${P.region?" ("+P.region+")":""}.`);
+  }
+  const svc = list(P.services);
+  if(svc.length){
+    const f = svc.filter(a => textL.includes(a.toLowerCase().split(/\s*&\s*|\s+and\s+/)[0]));
+    const s = f.length >= Math.ceil(svc.length*.75) ? "pass" : f.length ? "warn" : "fail";
+    add(A,"med", s, "Services named on the page", `Found ${f.length} of ${svc.length}.${s!=="pass"?" Missing: "+svc.filter(a=>!f.includes(a)).join(", ")+".":""}`, s==="pass"?null:"Name each service in text, with examples of the problems or needs it covers. People describe needs, not your program names.");
+  }
+  if(P.lang){
+    const langs = list(P.lang).filter(l => !/^english$/i.test(l));
+    const ok = /(interpret|translat|language|idioma)/i.test(text) || langs.some(l => textL.includes(l.toLowerCase()));
+    add(A,"low", ok?"pass":"warn", ok?"Language options mentioned":"Language options not mentioned", ok?"":"Agents serving non-English speakers can't say whether help is available in their language.", ok?null:`Say which languages you offer: ${P.lang}.`);
+  }
+  if(P.emerg){
+    const ok = /(emergenc|911|urgent|hotline|immediate danger|crisis)/i.test(text);
+    add(A,"low", ok?"pass":"warn", ok?"Urgent guidance present":"No urgent guidance", ok?"":"Agents need a safe answer when something is urgent.", ok?null:P.emerg);
+  }
+
+  /* readability */
+  const h1 = doc.querySelectorAll("h1").length;
+  add("Readability","med", h1===1?"pass":(h1?"warn":"fail"), h1===1?"One main heading (H1)":`${h1} H1 headings`, h1===1?"":"Agents use the H1 to decide what the page is about.", h1===1?null:`Use one H1 that says what you offer and for whom${P.summary?', e.g. "'+P.summary.replace(/\.$/,"")+'"':""}.`);
+  const hs = [...doc.querySelectorAll("h1,h2,h3,h4,h5,h6")].map(h => +h.tagName[1]);
+  let skip = null; for(let i=1;i<hs.length;i++) if(hs[i]-hs[i-1]>1){ skip = `H${hs[i-1]} → H${hs[i]}`; break; }
+  add("Readability","low", skip?"warn":"pass", skip?"Heading levels skip":"Heading levels are in order", skip?`Jumps from ${skip}. Agents read headings as an outline.`:"", skip?"Don't skip levels: H1, then H2 for sections, H3 inside them.":null);
+  const nScripts = doc.querySelectorAll("script").length, shell = words<120 && nScripts>3;
+  add("Readability","high", shell?"fail":(words<120?"warn":"pass"), shell?"Content loads only with JavaScript":(words<120?"Very little text in the source":"Content is in the page source"), shell?`Only ${words} words but ${nScripts} scripts. Many agents don't run JavaScript and see a blank page.`:`${words} words in the source.`, (shell||words<120)?"Put the key content (what you offer, who it's for, how to start) in the HTML the server sends.":null);
+  const rawTpl = (src.match(/\{\{[^{}]{1,80}\}\}/g)||[]).length;
+  const emptyRoot = [...doc.querySelectorAll("#root,#app,#__next,#__nuxt,[data-reactroot]")].some(n => !(n.textContent||"").trim());
+  if(rawTpl>=3 || emptyRoot) add("Readability","high", "fail", rawTpl>=3?"Agents see unfilled template code":"Page is an empty app shell", rawTpl>=3?`${rawTpl} placeholders like ${(src.match(/\{\{[^{}]{1,40}\}\}/)||[""])[0]} appear in the source. Agents that don't run JavaScript read these instead of your content.`:"The main app container is empty until JavaScript runs. Agents that don't run scripts see nothing.", "Pre-render the page (static HTML or server-side rendering) so the words people need are in the HTML the server sends.");
+  const imgs = [...doc.querySelectorAll("img")], noAlt = imgs.filter(i => !i.hasAttribute("alt"));
+  if(imgs.length) add("Readability","low", noAlt.length?"warn":"pass", noAlt.length?`${noAlt.length} of ${imgs.length} images lack alt text`:"Images have alt text", noAlt.length?"Agents and screen readers skip images without alt text.":"", noAlt.length?'Add short alt text, or alt="" for decorative images.':null);
+  const vague = links.filter(a => /^(click here|here|read more|learn more|more|this link)$/i.test((a.textContent||"").trim()));
+  add("Readability","med", vague.length?"warn":"pass", vague.length?`${vague.length} links with vague text`:"Link text is descriptive", vague.length?`e.g. "${(vague[0].textContent||"").trim()}". Agents pick links by their text.`:"", vague.length?'Say where the link goes, e.g. "Senior food boxes: who qualifies".':null);
+  const lm = doc.querySelector("main") && doc.querySelector("nav");
+  add("Readability","low", lm?"pass":"warn", lm?"Page uses <main> and <nav>":"Missing <main> or <nav> landmarks", lm?"":"Landmarks help agents separate content from menus and footers.", lm?null:"Wrap the menu in <nav> and the page content in <main>.");
+
+  /* discovery */
+  const title = (doc.querySelector("title")?.textContent||"").trim();
+  const tOk = title.length>=15 && title.length<=70 && !/^(home|welcome|index|untitled)$/i.test(title);
+  add("Discovery","med", tOk?"pass":"fail", tOk?"Page title is descriptive":"Page title is weak", `Title: "${title||"(none)"}"`, tOk?null:`Say what you offer and where, e.g. "${(svc[0]||"Services")}${area[0]?" in "+area[0]:""} | ${P.name||"Your name"}".`);
+  const desc = doc.querySelector('meta[name="description"]')?.getAttribute("content")||"";
+  add("Discovery","med", desc.length>=50?"pass":"fail", desc.length>=50?"Meta description present":"No useful meta description", desc?`"${desc.slice(0,120)}"`:"AI search tools often quote the description when summarizing a site.", desc.length>=50?null:`<meta name="description" content="${(P.summary||"What you do")} ${label}${P.phone?" or call "+P.phone:""}.">`);
+  const lang = doc.documentElement.getAttribute("lang");
+  add("Discovery","low", lang?"pass":"warn", lang?`Language declared (${lang})`:"No lang attribute", lang?"":"Tells agents what language the page is in.", lang?null:'<html lang="en">');
+  const robots = $("robots").value;
+  if(!robots.trim()) add("Discovery","high","skip","robots.txt not checked","Paste the site's robots.txt in the robots.txt tab to check which AI agents are allowed.");
+  else {
+    const g = parseRobots(robots);
+    const u = BOTS.user.filter(b => robotsBlocks(g,b)), s = BOTS.search.filter(b => robotsBlocks(g,b)), t = BOTS.train.filter(b => robotsBlocks(g,b));
+    add("Discovery","high", u.length?"fail":"pass", u.length?"Blocks assistants that browse for a person":"Assistants that browse for a person are allowed", u.length?`Blocked: ${u.join(", ")}. These visit when someone asks an assistant to check your site.`:BOTS.user.join(", "), u.length?"Remove these Disallow rules. See robots.txt in Generated fixes.":null);
+    add("Discovery","high", s.length?"fail":"pass", s.length?"Blocks AI search engines":"AI search engines are allowed", s.length?`Blocked: ${s.join(", ")}. Those assistants won't show you in their answers.`:"", s.length?"Allow these crawlers.":null);
+    add("Discovery","low","skip", t.length?`Training crawlers blocked: ${t.join(", ")}`:"Training crawlers allowed", "Your choice either way. Training crawlers don't decide whether you appear in answers. Google-Extended is the exception and is checked with the search crawlers, because it also controls Gemini's answers.");
+  }
+  const llms = $("llms").value;
+  if(!llms.trim()) add("Discovery","med","fail","No llms.txt","An llms.txt file gives agents a short map of the site: what you do, who it's for and how to start.","Publish the draft from Generated fixes at /llms.txt.");
+  else {
+    const c = [/^#\s+\S/m.test(llms), /^>\s+\S/m.test(llms), actionU ? llms.includes(actionU.host+normPath(actionU.pathname).replace(/^\/$/,"")) || llms.includes(P.action) : true, phone10 ? digits(llms).includes(phone10) : true];
+    const n = c.filter(Boolean).length;
+    add("Discovery","med", n===4?"pass":"warn","llms.txt quality",`Title ${c[0]?"✓":"✗"} · Summary line ${c[1]?"✓":"✗"} · Action link ${c[2]?"✓":"✗"} · Phone ${c[3]?"✓":"✗"}`, n===4?null:"Compare with the draft in Generated fixes.");
+  }
+
+  /* structured data */
+  const ld = []; let bad = 0;
+  doc.querySelectorAll('script[type="application/ld+json"]').forEach(s => { try{ const j = JSON.parse(s.textContent); (Array.isArray(j)?j:[j]).forEach(x => x && x["@graph"] ? ld.push(...x["@graph"]) : ld.push(x)); }catch(e){ bad++; } });
+  const types = ld.flatMap(x => [].concat(x && x["@type"] || []));
+  const flat = JSON.stringify(ld);
+  if(!ld.length) add("Structured data","high","fail", bad?"Structured data has errors":"No structured data (JSON-LD)", bad?`${bad} JSON-LD block(s) failed to parse.`:"Structured data states facts agents can read without guessing: what you are, how to contact you, where you serve.","Add the block from Generated fixes.");
+  else {
+    const want = P.type || "Organization";
+    const exact = types.some(t => t.toLowerCase()===want.toLowerCase());
+    const anyOrg = types.some(t => /Organization|Business|Service|NGO|Store|Clinic|Restaurant/i.test(t));
+    add("Structured data","high", exact?"pass":(anyOrg?"warn":"fail"), exact?`Declared as ${want}`:`Not declared as ${want}`, `Types found: ${types.join(", ")||"none"}`, exact?null:`Use "@type": "${want}".`);
+    const has = k => flat.includes('"'+k+'"');
+    if(phone10) add("Structured data","med", digits(flat).includes(phone10)?"pass":"fail","Phone in structured data","", digits(flat).includes(phone10)?null:"Add telephone.");
+    if(area.length) add("Structured data","med", has("areaServed")?"pass":"fail","Service area in structured data","", has("areaServed")?null:"Add areaServed.");
+    if(P.open) add("Structured data","low", has("openingHoursSpecification")||has("openingHours")?"pass":"warn","Hours in structured data","",null);
+    if(actionU){ const ok = flat.includes(actionU.host+normPath(actionU.pathname).replace(/^\/$/,"")) || flat.includes(P.action); add("Structured data","med", ok?"pass":"fail","Main action in structured data","Agents look for a potentialAction that says where to start.", ok?null:"Add a potentialAction pointing to your main action link."); }
+    add("Structured data","low", types.some(t=>/FAQPage/i.test(t))?"pass":"warn","FAQ markup","An FAQ (Who is it for? Where? How do I start?) gives agents ready answers.",null);
+  }
+  render(R);
+}
+
+/* render */
+const src_ok = () => !!$("html").value.trim();
+let filter = "issues", last = [], lastScore = 0;
+function render(R){
+  last = R;
+  const sc = R.filter(r => r.s!=="skip"), v = r => r.s==="pass"?1:r.s==="warn"?.5:0;
+  const tot = sc.reduce((a,r)=>a+r.w,0) || 1, score = Math.round(100*sc.reduce((a,r)=>a+r.w*v(r),0)/tot);
+  $("scoreNum").textContent = score;
+  $("scoreRing").style.setProperty("--pct", score);
+  $("scoreRing").style.setProperty("--ring", score>=80?"var(--good)":score>=55?"var(--warn)":"var(--bad)");
+  const cats = $("cats"); cats.textContent = "";
+  CAT.forEach(c => { const rs = sc.filter(r=>r.cat===c); if(!rs.length) return; const t = rs.reduce((a,r)=>a+r.w,0), p = Math.round(100*rs.reduce((a,r)=>a+r.w*v(r),0)/t); const bar = el("div",{class:"bar"}), i = el("i"); i.style.width = p+"%"; bar.append(i); cats.append(el("div",{class:"cat"}, el("span",{text:c}), bar, el("em",{text:p+"%"}))); });
+  const f = R.filter(r=>r.s==="fail").length, w = R.filter(r=>r.s==="warn").length;
+  const blocked = R.some(r => r.cat==="Path to action" && r.w===3 && r.s==="fail");
+  $("verdict").textContent = blocked ? `An agent would likely struggle to lead someone to your main action from this page. ${f} problems and ${w} warnings; start with Path to action.`
+    : score>=80 ? `Agents can lead people to your main action from this page. ${f} problems and ${w} warnings left to tidy.`
+    : `Agents can probably find your main action, but may give incomplete or wrong details. ${f} problems and ${w} warnings.`;
+  lastScore = score;
+  const isExample = !$("exampleBadge").hidden;
+  const structural = R.some(r => r.cat==="Readability" && r.w===3 && r.s==="fail");
+  if(src_ok()){
+    const P = readProfile(), site = $("pageUrl").value.trim() || P.site || "";
+    const q = `&site=${encodeURIComponent(site)}&score=${score}`;
+    $("ctaDiy").href = "https://webstudio.intexiau.com/checkout?plan=audit&path=diy"+q;
+    $("ctaDone").href = "https://webstudio.intexiau.com/checkout?plan=audit&path=redesign"+q;
+    $("ctaRedesign").href = "https://webstudio.intexiau.com/checkout?plan=momentum&path=redesign"+q;
+    $("ctaRedesign").hidden = !structural;
+    $("ctaText").innerHTML = structural
+      ? "<strong>The way this site is built hides its content from AI.</strong> Fixes help, but a rebuild that serves real HTML solves it. IntexiaUWebDesign can do either."
+      : "<strong>Want these fixed?</strong> Get a fix report with the exact changes for every issue, or have IntexiaUWebDesign make the fixes and re-test across every assistant.";
+    $("ctaBox").hidden = isExample;
+  } else $("ctaBox").hidden = true;
+  const box = $("checks"); box.textContent = "";
+  const ord = {fail:0,warn:1,skip:2,pass:3};
+  const item = r => { const b = el("div",null, el("strong",{text:r.title})); if(r.detail) b.append(el("p",{text:r.detail})); if(r.fix) b.append(el("p",{class:"fix",text:"Fix: "+r.fix})); return el("li",{class:"check","data-s":r.s}, el("span",{class:"pill",text:r.s==="skip"?"info":r.s}), b); };
+  $("gate").hidden = true;
+  document.querySelector(".filters").hidden = !unlocked;
+  if(!unlocked){
+    const issues = R.filter(r=>r.s==="fail"||r.s==="warn").sort((a,b)=>ord[a.s]-ord[b.s] || b.w-a.w);
+    if(!issues.length){ box.append(el("p",{class:"hint",text:"No issues found."})); return; }
+    const ul = el("ul",{class:"checks"}); issues.slice(0,FREE_ISSUES).forEach(r => ul.append(item(r)));
+    box.append(el("div",{class:"group"}, el("h3",{text:"Top issues"}), ul));
+    const more = issues.length - FREE_ISSUES;
+    if(src_ok()){
+      $("gate").hidden = false;
+      $("gateMore").textContent = more>0 ? `${more} more issue${more>1?"s":""} found.` : "That's every issue we found.";
+      $("gateForm").hidden = isExample; $("gateExample").hidden = !isExample;
+    }
+    return;
+  }
+  CAT.forEach(c => {
+    let rs = R.filter(r=>r.cat===c); if(filter==="issues") rs = rs.filter(r=>r.s==="fail"||r.s==="warn"); if(!rs.length) return;
+    rs.sort((a,b)=>ord[a.s]-ord[b.s] || b.w-a.w);
+    const ul = el("ul",{class:"checks"});
+    rs.forEach(r => ul.append(item(r)));
+    box.append(el("div",{class:"group"}, el("h3",{text:c}), ul));
+  });
+  if(!box.childNodes.length) box.append(el("p",{class:"hint",text:"No issues found."}));
+}
+document.querySelectorAll(".chip").forEach(c => c.addEventListener("click", () => { filter = c.dataset.f; document.querySelectorAll(".chip").forEach(x => x.setAttribute("aria-pressed", x===c)); render(last); }));
+
+/* fixes */
+function actionType(l){
+  l = (l||"").toLowerCase();
+  if(/apply|enroll/.test(l)) return "ApplyAction";
+  if(/book|schedule|reserve|appointment/.test(l)) return "ReserveAction";
+  if(/buy|order|shop|purchase/.test(l)) return "BuyAction";
+  if(/donate|give/.test(l)) return "DonateAction";
+  if(/register|sign ?up|join/.test(l)) return "RegisterAction";
+  if(/contact|call|message|email/.test(l)) return "CommunicateAction";
+  if(/quote|request/.test(l)) return "AskAction";
+  return "InteractAction";
+}
+function daysFrom(h){
+  h = (h||"").toLowerCase();
+  const all = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+  if(/daily|every day|7 days|24\/7/.test(h)) return all;
+  const days = all.slice(0,5);
+  if(/sat/.test(h)) days.push("Saturday");
+  if(/sun/.test(h)) days.push("Sunday");
+  return days;
+}
+function renderFixes(){
+/*PAID*/
+  const P = readProfile(), area = list(P.area), svc = list(P.services), phone10 = last10(P.phone);
+  const name = P.name || "Your organization", site = (P.site||"https://example.com/").replace(/\/?$/,"/");
+  const label = P.actionLabel || "Get started", action = P.action || site;
+  const intl = phone10 ? "+1-"+phone10.slice(0,3)+"-"+phone10.slice(3,6)+"-"+phone10.slice(6) : "";
+  const where = area.length ? `${area.join(", ")}${P.region?", "+P.region:""}` : (P.region||"");
+  const L = [`# ${name}`, "", `> ${P.summary || name+" — describe what you do in one sentence."}${where?" Serving "+where+".":""}`, "", "## How to get started", `- [${label}](${action})`];
+  if(P.phone) L.push(`- Phone: ${P.phone}${P.hours?", "+P.hours:""}`); else if(P.hours) L.push(`- Hours: ${P.hours}`);
+  if(P.lang) L.push(`- Languages: ${P.lang}`);
+  if(P.emerg) L.push(`- ${P.emerg}`);
+  if(P.audience || where){ L.push("", "## Who we serve"); if(where) L.push(`- Area: ${where}. People outside this area should look for a local provider.`); if(P.audience) L.push(`- ${P.audience}`); }
+  if(svc.length){ L.push("", "## Services"); svc.forEach(s => L.push(`- ${s}`)); }
+  L.push("", "## Key pages", `- [Home](${site})`, `- [${label}](${action})`, "", "## Instructions for AI assistants", `- To help someone take the next step, send them to "${label}" above${P.phone?" or the phone number listed":""}. Don't invent other contact details.`);
+  if(where) L.push("- If someone is outside the service area, say so and don't send them to sign up.");
+  if(P.emerg) L.push("- If something is urgent or someone is in danger, give the urgent guidance first.");
+  $("fx-llms").textContent = L.join("\n") + "\n";
+
+  const ld = {"@context":"https://schema.org","@type":P.type||"Organization","name":name,"url":site};
+  if(P.summary) ld.description = P.summary;
+  if(intl) ld.telephone = intl;
+  if(area.length) ld.areaServed = area.map(a => ({"@type":"Place","name":a+(P.region?", "+P.region:"")}));
+  else if(P.region) ld.areaServed = {"@type":"Place","name":P.region};
+  if(P.open && P.close) ld.openingHoursSpecification = [{"@type":"OpeningHoursSpecification","dayOfWeek":daysFrom(P.hours),"opens":P.open,"closes":P.close}];
+  if(intl || P.lang) ld.contactPoint = [Object.assign({"@type":"ContactPoint","contactType":"customer service","url":action}, intl?{telephone:intl}:{}, P.lang?{availableLanguage:list(P.lang)}:{})];
+  ld.potentialAction = {"@type":actionType(label),"name":label,"target":{"@type":"EntryPoint","urlTemplate":action}};
+  if(svc.length) ld.hasOfferCatalog = {"@type":"OfferCatalog","name":"Services","itemListElement":svc.map(s => ({"@type":"Offer","itemOffered":{"@type":"Service","name":s}}))};
+  const faq = {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":`How do I get started with ${name}?`,"acceptedAnswer":{"@type":"Answer","text":`${label}: ${action}${P.phone?". Or call "+P.phone+(P.hours?", "+P.hours.replace(/\.$/,""):""):""}.`}}]};
+  if(where) faq.mainEntity.push({"@type":"Question","name":"Where do you serve?","acceptedAnswer":{"@type":"Answer","text":where+"."}});
+  if(P.audience) faq.mainEntity.push({"@type":"Question","name":"Who is it for?","acceptedAnswer":{"@type":"Answer","text":P.audience}});
+  $("fx-jsonld").textContent = `<script type="application/ld+json">\n${JSON.stringify(ld,null,2)}\n<\/script>\n<script type="application/ld+json">\n${JSON.stringify(faq,null,2)}\n<\/script>`;
+
+  const B = [`<section id="get-started" aria-labelledby="get-started-title">`, `  <h2 id="get-started-title">How to get started</h2>`];
+  if(P.summary) B.push(`  <p>${esc(P.summary)}${where?" We serve "+esc(where)+".":""}</p>`);
+  B.push(`  <ol>`, `    <li><a href="${esc(action)}">${esc(label)}</a></li>`);
+  if(P.phone) B.push(`    <li>Or call <a href="tel:+1${phone10}">${esc(P.phone)}</a>${P.hours?", "+esc(P.hours):""}</li>`);
+  B.push(`  </ol>`);
+  if(P.audience) B.push(`  <p>${esc(P.audience)}</p>`);
+  if(svc.length) B.push(`  <p>We offer: ${esc(svc.join(", "))}.</p>`);
+  if(P.lang || P.emerg) B.push(`  <p>${P.lang?"Languages: "+esc(P.lang)+". ":""}${esc(P.emerg||"")}</p>`);
+  B.push(`</section>`);
+  $("fx-block").textContent = B.join("\n");
+
+  $("fx-robots").textContent = `# Assistants that visit when a person asks them about you
+User-agent: ChatGPT-User
+User-agent: Claude-User
+User-agent: Perplexity-User
+User-agent: Meta-ExternalFetcher
+Allow: /
+
+# Search crawlers behind AI answers (ChatGPT, Claude, Perplexity, Gemini, Copilot, Meta AI, Siri)
+User-agent: OAI-SearchBot
+User-agent: Claude-SearchBot
+User-agent: PerplexityBot
+User-agent: Googlebot
+User-agent: Google-Extended
+User-agent: Bingbot
+User-agent: Meta-WebIndexer
+User-agent: Applebot
+Allow: /
+
+# Optional: opt out of AI model training. This doesn't remove you from answers.
+# Don't add Google-Extended here: it also controls Gemini's answers.
+# User-agent: GPTBot
+# User-agent: ClaudeBot
+# User-agent: Meta-ExternalAgent
+# User-agent: Applebot-Extended
+# User-agent: CCBot
+# Disallow: /
+
+User-agent: *
+Allow: /
+
+Sitemap: ${site}sitemap.xml`;
+/*/PAID*/
+}
+document.querySelectorAll(".copy").forEach(b => b.addEventListener("click", async () => {
+  try{ await navigator.clipboard.writeText($(b.dataset.target).textContent); b.textContent = "Copied"; }catch(e){ b.textContent = "Select and copy"; }
+  setTimeout(() => b.textContent = "Copy", 1800);
+}));
+
+/* agent test */
+const scenarioList = () => $("scenarios").value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean).map(s => s.startsWith("!") ? {q:s.slice(1).trim(), expect:"decline"} : {q:s, expect:"action"});
+function fillScenarioSelect(){
+  const sel = $("scenario"), prev = sel.value; sel.textContent = "";
+  scenarioList().forEach((s,i) => sel.append(el("option",{value:i,text:(s.expect==="decline"?"[Can't help] ":"")+s.q})));
+  if(prev && sel.options[+prev]) sel.value = prev;
+}
+$("scenarios").addEventListener("input", () => { fillScenarioSelect(); saveAll(); });
+function agentView(){
+  const P = readProfile(), base = $("pageUrl").value.trim() || P.site || "https://example.com/";
+  const doc = new DOMParser().parseFromString($("html").value, "text/html");
+  const title = (doc.querySelector("title")?.textContent||"").trim();
+  const desc = doc.querySelector('meta[name="description"]')?.getAttribute("content")||"";
+  const ld = [...doc.querySelectorAll('script[type="application/ld+json"]')].map(s=>s.textContent.trim()).join("\n").slice(0,4000);
+  const c = doc.body.cloneNode(true); c.querySelectorAll("script,style,noscript,svg,template").forEach(n=>n.remove());
+  const text = (c.textContent||"").replace(/\s+/g," ").trim().slice(0,9000);
+  const links = [...doc.querySelectorAll("a[href]")].slice(0,150).map(a => { const h = a.getAttribute("href"); const t = (a.textContent||a.getAttribute("aria-label")||"").replace(/\s+/g," ").trim()||"(no text)"; if(/^(#|javascript:)/i.test(h)) return `- [${t}] (script link: no URL, cannot be followed)`; const u = safeUrl(h, base); return `- [${t}] -> ${u?u.href:h}`; }).join("\n");
+  const btns = [...doc.querySelectorAll("button, [onclick]:not(a)")].slice(0,40).map(b => `- [${(b.textContent||"").replace(/\s+/g," ").trim()}] (button: no URL, cannot be followed)`).join("\n");
+  const llms = $("llms").value.trim();
+  return `URL: ${base}\nTITLE: ${title}\nMETA DESCRIPTION: ${desc}\n${ld?"STRUCTURED DATA:\n"+ld+"\n":""}PAGE TEXT:\n${text}\n\nLINKS:\n${links||"(none)"}\n${btns?"\nBUTTONS:\n"+btns:""}${llms?"\n\nLLMS.TXT:\n"+llms.slice(0,3000):""}`;
+}
+let sampleFn = null, viaApi = false;
+(async () => {
+  try{ if(window.claude && window.claude.use) sampleFn = await window.claude.use("sample"); }catch(e){ sampleFn = null; }
+  if(!sampleFn && /^https?:$/.test(location.protocol)) viaApi = true;
+  if(!sampleFn && !viaApi){ $("agentStatus").textContent = "The live agent test isn't available in this view. The audit still works."; $("runAgent").disabled = true; $("runAll").disabled = true; }
+  else updateAgentButtons();
+})();
+async function apiAgent(sc){
+  const r = await fetch("/api/agent-test", {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({question: sc.q, view: agentView()})});
+  if(r.status===429){ const e = new Error("rate"); e.code = "rate_limited"; throw e; }
+  if(!r.ok){ const e = new Error("api"); e.code = r.status===503 ? "unavailable" : "failed"; throw e; }
+  return r.json();
+}
+async function askAgent(sc){
+  const P = readProfile();
+  const prompt = `You are a web-browsing AI assistant helping a member of the public. You have opened one web page. Use ONLY the page content below: no outside knowledge about this organization, and never guess phone numbers or URLs that aren't on the page. You cannot run JavaScript or click buttons or script links that have no URL.
+
+The person asks: "${sc.q}"
+
+Help them take the next step. Reply with ONLY a JSON object:
+{"reply_to_person": "what you'd tell them, 2-4 sentences, in their language",
+ "action": {"type": "link" | "phone" | "referral" | "none", "target": "exact URL or phone number from the page, or empty", "label": "short description"},
+ "confidence": "high" | "medium" | "low",
+ "what_was_confusing": ["short notes on anything on the page that made this harder, max 4"]}
+
+PAGE CONTENT:
+${agentView()}`;
+  const res = sampleFn ? await sampleFn(prompt, {modelTier:"default", cache:false}) : await apiAgent(sc);
+  const raw = (res && res.text) || "";
+  const m = raw.match(/\{[\s\S]*\}/); let j = null; try{ j = JSON.parse(m ? m[0] : raw); }catch(e){}
+  if(!j) return {sc, raw};
+  const tgt = String(j.action && j.action.target || ""), type = j.action && j.action.type;
+  const aU = safeUrl(P.action, P.site||undefined), tU = safeUrl(tgt);
+  const hitUrl = aU && tU && tU.host===aU.host && normPath(tU.pathname)===normPath(aU.pathname);
+  const hitPhone = last10(P.phone) && last10(tgt)===last10(P.phone);
+  let cls, msg;
+  if(sc.expect==="action"){
+    if(hitUrl){ cls="pass"; msg=`Pass: sent the person to "${P.actionLabel||"the main action"}".`; }
+    else if(hitPhone){ cls="pass"; msg="Pass: sent the person to your phone line."; }
+    else if(type==="phone"){ cls="warn"; msg=`Partial: gave a phone number (${tgt}) that isn't yours.`; }
+    else if(tU && aU && tU.host===aU.host){ cls="warn"; msg=`Partial: stayed on your site but sent them to ${tU.pathname}, not the main action.`; }
+    else { cls="fail"; msg="Fail: didn't reach your main action."+(tgt?` Sent them to ${tgt}.`:""); }
+  } else {
+    if(hitUrl||hitPhone){ cls="fail"; msg="Fail: sent someone you can't help to your main action. Make limits (area, eligibility) clearer."; }
+    else { cls="pass"; msg="Pass: recognized you can't help this person."; }
+  }
+  return {sc, j, cls, msg, type, tgt};
+}
+function showResult(r, out){
+  const card = el("div",{class:"agent-out"});
+  card.append(el("h3",{text:(r.sc.expect==="decline"?"[Can't help] ":"")+r.sc.q}));
+  if(!r.j){ card.append(el("p",{class:"result-line warn",text:"The agent didn't return a structured answer. Its reply:"}), el("div",{class:"transcript",text:r.raw})); out.append(card); return; }
+  card.append(el("p",{class:"result-line "+r.cls,text:r.msg}), el("div",{class:"transcript",text:String(r.j.reply_to_person||"")}), el("p",{class:"hint",text:`Action: ${r.type||"none"}${r.tgt?" → "+r.tgt:""} · Confidence: ${r.j.confidence||"?"}`}));
+  const conf = Array.isArray(r.j.what_was_confusing) ? r.j.what_was_confusing.filter(Boolean) : [];
+  if(conf.length){ const ul = el("ul"); conf.forEach(c => ul.append(el("li",{text:String(c)}))); card.append(el("p",{class:"hint",text:"What the agent found confusing:"}), ul); }
+  out.append(card);
+}
+function agentCap(){ return EDITION==="full" ? Infinity : unlocked ? AGENT_UNLOCKED : AGENT_FREE; }
+function updateAgentButtons(){
+  if(EDITION==="full" || (!sampleFn && !viaApi)) return;
+  const left = agentCap() - agentRuns;
+  $("runAll").hidden = true;
+  $("runAgent").disabled = left <= 0;
+  $("agentStatus").textContent = left > 0 ? `${left} free agent test${left>1?"s":""} left.`
+    : unlocked ? "You've used your free agent tests. The Agent Readiness Audit tests every question across each assistant."
+    : "Enter your email above for your full report and more agent tests.";
+}
+async function runAgents(all){
+  if(!sampleFn && !viaApi) return;
+  if(agentRuns >= agentCap()){ updateAgentButtons(); return; }
+  if(!$("html").value.trim()){ $("agentStatus").textContent = "Paste the page source first."; return; }
+  const scs = scenarioList(); if(!scs.length){ $("agentStatus").textContent = "Add at least one test question."; return; }
+  const todo = all ? scs : [scs[+$("scenario").value||0]];
+  const out = $("agentOut"); out.textContent = "";
+  $("runAgent").disabled = $("runAll").disabled = true;
+  let passed = 0, done = 0;
+  try{
+    for(const sc of todo){
+      $("agentStatus").textContent = `Agent is reading the page… (${done+1} of ${todo.length})`;
+      const r = await askAgent(sc); showResult(r, out); done++; if(r.cls==="pass") passed++;
+      agentRuns++; try{ localStorage.setItem(KEY+"-agent-runs", String(agentRuns)); }catch(e){}
+      if(agentRuns >= agentCap()) break;
+    }
+    $("agentStatus").textContent = todo.length>1 ? `${passed} of ${todo.length} passed.` : "";
+    const d = el("details"); d.append(el("summary",{text:"What the agent saw"}), el("pre",{text:agentView()})); out.append(d);
+  }catch(e){
+    $("agentStatus").textContent = e && e.code==="rate_limited" ? "Too many requests. Wait a minute and try again." : e && e.code==="not_granted" ? "Permission to ask Claude wasn't granted." : e && e.code==="unavailable" ? "The live agent test isn't switched on yet. The audit and fixes still work." : "The agent test failed. Try again.";
+  }finally{ $("runAgent").disabled = $("runAll").disabled = false; updateAgentButtons(); }
+}
+$("runAgent").addEventListener("click", () => runAgents(false));
+$("runAll").addEventListener("click", () => runAgents(true));
+
+/* wiring */
+function loadExample(){
+  writeProfile(EXAMPLE.profile); $("scenarios").value = EXAMPLE.scenarios; fillScenarioSelect();
+  $("html").value = EXAMPLE.html; $("robots").value = EXAMPLE.robots; $("llms").value = ""; $("pageUrl").value = EXAMPLE.profile.site;
+  $("exampleBadge").hidden = false; $("agentOut").textContent = ""; saveAll(); renderFixes(); runAudit();
+}
+$("loadExample").addEventListener("click", loadExample);
+$("gateForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const name = $("g-name").value.trim(), email = $("g-email").value.trim();
+  if(!name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ $("gateStatus").textContent = "Enter your name and a valid email."; return; }
+  const P = readProfile();
+  const issues = last.filter(r=>r.s==="fail"||r.s==="warn").map(r => `${r.s.toUpperCase()} [${r.cat}] ${r.title}`).join("\n");
+  $("gateBtn").disabled = true; $("gateStatus").textContent = "Sending…";
+  let ok = false;
+  try{
+    const r = await fetch("/api/lead", {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({
+      source:"checker", name, email, organization: $("g-org").value.trim() || P.name, website: $("pageUrl").value.trim() || P.site,
+      score: String(lastScore), mainAction: [P.actionLabel, P.action].filter(Boolean).join(" — "), issues, company_fax: $("g-trap").value })});
+    ok = r.ok || r.status===503; /* 503: email not set up yet, but the lead is logged on the server */
+  }catch(err){ ok = false; }
+  $("gateBtn").disabled = false;
+  if(!ok){ $("gateStatus").textContent = "We couldn't send that. Check your connection and try again."; return; }
+  unlocked = true; try{ localStorage.setItem(KEY+"-unlocked","1"); }catch(err){}
+  $("gateStatus").textContent = ""; render(last); updateAgentButtons();
+  $("checks").scrollIntoView({behavior:"smooth", block:"start"});
+});
+$("startOwn").addEventListener("click", () => {
+  writeProfile({}); ["html","robots","llms","pageUrl","scenarios"].forEach(k => $(k).value = "");
+  fillScenarioSelect(); $("exampleBadge").hidden = true; $("agentOut").textContent = ""; saveAll(); renderFixes(); runAudit();
+  document.querySelector("#t-prof").click(); $("f-name").focus();
+});
+$("fetchPage").addEventListener("click", async () => {
+  const url = $("pageUrl").value.trim() || $("f-site").value.trim();
+  if(!url){ $("fetchStatus").textContent = "Enter the page URL first."; return; }
+  $("fetchPage").disabled = true; $("fetchStatus").textContent = "Fetching the page the way an agent would…";
+  try{
+    const r = await fetch("/api/fetch-page", {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({url})});
+    const d = await r.json().catch(() => ({}));
+    if(!r.ok || typeof d.html !== "string" || !d.url) throw new Error(d.error || "Could not fetch that page.");
+    $("html").value = d.html; $("robots").value = d.robots || ""; $("llms").value = d.llms || ""; $("pageUrl").value = d.url;
+    if(!$("f-site").value.trim()) $("f-site").value = new URL(d.url).origin + "/";
+    $("exampleBadge").hidden = true; saveAll();
+    $("fetchStatus").textContent = `Fetched ${d.url} (HTTP ${d.status}${d.truncated?", first 1.5 MB":""}). robots.txt ${d.robots?"found":"not found"}, llms.txt ${d.llms?"found":"not found"}.`;
+    runAudit(); renderFixes();
+  }catch(e){
+    $("fetchStatus").textContent = (/Failed to fetch|NetworkError|Load failed/i.test(String(e && e.message)) ? "Fetching isn't available here." : String(e.message)) + " You can paste the page source below instead.";
+  }finally{ $("fetchPage").disabled = false; }
+});
+$("clearAll").addEventListener("click", () => { ["html","robots","llms"].forEach(k => $(k).value = ""); $("pageUrl").value = $("f-site").value; $("exampleBadge").hidden = true; $("agentOut").textContent = ""; runAudit(); });
+["html","robots","llms"].concat(PF.map(k=>"f-"+k)).forEach(k => $(k).addEventListener("input", () => $("exampleBadge").hidden = true));
+$("run").addEventListener("click", runAudit);
+
+const saved = store.get(KEY);
+if(saved && saved.profile && saved.profile.name && saved.profile.name !== EXAMPLE.profile.name){
+  writeProfile(saved.profile); $("scenarios").value = saved.scenarios || ""; fillScenarioSelect();
+  $("pageUrl").value = saved.profile.site || ""; $("exampleBadge").hidden = true; renderFixes(); runAudit();
+} else loadExample();
+})();
+</script>
+<script>
+(function(){
+"use strict";
+const $ = id => document.getElementById(id);
+const KEY = "agent-optimizer-platforms-" + (document.title||"").toLowerCase().replace(/\W+/g,"-");
+const store = { get(){ try{ return JSON.parse(localStorage.getItem(KEY)) || {}; }catch(e){ return {}; } }, set(v){ try{ localStorage.setItem(KEY, JSON.stringify(v)); }catch(e){} } };
+let state = store.get(); state.off = state.off || {}; state.tests = state.tests || {};
+function el(tag, attrs, ...kids){
+  const n = document.createElement(tag);
+  if(attrs) for(const k in attrs){ if(k==="text") n.textContent = attrs[k]; else n.setAttribute(k, attrs[k]); }
+  kids.forEach(k => { if(k!=null) n.append(k.nodeType ? k : document.createTextNode(k)); });
+  return n;
+}
+
+/* Crawler tokens as published by each company (checked November 2026). */
+const PLATFORMS = [
+  {name:"ChatGPT", maker:"OpenAI", search:["OAI-SearchBot"], visit:"ChatGPT-User", visitNote:"OpenAI says robots.txt may not apply to it.", train:"GPTBot"},
+  {name:"Claude", maker:"Anthropic", search:["Claude-SearchBot"], visit:"Claude-User", train:"ClaudeBot"},
+  {name:"Gemini and Google AI Overviews", maker:"Google", search:["Googlebot","Google-Extended"], index:"google", visit:null, train:"Google-Extended", trainNote:"Also controls Gemini's answers. Blocking it keeps you out of the Gemini app."},
+  {name:"Microsoft Copilot", maker:"Microsoft", search:["Bingbot"], index:"bing", visit:null, train:null, searchNote:"Answers come from the Bing index."},
+  {name:"Perplexity", maker:"Perplexity", search:["PerplexityBot"], visit:"Perplexity-User", visitNote:"Generally ignores robots.txt, since a person asked.", train:null, trainNote:"Perplexity says it doesn't crawl for training."},
+  {name:"Meta AI", maker:"Meta", search:["Meta-WebIndexer"], visit:"Meta-ExternalFetcher", visitNote:"May bypass robots.txt.", train:"Meta-ExternalAgent"},
+  {name:"Grok", maker:"xAI", wildcard:true},
+  {name:"Siri, Spotlight and Apple Intelligence", maker:"Apple", search:["Applebot"], visit:null, train:"Applebot-Extended", trainNote:"Training only. Doesn't affect Siri or Spotlight results."}
+];
+
+function parseRobots(txt){
+  const groups = []; let cur = null, lastUA = false;
+  txt.split(/\r?\n/).forEach(raw => {
+    const line = raw.replace(/#.*/,"").trim(); if(!line) return;
+    const m = line.match(/^([A-Za-z-]+)\s*:\s*(.*)$/); if(!m) return;
+    const k = m[1].toLowerCase(), v = m[2].trim();
+    if(k==="user-agent"){ if(!cur||!lastUA){ cur={uas:[],rules:[]}; groups.push(cur); } cur.uas.push(v.toLowerCase()); lastUA = true; }
+    else if(k==="allow"||k==="disallow"){ if(cur) cur.rules.push({type:k,path:v}); lastUA = false; }
+    else lastUA = false;
+  });
+  return groups;
+}
+function blocked(groups, bot){
+  const b = bot.toLowerCase(); let best = null, len = -1;
+  groups.forEach(g => g.uas.forEach(ua => { if(ua!=="*" && b.includes(ua) && ua.length>len){ best=g; len=ua.length; } }));
+  if(!best) best = groups.find(g => g.uas.includes("*"));
+  if(!best) return false;
+  return best.rules.some(r => r.type==="disallow" && r.path==="/") && !best.rules.some(r => r.type==="allow" && (r.path==="/"||r.path===""));
+}
+function metaRobots(){
+  const doc = new DOMParser().parseFromString($("html").value || "", "text/html");
+  const get = n => [...doc.querySelectorAll(`meta[name="${n}" i]`)].map(m => (m.getAttribute("content")||"").toLowerCase()).join(",");
+  const all = get("robots"), g = all+","+get("googlebot"), b = all+","+get("bingbot");
+  return {
+    gNoindex:/noindex|\bnone\b/.test(g), bNoindex:/noindex|\bnone\b/.test(b), anyNoindex:/noindex|\bnone\b/.test(all),
+    gNosnippet:/nosnippet/.test(g), aNosnippet:/nosnippet/.test(all),
+    bLimited:/noarchive|nocache/.test(b)
+  };
+}
+function cell(s, label, note, bots){
+  const td = el("td"); td.append(el("span",{class:"st "+s,text:label}));
+  if(note) td.append(el("span",{class:"pl-note",text:note}));
+  if(bots) td.append(el("span",{class:"pl-bot",text:bots}));
+  return td;
+}
+function renderMatrix(){
+  const robots = $("robots").value, have = !!robots.trim(), g = have ? parseRobots(robots) : [];
+  const m = metaRobots();
+  const body = $("pl-body"); body.textContent = "";
+  let ok = 0, part = 0, bad = 0;
+  PLATFORMS.forEach(p => {
+    const tr = el("tr"); tr.append(el("td",null, p.name, el("span",{class:"pl-note",text:p.maker})));
+    if(p.wildcard){
+      const star = have && g.some(x => x.uas.includes("*")) && blocked(g,"zz-unnamed-bot");
+      const sx = !have ? "skip" : star ? "fail" : "warn";
+      if(sx==="fail") bad++;
+      tr.append(cell(sx, !have?"Not checked":star?"Likely blocked":"Can't confirm", !have?"Paste robots.txt to check the catch-all rule.":star?"xAI publishes no crawler name, so your catch-all rule (User-agent: *) is the only one that could apply, and it blocks everything.":"xAI publishes no crawler name, so robots.txt can't target Grok. Your catch-all rule allows unnamed crawlers. Grok also searches posts on X.", "no published crawler"));
+      tr.append(cell("skip","Not published","Grok browses pages, but xAI doesn't name the agent it uses."));
+      tr.append(cell("skip","Not published",""));
+      body.append(tr); return;
+    }
+    /* answers */
+    let s, label, note = p.searchNote || "";
+    const blockedBots = have ? p.search.filter(b => blocked(g,b)) : [];
+    const noindex = p.index==="google" ? m.gNoindex : p.index==="bing" ? m.bNoindex : m.anyNoindex;
+    if(noindex){ s="fail"; label="Hidden"; note = "The page has a noindex robots tag, so it's left out of search indexes."; }
+    else if(blockedBots.length===p.search.length && have){ s="fail"; label="Blocked"; note = `robots.txt blocks ${blockedBots.join(", ")}.`; }
+    else if(blockedBots.length){ s="warn"; label="Partly"; note = p.index==="google" && blockedBots.includes("Google-Extended") ? "Google Search and AI Overviews can show you; the Gemini app can't, because Google-Extended is blocked." : `robots.txt blocks ${blockedBots.join(", ")}.`; }
+    else if(p.index==="google" && m.gNosnippet){ s="warn"; label="Limited"; note = "nosnippet stops AI Overviews from quoting this page."; }
+    else if(p.index==="bing" && m.bLimited){ s="warn"; label="Limited"; note = "noarchive or nocache limits how Copilot can use this page."; }
+    else if(p.maker==="Apple" && m.aNosnippet){ s="warn"; label="Limited"; note = "nosnippet keeps this page out of Apple's AI answers."; }
+    else if(!have){ s="skip"; label="Not checked"; note = "Paste robots.txt to check."; }
+    else { s="pass"; label="Allowed"; }
+    if(s==="pass") ok++; else if(s==="fail") bad++; else if(s==="warn") part++;
+    tr.append(cell(s, label, note, p.search.join(" · ")));
+    /* visit */
+    if(!p.visit) tr.append(cell("skip","No separate agent","No published crawler for visiting pages on request."));
+    else if(!have) tr.append(cell("skip","Not checked", p.visitNote||"", p.visit));
+    else if(blocked(g,p.visit)) tr.append(cell("warn","Blocked", (p.visitNote? p.visitNote+" " : "")+"Remove the block so it can read the page for someone.", p.visit));
+    else tr.append(cell("pass","Allowed", p.visitNote||"", p.visit));
+    /* train */
+    if(!p.train) tr.append(cell("skip","None", p.trainNote||""));
+    else if(!have) tr.append(cell("skip","Not checked", p.trainNote||"", p.train));
+    else { const b = blocked(g,p.train); tr.append(cell(b ? (p.train==="Google-Extended"?"warn":"skip") : "skip", b?"Opted out":"Allowed", p.trainNote||"", p.train)); }
+    body.append(tr);
+  });
+  $("pl-summary").textContent = !$("robots").value.trim() && !$("html").value.trim()
+    ? "Paste the page source and robots.txt above to check each assistant."
+    : `${ok} of ${PLATFORMS.length} assistants confirmed able to show this site in answers${part?`, ${part} partly`:""}${bad?`, ${bad} blocked or hidden`:""}.${!have?" robots.txt not checked yet.":""}`;
+}
+
+const OFF = [
+  {id:"google", t:"Pages are indexed in Google", d:"Check in Google Search Console, or search site:yourdomain. Gemini and AI Overviews draw on this index."},
+  {id:"bing", t:"Site verified in Bing Webmaster Tools, with a sitemap submitted", d:"Microsoft Copilot answers from the Bing index, and DuckDuckGo uses it too."},
+  {id:"indexnow", t:"IndexNow turned on", d:"Tells Bing and others right away when a page changes, so hours and links don't go stale."},
+  {id:"gbp", t:"Google Business Profile claimed and accurate", d:"Name, hours, phone and a link to your main action. Gemini and Google Maps use it."},
+  {id:"places", t:"Bing Places and Apple Business Connect listings", d:"Feed Copilot, Siri and Apple Maps."},
+  {id:"nap", t:"Same name, phone, address and main link everywhere", d:"Website, listings, directories and social profiles. Conflicting details make assistants hedge or give the wrong number."},
+  {id:"dirs", t:"Listed in the directories trusted in your field", d:"For example, legal aid: the statewide LawHelp site and 211. Assistants often cite these."},
+  {id:"x", t:"An active X account with clear posts about your services", d:"Grok searches X as well as the web. A bio and pinned post with your main link help."},
+  {id:"wiki", t:"Wikipedia or Wikidata entry is accurate (if you have one)", d:"Many models learn basic facts about organizations from these."},
+  {id:"faq", t:"A page answers common questions in people's own words", d:"\"Can I get help with an eviction?\" matches how people ask assistants."}
+];
+function renderOff(){
+  const ul = $("pl-off"); if(!ul) return; ul.textContent = "";
+  OFF.forEach(o => {
+    const id = "pl-off-"+o.id;
+    const cb = el("input",{type:"checkbox",id}); cb.checked = !!state.off[o.id];
+    cb.addEventListener("change", () => { state.off[o.id] = cb.checked; store.set(state); });
+    const lab = el("label",{for:id}, cb, el("span",null, o.t, el("small",{text:o.d})));
+    ul.append(el("li",null, lab));
+  });
+}
+
+const ASSISTANTS = [
+  {id:"chatgpt", n:"ChatGPT", url:"https://chatgpt.com/"},
+  {id:"claude", n:"Claude", url:"https://claude.ai/"},
+  {id:"gemini", n:"Gemini", url:"https://gemini.google.com/"},
+  {id:"copilot", n:"Copilot", url:"https://copilot.microsoft.com/"},
+  {id:"perplexity", n:"Perplexity", url:"https://www.perplexity.ai/"},
+  {id:"meta", n:"Meta AI", url:"https://www.meta.ai/"},
+  {id:"grok", n:"Grok", url:"https://grok.com/"}
+];
+const OUTCOMES = [["","Not tested yet"],["linked","Named us and linked the right page"],["named","Named us, wrong or no link"],["wrong","Gave wrong details about us"],["missing","Didn't mention us"]];
+function currentQuestion(){
+  const sel = $("scenario");
+  const opt = sel && sel.options[sel.selectedIndex];
+  return opt ? opt.textContent.replace(/^\[[^\]]*\]\s*/,"") : "";
+}
+function renderTests(){
+  $("pl-q").textContent = currentQuestion() || "Add a test question in the live agent section below.";
+  const box = $("pl-tests"); box.textContent = "";
+  ASSISTANTS.forEach(a => {
+    const id = "pl-t-"+a.id;
+    const s = el("select",{id});
+    OUTCOMES.forEach(([v,t]) => { const o = el("option",{value:v,text:t}); if((state.tests[a.id]||"")===v) o.selected = true; s.append(o); });
+    s.addEventListener("change", () => { state.tests[a.id] = s.value; store.set(state); testSum(); });
+    const link = el("a",{href:a.url, target:"_blank", rel:"noopener", text:a.n});
+    box.append(el("div",{class:"r"}, el("label",{for:id}, link), s));
+  });
+  testSum();
+}
+function testSum(){
+  const v = ASSISTANTS.map(a => state.tests[a.id]||"").filter(Boolean);
+  const linked = v.filter(x=>x==="linked").length;
+  $("pl-testsum").textContent = v.length ? `${linked} of ${v.length} tested assistants sent people to the right page.` : "";
+}
+$("pl-copy").addEventListener("click", async e => {
+  const b = e.currentTarget;
+  try{ await navigator.clipboard.writeText(currentQuestion()); b.textContent = "Copied"; }catch(err){ b.textContent = "Select and copy"; }
+  setTimeout(() => b.textContent = "Copy question", 1800);
+});
+
+function refresh(){ renderMatrix(); $("pl-q").textContent = currentQuestion() || "Add a test question in the live agent section below."; }
+["run","loadExample","clearAll"].forEach(id => $(id) && $(id).addEventListener("click", () => setTimeout(refresh, 0)));
+["robots","html","scenarios"].forEach(id => $(id) && $(id).addEventListener("input", () => { clearTimeout(refresh.t); refresh.t = setTimeout(refresh, 300); }));
+$("scenario") && $("scenario").addEventListener("change", refresh);
+renderOff(); renderTests(); renderMatrix();
+})();
+</script>
+
+</body>
+</html>

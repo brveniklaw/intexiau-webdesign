@@ -36,7 +36,10 @@ export default async function handler(req, res) {
   }
 
   const source = fields.source || 'start-a-project';
-  const subject = `New WebStudio lead — ${source === 'checkout' ? `${fields.path === 'diy' ? 'Fix report' : 'Redesign'} (${fields.plan || 'no tier'})` : 'Start a Project'} — ${fields.name}`;
+  const kind = source === 'checkout'
+    ? `${fields.path === 'diy' ? 'Fix report' : 'Done for you'} (${fields.plan || 'no tier'})${fields.readinessScore ? `, score ${fields.readinessScore}` : ''}`
+    : source === 'checker' ? `Free checker, score ${fields.score || '?'}` : 'Start a Project';
+  const subject = `New WebStudio lead — ${kind} — ${fields.name}`;
 
   // Always log so a lead is never lost even if email is misconfigured.
   console.log('[lead]', JSON.stringify({ at: new Date().toISOString(), ...fields }));
