@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Choose Your Path — IntexiaUWebDesign</title>
+<meta name="description" content="Get a prioritized fix report for your website, or have IntexiaUWebDesign redesign it — Genesis, Momentum, or Signature.">
+<link rel="canonical" href="https://webstudio.intexiau.com/checkout">
+<meta name="theme-color" content="#020510">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="IntexiaUWebDesign">
+<meta property="og:url" content="https://webstudio.intexiau.com/checkout">
+<meta property="og:title" content="Choose Your Path — IntexiaUWebDesign">
+<meta property="og:description" content="Get a prioritized fix report for your website, or have IntexiaUWebDesign redesign it — Genesis, Momentum, or Signature.">
+<meta property="og:image" content="https://webstudio.intexiau.com/assets/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Choose Your Path — IntexiaUWebDesign">
+<meta name="twitter:description" content="Get a prioritized fix report for your website, or have IntexiaUWebDesign redesign it — Genesis, Momentum, or Signature.">
+<meta name="twitter:image" content="https://webstudio.intexiau.com/assets/og-image.jpg">
+<link rel="icon" href="/assets/favicon-32.png" type="image/png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<meta name="robots" content="noindex">
+<script src="/vendor/react.production.min.js"></script>
+<script src="/vendor/react-dom.production.min.js"></script>
+<script src="/support.js"></script>
+</head>
+<body>
+<noscript><div style="font-family:sans-serif;color:#fff;background:#020510;padding:40px"><h1>Choose your path</h1><p>Please enable JavaScript to request a fix report or a redesign plan.</p></div></noscript>
+<x-dc>
+
+<helmet>
+  <title>Choose Your Path — IntexiaUWebDesign</title>
+  <link rel="icon" href="/assets/favicon-32.png" type="image/png">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&amp;family=Rajdhani:wght@300;400;500;600;700&amp;family=Share+Tech+Mono&amp;display=swap" rel="stylesheet">
+  <style>
+    html,body{ margin:0; background:#020510; }
+    ::selection{ background:#22e5ff; color:#020510; }
+    @keyframes pulse{ 0%,100%{ opacity:1; } 50%{ opacity:.55; } }
+    @keyframes ringExpand{ 0%{ transform:scale(.6); opacity:.7; } 100%{ transform:scale(2.6); opacity:0; } }
+    a{ color:#22e5ff; }
+    a:hover{ color:#7be3ff; }
+  </style>
+</helmet>
+
+<div style="background:#020510; color:#fff; font-family:'Rajdhani',sans-serif; min-height:100vh; overflow-x:hidden; position:relative;">
+
+  <div style="position:fixed; inset:0; z-index:0; pointer-events:none; background:
+    radial-gradient(circle at 20% 15%, rgba(34,229,255,.08), transparent 40%),
+    radial-gradient(circle at 85% 75%, rgba(123,47,255,.10), transparent 45%);"></div>
+
+  <div style="position:relative; z-index:1; padding:22px 8vw; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+    <a href="/pricing" style="text-decoration:none; color:#fff; font-family:'Share Tech Mono',monospace; font-size:12px; letter-spacing:2px; opacity:.85; border:1px solid rgba(255,255,255,.35); padding:8px 18px; border-radius:20px; white-space:nowrap;">← BACK TO PRICING</a>
+    <a href="/" style="display:flex; align-items:center; gap:12px; text-decoration:none;">
+      <img src="/assets/intexiau_logo.webp" alt="IntexiaU" style="height:34px; width:34px; object-fit:contain; filter:brightness(1.5);">
+      <span style="font-family:'Orbitron',sans-serif; font-size:15px; font-weight:700; letter-spacing:1px; background:linear-gradient(135deg,#fff,#22e5ff); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">IntexiaUWebDesign</span>
+    </a>
+    <div style="font-family:'Share Tech Mono',monospace; font-size:11px; letter-spacing:2px; color:rgba(255,255,255,.4);">NO PAYMENT TAKEN HERE</div>
+  </div>
+
+  <section style="position:relative; z-index:1; text-align:center; padding:30px 8vw 10px;">
+    <div style="font-family:'Share Tech Mono',monospace; font-size:13px; letter-spacing:6px; color:{{ plan.accent }}; text-transform:uppercase; margin-bottom:16px;">Selected — {{ plan.title }}</div>
+    <h1 style="font-family:'Orbitron',sans-serif; font-weight:900; font-size:clamp(30px,4.6vw,54px); line-height:1.1; margin:0 0 16px;">Choose Your <span style="background:linear-gradient(135deg,#22e5ff,#7b2fff); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">Path</span></h1>
+    <p style="max-width:640px; margin:0 auto; font-size:16px; font-weight:300; color:rgba(255,255,255,.7); line-height:1.7;">Fix your current site yourself with a prioritized fix report, or have us redesign it. Either way, we start with a look at what you have.</p>
+  </section>
+
+  <section style="position:relative; z-index:1; max-width:1100px; margin:40px auto 100px; padding:0 8vw; display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap:32px; align-items:start;">
+
+    <div style="position:relative; background:{{ plan.bg }}; border:1px solid {{ plan.border }}; border-radius:20px; padding:38px 30px;">
+      <sc-if value="{{ plan.badge }}">
+        <div style="position:absolute; top:-14px; left:50%; transform:translateX(-50%); background:linear-gradient(135deg,#22e5ff,#7b2fff); color:#020510; font-family:'Orbitron',sans-serif; font-size:11px; font-weight:900; letter-spacing:1.5px; padding:6px 18px; border-radius:20px; white-space:nowrap; box-shadow:0 0 20px rgba(34,229,255,.5);">{{ plan.badge }}</div>
+      </sc-if>
+      <div style="font-family:'Orbitron',sans-serif; font-size:13px; letter-spacing:3px; color:{{ plan.accent }}; text-transform:uppercase; margin-bottom:14px;">{{ plan.eyebrow }}</div>
+      <h3 style="font-family:'Orbitron',sans-serif; font-weight:700; font-size:26px; margin:0 0 6px; color:#fff;">{{ plan.title }}</h3>
+      <p style="font-size:14.5px; color:rgba(255,255,255,.6); line-height:1.6; margin:0 0 22px;">{{ plan.desc }}</p>
+      <div style="display:flex; align-items:baseline; gap:6px; margin-bottom:8px;">
+        <sc-if value="{{ plan.priceNote }}"><span style="font-size:13px; color:rgba(255,255,255,.45);">{{ plan.priceNote }}</span></sc-if><span style="font-family:'Orbitron',sans-serif; font-weight:900; font-size:clamp(28px,3vw,38px); background:{{ plan.priceBg }}; -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">{{ plan.price }}</span>
+      </div>
+      <div style="height:1px; background:rgba(255,255,255,.1); margin-bottom:24px;"></div>
+      <div style="display:flex; flex-direction:column; gap:14px;">
+        <sc-for list="{{ plan.features }}" as="f" hint-placeholder-count="6">
+          <sc-if value="{{ f.divider }}">
+            <div style="display:flex; align-items:center; gap:10px; margin:4px 0;">
+              <div style="flex:1; height:1px; background:linear-gradient(90deg, transparent, #d4af37, transparent);"></div>
+              <span style="font-family:'Orbitron',sans-serif; font-size:10.5px; letter-spacing:1.5px; color:#d4af37; text-transform:uppercase; white-space:nowrap;">{{ f.dividerLabel }}</span>
+              <div style="flex:1; height:1px; background:linear-gradient(90deg, transparent, #d4af37, transparent);"></div>
+            </div>
+          </sc-if>
+          <div style="display:flex; align-items:flex-start; gap:10px;">
+            <span style="color:{{ plan.accent }}; font-size:15px; line-height:1.4; flex-shrink:0;">◆</span>
+            <span style="font-size:14.5px; color:{{ f.textColor }}; font-weight:{{ f.textWeight }}; line-height:1.5;">{{ f.text }}</span>
+          </div>
+        </sc-for>
+        <sc-if value="{{ plan.highlightFeature }}">
+          <div style="display:flex; align-items:center; gap:10px; margin-top:6px; padding:12px 14px; border-radius:10px; background:linear-gradient(135deg, rgba(34,229,255,.14), rgba(123,47,255,.18)); border:1px solid rgba(34,229,255,.4); box-shadow:0 0 22px rgba(123,47,255,.25);">
+            <span style="font-size:14px; font-weight:700; color:#fff; line-height:1.4;">{{ plan.highlightFeature }}</span>
+          </div>
+        </sc-if>
+        <sc-if value="{{ plan.highlightCgi }}">
+          <div style="display:flex; align-items:center; gap:10px; margin-top:6px; padding:12px 14px; border-radius:10px; background:linear-gradient(135deg, rgba(123,47,255,.18), rgba(34,229,255,.14)); border:1px solid rgba(123,47,255,.5); box-shadow:0 0 22px rgba(34,229,255,.25);">
+            <span style="font-size:14px; font-weight:700; color:#fff; line-height:1.4;">{{ plan.highlightCgi }}</span>
+          </div>
+        </sc-if>
+      </div>
+      <a href="/pricing" style="display:inline-block; margin-top:26px; font-size:13px; color:{{ plan.accent }}; text-decoration:none; letter-spacing:.5px;">Not the right tier? Switch plans →</a>
+    </div>
+
+    <div style="position:relative; background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.12); border-radius:20px; padding:34px 30px;">
+      <sc-if value="{{ !submitted }}">
+        <div style="font-family:'Orbitron',sans-serif; font-size:13px; letter-spacing:2px; color:#fff; margin-bottom:18px; display:flex; align-items:center; gap:10px;">
+          <span style="width:8px; height:8px; border-radius:50%; background:#22e5ff; box-shadow:0 0 8px #22e5ff; animation:pulse 1.6s ease infinite;"></span>
+          CHOOSE YOUR PATH
+        </div>
+        <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:22px;">
+          <div onClick="{{ pickDiy }}" role="button" tabindex="0" style="cursor:pointer; padding:16px 18px; border-radius:12px; border:{{ diyBorder }}; background:{{ diyBg }}; transition:border-color .2s, background .2s;">
+            <div style="font-family:'Orbitron',sans-serif; font-size:13px; font-weight:700; letter-spacing:1px; color:#fff; margin-bottom:6px;">{{ diyMark }} Fix it yourself</div>
+            <div style="font-size:14px; color:rgba(255,255,255,.65); line-height:1.55;">Pay for a prioritized fix report on your current site — exactly what to change and why — and make the changes on your own schedule.</div>
+          </div>
+          <div onClick="{{ pickRedesign }}" role="button" tabindex="0" style="cursor:pointer; padding:16px 18px; border-radius:12px; border:{{ redesignBorder }}; background:{{ redesignBg }}; transition:border-color .2s, background .2s;">
+            <div style="font-family:'Orbitron',sans-serif; font-size:13px; font-weight:700; letter-spacing:1px; color:#fff; margin-bottom:6px;">{{ redesignMark }} Let us redesign it — {{ plan.title }}</div>
+            <div style="font-size:14px; color:rgba(255,255,255,.65); line-height:1.55;">We review your site and send you a redesign plan and quote for the {{ plan.title }} tier before any work or payment begins.</div>
+          </div>
+        </div>
+        <form onSubmit="{{ handleSubmit }}" style="display:flex; flex-direction:column; gap:16px;">
+          <div>
+            <label for="co-name" style="display:block; font-size:12px; letter-spacing:1px; color:rgba(255,255,255,.5); margin-bottom:6px;">Full Name</label>
+            <input id="co-name" name="name" required="" value="{{ name }}" onChange="{{ onNameChange }}" type="text" autocomplete="name" placeholder="Jane Doe" style="width:100%; box-sizing:border-box; padding:12px 14px; font-size:15px; border-radius:8px; border:1px solid rgba(255,255,255,.15); background:rgba(255,255,255,.04); color:#fff; font-family:'Rajdhani',sans-serif;">
+          </div>
+          <div>
+            <label for="co-email" style="display:block; font-size:12px; letter-spacing:1px; color:rgba(255,255,255,.5); margin-bottom:6px;">Email</label>
+            <input id="co-email" name="email" required="" value="{{ email }}" onChange="{{ onEmailChange }}" type="email" autocomplete="email" placeholder="jane@company.com" style="width:100%; box-sizing:border-box; padding:12px 14px; font-size:15px; border-radius:8px; border:1px solid rgba(255,255,255,.15); background:rgba(255,255,255,.04); color:#fff; font-family:'Rajdhani',sans-serif;">
+          </div>
+          <div>
+            <label for="co-site" style="display:block; font-size:12px; letter-spacing:1px; color:rgba(255,255,255,.5); margin-bottom:6px;">Your current website (if you have one)</label>
+            <input id="co-site" name="website" value="{{ website }}" onChange="{{ onWebsiteChange }}" type="text" inputmode="url" placeholder="yourbusiness.com" style="width:100%; box-sizing:border-box; padding:12px 14px; font-size:15px; border-radius:8px; border:1px solid rgba(255,255,255,.15); background:rgba(255,255,255,.04); color:#fff; font-family:'Rajdhani',sans-serif;">
+          </div>
+          <div>
+            <label for="co-notes" style="display:block; font-size:12px; letter-spacing:1px; color:rgba(255,255,255,.5); margin-bottom:6px;">Anything we should know?</label>
+            <textarea id="co-notes" name="notes" rows="3" value="{{ notes }}" onChange="{{ onNotesChange }}" placeholder="Goals, deadlines, must-haves" style="width:100%; box-sizing:border-box; padding:12px 14px; font-size:15px; border-radius:8px; border:1px solid rgba(255,255,255,.15); background:rgba(255,255,255,.04); color:#fff; font-family:'Rajdhani',sans-serif; resize:vertical;"></textarea>
+          </div>
+          <input type="text" name="company_fax" value="{{ trap }}" onChange="{{ onTrapChange }}" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute; left:-9999px; width:1px; height:1px; opacity:0;">
+          <sc-if value="{{ errorMsg }}">
+            <div style="background:rgba(229,72,77,.12); border:1px solid rgba(229,72,77,.6); color:#ffb4b4; padding:12px 14px; border-radius:8px; font-size:14px;">{{ errorMsg }}</div>
+          </sc-if>
+          <button type="submit" disabled="{{ sending }}" style="margin-top:4px; padding:16px; border:none; border-radius:10px; font-family:'Orbitron',sans-serif; font-size:13px; font-weight:700; letter-spacing:1.5px; color:#fff; background:linear-gradient(135deg,#0088ff,#7b2fff); cursor:pointer; box-shadow:0 0 30px rgba(0,136,255,.3);">{{ submitLabel }}</button>
+          <div style="font-size:12px; color:rgba(255,255,255,.4); text-align:center; line-height:1.6;">No payment is taken on this page. We'll reply by email with next steps{{ payNote }}.</div>
+        </form>
+      </sc-if>
+      <sc-if value="{{ submitted }}">
+        <div style="text-align:center; padding:40px 10px;">
+          <div style="font-size:40px; margin-bottom:18px;">✓</div>
+          <h3 style="font-family:'Orbitron',sans-serif; font-weight:700; font-size:22px; margin:0 0 12px; color:#fff;">Request Received</h3>
+          <p style="font-size:15px; color:rgba(255,255,255,.65); line-height:1.7; max-width:38ch; margin:0 auto;">Thanks, {{ name }}. We've got your {{ pathLabel }} request and will reach out at {{ email }} with next steps.</p>
+        </div>
+      </sc-if>
+    </div>
+
+  </section>
+
+  <footer style="position:relative; z-index:1; padding:34px 8vw; display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; font-size:12px; color:rgba(255,255,255,.4); border-top:1px solid rgba(255,255,255,.08);">
+    <span>IntexiaUWebDesign</span>
+    <span>A Platform of IntexiaU</span>
+  </footer>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    name: '', email: '', website: '', notes: '', trap: '',
+    path: (new URLSearchParams(window.location.search).get('path') === 'diy') ? 'diy' : 'redesign',
+    submitted: false, sending: false, errorMsg: ''
+  };
+
+  constructor(props) {
+    super(props);
+    this.planData = {
+      genesis: {
+        eyebrow: 'Tier One', title: 'Genesis', accent: '#22e5ff',
+        bg: 'linear-gradient(160deg, rgba(34,229,255,.06), rgba(255,255,255,.02))',
+        border: 'rgba(34,229,255,.25)', priceBg: 'linear-gradient(135deg,#22e5ff,#7be3ff)',
+        desc: 'A sharp, fully custom launchpad for your brand — built to make a serious first impression, not a placeholder site.',
+        price: '$600', priceNote: 'Starting at',
+        features: [
+          { text: 'Fully custom design — zero templates' },
+          { text: 'Up to 5 pages, precision-crafted' },
+          { text: 'Flawless on mobile & desktop' },
+          { text: 'Built-in contact & lead capture' },
+          { text: 'Basic SEO setup' }
+        ],
+        highlightCgi: '🎬 Custom 4K CGI Visuals',
+        badge: ''
+      },
+      momentum: {
+        eyebrow: 'Tier Two', title: 'Momentum', accent: '#7be3ff',
+        bg: 'linear-gradient(160deg, rgba(123,47,255,.10), rgba(34,229,255,.04))',
+        border: 'rgba(123,47,255,.35)', priceBg: 'linear-gradient(135deg,#22e5ff,#7b2fff)',
+        desc: 'For businesses ready to stand out — richer pages, real interactivity, and a site that does more of the work for you.',
+        price: '$2,000', priceNote: 'Starting at',
+        features: [
+          { text: 'Fully custom design — zero templates' },
+          { text: 'Up to 10 pages, precision-crafted', gold: true },
+          { text: 'Flawless on mobile & desktop' },
+          { text: 'Built-in contact & lead capture' },
+          { text: 'Basic SEO setup' },
+          { text: 'Custom animations & interactions', divider: true, dividerLabel: 'Everything in Genesis, plus' },
+          { text: 'Booking / product listings', gold: true }
+        ],
+        highlightFeature: '🤖 Custom AI Chatbot — trained on your business',
+        highlightCgi: '🎬 Custom 4K CGI Visuals',
+        badge: 'MOST CHOSEN'
+      },
+      signature: {
+        eyebrow: 'Tier Three', title: 'Signature', accent: '#c9a5ff',
+        bg: 'linear-gradient(160deg, rgba(123,47,255,.14), rgba(34,229,255,.05))',
+        border: 'rgba(123,47,255,.45)', priceBg: 'linear-gradient(135deg,#7b2fff,#c9a5ff)',
+        desc: 'A flagship digital presence — deeply custom, immersive, and built to be the centerpiece of your brand.',
+        price: '$10,000', priceNote: 'Starting at',
+        features: [
+          { text: 'Fully custom design — zero templates' },
+          { text: 'Unlimited pages, precision-crafted', gold: true },
+          { text: 'Flawless on mobile & desktop' },
+          { text: 'Built-in contact & lead capture' },
+          { text: 'Basic SEO setup' },
+          { text: 'Custom animations & interactions' },
+          { text: 'Booking / product listings', gold: true },
+          { text: 'Immersive scroll/Animated experience', divider: true, dividerLabel: 'Everything in Momentum, plus' },
+          { text: 'Priority support during build' }
+        ],
+        highlightFeature: '🤖 Custom AI Chatbot — trained on your business',
+        highlightCgi: '🎬 Custom 4K CGI Visuals',
+        badge: ''
+      }
+    };
+  }
+
+  getPlanKey() {
+    const params = new URLSearchParams(window.location.search);
+    const p = (params.get('plan') || '').toLowerCase();
+    return this.planData[p] ? p : 'momentum';
+  }
+  handleSubmit(e) {
+    e.preventDefault();
+    if (this.state.sending) return;
+    this.setState({ sending: true, errorMsg: '' });
+    const s = this.state;
+    const payload = {
+      source: 'checkout',
+      path: s.path,
+      plan: this.planData[this.getPlanKey()].title,
+      name: s.name, email: s.email, website: s.website, notes: s.notes,
+      company_fax: s.trap
+    };
+    fetch('/api/lead', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(res => {
+      if (res.ok) this.setState({ submitted: true, sending: false });
+      else this.setState({ sending: false, errorMsg: "Something went wrong sending your request. Please try again in a moment." });
+    }).catch(() => {
+      this.setState({ sending: false, errorMsg: "We couldn't reach our server. Please check your connection and try again." });
+    });
+  }
+  renderVals() {
+    const raw = this.planData[this.getPlanKey()];
+    const plan = {
+      ...raw,
+      features: raw.features.map(f => ({
+        ...f,
+        textColor: f.gold ? '#d4af37' : 'rgba(255,255,255,.8)',
+        textWeight: f.gold ? '700' : '400'
+      }))
+    };
+    const diy = this.state.path === 'diy';
+    const on = '1px solid rgba(34,229,255,.7)', off = '1px solid rgba(255,255,255,.14)';
+    const onBg = 'rgba(34,229,255,.08)', offBg = 'rgba(255,255,255,.02)';
+    return {
+      plan,
+      name: this.state.name,
+      email: this.state.email,
+      website: this.state.website,
+      notes: this.state.notes,
+      trap: this.state.trap,
+      submitted: this.state.submitted,
+      sending: this.state.sending,
+      errorMsg: this.state.errorMsg,
+      diyBorder: diy ? on : off, diyBg: diy ? onBg : offBg, diyMark: diy ? '◉' : '○',
+      redesignBorder: diy ? off : on, redesignBg: diy ? offBg : onBg, redesignMark: diy ? '○' : '◉',
+      pathLabel: diy ? 'fix report' : (raw.title + ' redesign'),
+      payNote: diy ? ', including a secure payment link for your fix report' : ' and a redesign plan and quote',
+      submitLabel: this.state.sending ? 'SENDING...' : (diy ? 'REQUEST MY FIX REPORT' : 'REQUEST MY REDESIGN PLAN'),
+      pickDiy: () => this.setState({ path: 'diy' }),
+      pickRedesign: () => this.setState({ path: 'redesign' }),
+      onNameChange: (e) => this.setState({ name: e.target.value }),
+      onEmailChange: (e) => this.setState({ email: e.target.value }),
+      onWebsiteChange: (e) => this.setState({ website: e.target.value }),
+      onNotesChange: (e) => this.setState({ notes: e.target.value }),
+      onTrapChange: (e) => this.setState({ trap: e.target.value }),
+      handleSubmit: (e) => this.handleSubmit(e)
+    };
+  }
+}
+
+</script>
+</body>
+</html>
