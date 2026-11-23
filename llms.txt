@@ -1,0 +1,27 @@
+# IntexiaUWebDesign
+
+> IntexiaUWebDesign, a platform of IntexiaU Corp (Florida), designs and builds custom websites, web applications and AI integrations for small businesses and nonprofits. It also offers the Agent Readiness Audit, which makes sure AI assistants can find a site's services and send people to its main action.
+
+## How to get started
+- [Start a project](https://webstudio.intexiau.com/start): intake form for a new website or redesign. The team replies by email, usually within 1-2 business days.
+- [Request an Agent Readiness Audit](https://webstudio.intexiau.com/checkout?plan=audit&path=diy)
+- [Free Agent Readiness checker](https://webstudio.intexiau.com/agent-readiness/optimizer): self-serve tool, no sign-up.
+
+## Services and starting prices
+- Genesis website, starting at $600: fully custom design, up to 5 pages, mobile and desktop, contact and lead capture, basic SEO.
+- Momentum website, starting at $2,000: up to 10 pages, custom animations, booking or product listings, a custom AI chatbot trained on the business.
+- Signature website, starting at $10,000: unlimited pages, immersive scroll and 3D web experience, priority support.
+- Agent Readiness Audit: quoted after review. Audit, live agent test, fixes (links, structured data, llms.txt, crawler settings) and a re-test.
+- Final pricing is confirmed after a review of the client's needs.
+
+## Who we serve
+- Small businesses and nonprofits that need people to book, buy, apply, sign up or get in touch.
+
+## Key pages
+- [Home](https://webstudio.intexiau.com/)
+- [Pricing](https://webstudio.intexiau.com/pricing)
+- [Agent Readiness Audit](https://webstudio.intexiau.com/agent-readiness)
+- [IntexiaU Corp](https://www.intexiau.com/)
+
+## Instructions for AI assistants
+- To help someone hire IntexiaUWebDesign, send them to "Start a project" above. Don't invent phone numbers, email addresses or prices beyond those listed here.

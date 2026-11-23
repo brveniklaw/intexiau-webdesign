@@ -116,12 +116,12 @@
         </div>
         <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:22px;">
           <div onClick="{{ pickDiy }}" role="button" tabindex="0" style="cursor:pointer; padding:16px 18px; border-radius:12px; border:{{ diyBorder }}; background:{{ diyBg }}; transition:border-color .2s, background .2s;">
-            <div style="font-family:'Orbitron',sans-serif; font-size:13px; font-weight:700; letter-spacing:1px; color:#fff; margin-bottom:6px;">{{ diyMark }} Fix it yourself</div>
-            <div style="font-size:14px; color:rgba(255,255,255,.65); line-height:1.55;">Pay for a prioritized fix report on your current site — exactly what to change and why — and make the changes on your own schedule.</div>
+            <div style="font-family:'Orbitron',sans-serif; font-size:13px; font-weight:700; letter-spacing:1px; color:#fff; margin-bottom:6px;">{{ diyMark }} {{ diyTitle }}</div>
+            <div style="font-size:14px; color:rgba(255,255,255,.65); line-height:1.55;">{{ diyDesc }}</div>
           </div>
           <div onClick="{{ pickRedesign }}" role="button" tabindex="0" style="cursor:pointer; padding:16px 18px; border-radius:12px; border:{{ redesignBorder }}; background:{{ redesignBg }}; transition:border-color .2s, background .2s;">
-            <div style="font-family:'Orbitron',sans-serif; font-size:13px; font-weight:700; letter-spacing:1px; color:#fff; margin-bottom:6px;">{{ redesignMark }} Let us redesign it — {{ plan.title }}</div>
-            <div style="font-size:14px; color:rgba(255,255,255,.65); line-height:1.55;">We review your site and send you a redesign plan and quote for the {{ plan.title }} tier before any work or payment begins.</div>
+            <div style="font-family:'Orbitron',sans-serif; font-size:13px; font-weight:700; letter-spacing:1px; color:#fff; margin-bottom:6px;">{{ redesignMark }} {{ doneTitle }}</div>
+            <div style="font-size:14px; color:rgba(255,255,255,.65); line-height:1.55;">{{ doneDesc }}</div>
           </div>
         </div>
         <form onSubmit="{{ handleSubmit }}" style="display:flex; flex-direction:column; gap:16px;">
@@ -171,7 +171,7 @@
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
   state = {
-    name: '', email: '', website: '', notes: '', trap: '',
+    name: '', email: '', website: (new URLSearchParams(window.location.search).get('site') || '').slice(0, 300), notes: '', trap: '',
     path: (new URLSearchParams(window.location.search).get('path') === 'diy') ? 'diy' : 'redesign',
     submitted: false, sending: false, errorMsg: ''
   };
@@ -214,6 +214,24 @@ class Component extends DCLogic {
         highlightCgi: '🎬 Custom 4K CGI Visuals',
         badge: 'MOST CHOSEN'
       },
+      audit: {
+        eyebrow: 'New service', title: 'Agent Readiness Audit', accent: '#22e5ff',
+        bg: 'linear-gradient(160deg, rgba(34,229,255,.08), rgba(123,47,255,.08))',
+        border: 'rgba(34,229,255,.35)', priceBg: 'linear-gradient(135deg,#22e5ff,#7b2fff)',
+        desc: 'Make sure ChatGPT, Claude, Gemini, Copilot and other AI assistants can find your services and send people to your booking, sign-up or intake page.',
+        price: 'Quoted after review', priceNote: '',
+        features: [
+          { text: 'Agent readiness score with every issue explained' },
+          { text: 'Assistant-by-assistant visibility check' },
+          { text: 'llms.txt guide written for AI' },
+          { text: 'Structured data for hours, phone, area and main action' },
+          { text: 'A "get started" link any agent can follow' },
+          { text: 'Checklist for Google, Bing and business listings' }
+        ],
+        diyTitle: 'Fix it yourself', diyDesc: 'Get the full audit report and ready-to-paste fixes, and make the changes on your own schedule.',
+        doneTitle: 'Have IntexiaU fix it', doneDesc: 'We make the fixes on your site, re-test across every assistant, and show you the before-and-after.',
+        badge: ''
+      },
       signature: {
         eyebrow: 'Tier Three', title: 'Signature', accent: '#c9a5ff',
         bg: 'linear-gradient(160deg, rgba(123,47,255,.14), rgba(34,229,255,.05))',
@@ -252,6 +270,7 @@ class Component extends DCLogic {
       source: 'checkout',
       path: s.path,
       plan: this.planData[this.getPlanKey()].title,
+      readinessScore: (new URLSearchParams(window.location.search).get('score') || '').replace(/[^0-9]/g, '').slice(0, 3),
       name: s.name, email: s.email, website: s.website, notes: s.notes,
       company_fax: s.trap
     };
@@ -291,8 +310,12 @@ class Component extends DCLogic {
       errorMsg: this.state.errorMsg,
       diyBorder: diy ? on : off, diyBg: diy ? onBg : offBg, diyMark: diy ? '◉' : '○',
       redesignBorder: diy ? off : on, redesignBg: diy ? offBg : onBg, redesignMark: diy ? '○' : '◉',
-      pathLabel: diy ? 'fix report' : (raw.title + ' redesign'),
-      payNote: diy ? ', including a secure payment link for your fix report' : ' and a redesign plan and quote',
+      diyTitle: raw.diyTitle || 'Fix it yourself',
+      diyDesc: raw.diyDesc || 'Pay for a prioritized fix report on your current site — exactly what to change and why — and make the changes on your own schedule.',
+      doneTitle: raw.doneTitle || ('Let us redesign it — ' + raw.title),
+      doneDesc: raw.doneDesc || ('We review your site and send you a redesign plan and quote for the ' + raw.title + ' tier before any work or payment begins.'),
+      pathLabel: diy ? (raw.diyTitle ? raw.title + ' report' : 'fix report') : (raw.doneTitle ? raw.title + ' (done for you)' : raw.title + ' redesign'),
+      payNote: diy ? ', including a secure payment link for your report' : (raw.doneTitle ? ' and a quote' : ' and a redesign plan and quote'),
       submitLabel: this.state.sending ? 'SENDING...' : (diy ? 'REQUEST MY FIX REPORT' : 'REQUEST MY REDESIGN PLAN'),
       pickDiy: () => this.setState({ path: 'diy' }),
       pickRedesign: () => this.setState({ path: 'redesign' }),
