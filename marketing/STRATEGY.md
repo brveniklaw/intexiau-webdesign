@@ -34,3 +34,21 @@ Prices: to be set. Rule of thumb against Genesis ($600): Fix Report well below i
 ## Numbers to watch
 
 Checks run → email rate (aim 20–30%) → paid report or call → Fix Report → Done for you upgrades → Monitoring retention.
+
+## Status (Nov 23, 2026)
+
+- Built on branch `agent-readiness` in `brveniklaw/intexiau-webdesign`, deployed as a **Vercel preview only**. Production is unchanged until the branch is merged; Andrea decides when.
+- Preview pages: `/agent-readiness` (product page), `/agent-readiness/optimizer` (free checker), `/checkout?plan=audit` (audit request).
+- Without Vercel env vars the preview's forms log leads but don't email them, and the live agent test says it isn't switched on.
+
+## Open decisions and next steps
+
+| Item | Owner | Notes |
+|---|---|---|
+| Prices for Fix Report, Done for you, Monitoring | Andrea | Checkout says "Quoted after review" until set |
+| Vercel env vars: `RESEND_API_KEY`, `LEAD_TO_EMAIL`, `ANTHROPIC_API_KEY` | Edward | Production scope |
+| Vercel Firewall rate limit on `/api/fetch-page` and `/api/agent-test` | Edward | Protects AI costs |
+| Follow-up email sequence (day 0, 3, 7, 30) | Edward | Resend or Zapier, triggered by checker leads |
+| Pre-render the WebStudio homepage so agents see real text | Edward | Our own checker flags the homepage today |
+| Fix Report template using the staff build | Edward | Fixed format: score, issues, fixes, code, listings checklist |
+| Take down or keep private the copy published from the other Claude account | Andrea | It contains the full paid fixes |
