@@ -32,6 +32,26 @@
       "source": "/start-a-project",
       "destination": "/start",
       "permanent": true
+    },
+    {
+      "source": "/IntexiaU(.*)WebDesign.dc",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/Pricing.dc",
+      "destination": "/pricing",
+      "permanent": true
+    },
+    {
+      "source": "/Start(.*)Project.dc",
+      "destination": "/start",
+      "permanent": true
+    },
+    {
+      "source": "/Checkout.dc",
+      "destination": "/checkout",
+      "permanent": true
     }
   ],
   "headers": [
