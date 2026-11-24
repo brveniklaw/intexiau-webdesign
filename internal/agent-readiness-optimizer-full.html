@@ -14,32 +14,20 @@
 <link rel="icon" href="/assets/favicon-32.png" type="image/png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
 /* Universal version. Layout: tool header, two-column workbench (inputs left, findings right), fixes below. Summary before detail. */
 :root{
-  --bg:#f3f5f6; --surface:#ffffff; --ink:#14232b; --muted:#5a6b73; --line:#d8e0e3;
-  --accent:#0d6b74; --accent-ink:#ffffff; --accent-soft:#e1f0f1;
-  --good:#1e7a46; --good-soft:#e3f3e9; --warn:#a1620a; --warn-soft:#fbf0dc; --bad:#b3261e; --bad-soft:#fbe5e3; --skip:#7b8a91; --skip-soft:#eef1f2;
-  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
-  --body:"Source Sans 3", "Segoe UI", system-ui, sans-serif;
-  --mono:"JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
-  color-scheme: light;
-}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --bg:#0f171b; --surface:#16222a; --ink:#e4ecef; --muted:#97a8b0; --line:#2a3a43;
-    --accent:#3fb3bd; --accent-ink:#0b1417; --accent-soft:#163238;
-    --good:#5cc98a; --good-soft:#163024; --warn:#e5a849; --warn-soft:#33281a; --bad:#f07a71; --bad-soft:#3a1d1b; --skip:#8696a0; --skip-soft:#1d2a31;
-    color-scheme: dark;
-  }
-}
-:root[data-theme="dark"]{
-  --bg:#0f171b; --surface:#16222a; --ink:#e4ecef; --muted:#97a8b0; --line:#2a3a43;
-  --accent:#3fb3bd; --accent-ink:#0b1417; --accent-soft:#163238;
-  --good:#5cc98a; --good-soft:#163024; --warn:#e5a849; --warn-soft:#33281a; --bad:#f07a71; --bad-soft:#3a1d1b; --skip:#8696a0; --skip-soft:#1d2a31;
+  /* IntexiaUWebDesign brand (dark), matches webstudio.intexiau.com */
+  --bg:#060a18; --surface:#0b1124; --ink:#e8eefc; --muted:#9aa7c2; --line:#1f2b48;
+  --accent:#22e5ff; --accent-ink:#020510; --accent-soft:rgba(34,229,255,.08); --accent-2:#7b2fff;
+  --good:#3ddc84; --good-soft:rgba(61,220,132,.10); --warn:#f2b33d; --warn-soft:rgba(242,179,61,.10); --bad:#ff6b6b; --bad-soft:rgba(255,107,107,.10); --skip:#8a97b2; --skip-soft:rgba(138,151,178,.10);
+  --display:"Orbitron", "Segoe UI", system-ui, sans-serif;
+  --body:"Rajdhani", "Segoe UI", system-ui, sans-serif;
+  --mono:"Share Tech Mono", ui-monospace, Menlo, Consolas, monospace;
   color-scheme: dark;
 }
+body{background:radial-gradient(circle at 15% 0%, rgba(34,229,255,.07), transparent 40%), radial-gradient(circle at 90% 30%, rgba(123,47,255,.09), transparent 45%), #020510 !important;font-size:17px !important}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html,body{margin:0}
@@ -124,6 +112,14 @@ pre{margin:0;background:var(--bg);border:1px solid var(--line);border-radius:6px
 .gate p{margin:0}
 .gate form{display:grid;gap:10px}
 .locked{color:var(--muted);font-size:.92rem;margin:4px 0 0}
+/* brand overrides */
+h1{letter-spacing:.01em}
+.btn{background:linear-gradient(135deg,#0088ff,var(--accent-2));border-color:transparent;color:#fff}
+.btn.ghost{background:transparent;border-color:rgba(34,229,255,.45);color:var(--accent)}
+.chip[aria-pressed="true"]{background:var(--accent);color:#020510;border-color:var(--accent)}
+.cta-box{background:linear-gradient(135deg, rgba(34,229,255,.08), rgba(123,47,255,.12))}
+.brandbar a.home{color:#fff;font-family:var(--display);font-size:.95rem}
+.tab[aria-selected="true"]{color:#fff}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
